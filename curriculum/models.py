@@ -45,7 +45,7 @@ class State(models.TextChoices):
     INTERCEPTS = 'INTERCEPTS', 'Intercepts'
     SOLUTION_SET = 'SOLUTION_SET', 'Solution set'
 
-    TYPE_CLASSIFICATION = 'TYPE_CLASSIFICATION','Type classification'
+    BEHAVIOR_CLASSIFICATION = 'BEHAVIOR_CLASSIFICATION','Behavior classification'
     SOLUTIONS_COUNT = 'SOLUTIONS_COUNT', 'Solutions count'
 
 
@@ -59,7 +59,7 @@ class SyntacticStructure(models.TextChoices):
     DATA_SET = 'DATA_SET', 'Bivariate Data'
     SYSTEM = 'SYSTEM', 'System'
 
-class Type(models.TextChoices):
+class Behavior(models.TextChoices):
     LINEAR = 'LINEAR', 'Linear'
     QUADRATIC = 'QUADRATIC', 'Quadratic'
     EXPONENTIAL = 'EXPONENTIAL', 'Exponential'
@@ -76,8 +76,8 @@ class MathObject(models.Model):
     )
     type = models.CharField(
         max_length=50, 
-        choices=Type.choices,
-        default=Type.NONE,
+        choices=Behavior.choices,
+        default=Behavior.NONE,
         blank=True
     )
     system_components = models.ManyToManyField(
