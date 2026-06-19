@@ -1,0 +1,24 @@
+# ignore everything
+*
+
+# unignore these extensions
+!*/
+!*.gitignore
+
+!*.md
+!*.py
+
+!*.html
+!*.css
+!*.js
+!*.json
+!*.ts
+!*.vue
+
+# reignore this stuff
+.env
+.venv/
+token.json
+*.swp
+node_modules
+staticfiles/
