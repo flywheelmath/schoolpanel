@@ -1,0 +1,4369 @@
+{
+  "dependencies": [
+    {
+      "source": "K.CC.A.1",
+      "target": "1.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.CC.A.1",
+      "target": "K.CC.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.CC.A.1",
+      "target": "K.CC.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.CC.A.2",
+      "target": "K.CC.B.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.CC.A.1",
+      "target": "K.CC.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.CC.B.4",
+      "target": "K.CC.C.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.CC.B.4",
+      "target": "K.CC.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.CC.B.4",
+      "target": "1.OA.C.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.CC.B.5",
+      "target": "K.CC.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.CC.B.4.c",
+      "target": "K.CC.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.CC.B.4.c",
+      "target": "1.OA.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.CC.B.5",
+      "target": "K.CC.C.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.CC.C.6",
+      "target": "K.CC.B.4.c",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.CC.C.6",
+      "target": "K.CC.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.CC.C.6",
+      "target": "K.MD.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.CC.C.7",
+      "target": "1.NBT.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.1",
+      "target": "K.G.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.G.A.1",
+      "target": "K.G.A.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.G.A.1",
+      "target": "K.G.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.1",
+      "target": "K.G.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.1",
+      "target": "K.G.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.2",
+      "target": "K.G.A.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.G.A.2",
+      "target": "K.G.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.2",
+      "target": "K.G.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.2",
+      "target": "K.G.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.2",
+      "target": "1.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.3",
+      "target": "1.G.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "K.G.A.3",
+      "target": "K.G.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.3",
+      "target": "K.G.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.A.3",
+      "target": "K.G.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.B.4",
+      "target": "1.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.B.5",
+      "target": "1.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.G.B.6",
+      "target": "1.G.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.MD.A.1",
+      "target": "K.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.MD.A.2",
+      "target": "K.MD.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.MD.A.2",
+      "target": "1.MD.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.MD.B.3",
+      "target": "1.MD.C.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.NBT.A.1",
+      "target": "1.NBT.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.1",
+      "target": "K.OA.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.2",
+      "target": "K.OA.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.2",
+      "target": "1.OA.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.2",
+      "target": "1.OA.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.2",
+      "target": "1.OA.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.2",
+      "target": "1.OA.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.3",
+      "target": "K.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.3",
+      "target": "K.OA.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.3",
+      "target": "K.OA.A.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.3",
+      "target": "1.OA.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.4",
+      "target": "1.OA.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "K.OA.A.5",
+      "target": "1.OA.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.G.A.1",
+      "target": "2.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.G.A.2",
+      "target": "1.G.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.G.A.2",
+      "target": "3.MD.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.G.A.2",
+      "target": "4.G.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.G.A.3",
+      "target": "2.G.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.MD.A.1",
+      "target": "1.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.MD.A.2",
+      "target": "2.MD.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.MD.B.3",
+      "target": "2.MD.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.MD.C.4",
+      "target": "2.MD.D.10",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.A.1",
+      "target": "1.NBT.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.B.2",
+      "target": "1.NBT.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.B.2",
+      "target": "1.NBT.C.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.B.2",
+      "target": "1.NBT.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.B.2",
+      "target": "1.NBT.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.B.2",
+      "target": "2.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.C.4",
+      "target": "2.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.C.4",
+      "target": "2.OA.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.C.5",
+      "target": "2.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.C.5",
+      "target": "1.NBT.C.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "1.NBT.C.6",
+      "target": "2.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.C.5",
+      "target": "2.OA.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.NBT.C.6",
+      "target": "2.OA.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.A.1",
+      "target": "1.MD.C.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.A.1",
+      "target": "1.OA.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.A.1",
+      "target": "1.OA.D.8",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "1.OA.A.1",
+      "target": "2.OA.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.A.1",
+      "target": "1.OA.C.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "1.OA.A.2",
+      "target": "1.MD.C.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.3",
+      "target": "1.OA.B.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "1.OA.B.3",
+      "target": "1.OA.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.3",
+      "target": "2.NBT.B.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.3",
+      "target": "4.NF.B.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.3",
+      "target": "4.NF.B.3.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.3",
+      "target": "4.NF.B.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.3",
+      "target": "6.EE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.3",
+      "target": "6.EE.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.4",
+      "target": "1.OA.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.4",
+      "target": "2.NBT.B.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.4",
+      "target": "3.NBT.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.4",
+      "target": "4.NF.B.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.4",
+      "target": "4.NF.B.3.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.B.4",
+      "target": "4.NF.B.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.C.5",
+      "target": "1.OA.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.C.6",
+      "target": "1.OA.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "1.OA.C.6",
+      "target": "2.OA.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.C.6",
+      "target": "1.NBT.C.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.D.7",
+      "target": "1.OA.D.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.D.7",
+      "target": "2.OA.C.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.D.7",
+      "target": "2.OA.C.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.D.8",
+      "target": "4.MD.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "1.OA.D.8",
+      "target": "4.NF.B.3.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.G.A.1",
+      "target": "3.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.G.A.2",
+      "target": "2.G.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.G.A.2",
+      "target": "3.MD.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.G.A.3",
+      "target": "3.NF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.MD.A.1",
+      "target": "2.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.MD.A.1",
+      "target": "2.MD.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.MD.A.1",
+      "target": "3.MD.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.MD.A.1",
+      "target": "3.MD.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.MD.A.2",
+      "target": "3.NF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.MD.A.3",
+      "target": "2.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.MD.A.3",
+      "target": "2.MD.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.MD.A.4",
+      "target": "2.MD.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.MD.B.5",
+      "target": "2.MD.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.MD.B.5",
+      "target": "2.OA.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.MD.B.6",
+      "target": "2.MD.D.9",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.MD.B.6",
+      "target": "3.NF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.1",
+      "target": "2.NBT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.1",
+      "target": "2.NBT.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.1",
+      "target": "2.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.1",
+      "target": "2.NBT.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.1",
+      "target": "2.NBT.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.1",
+      "target": "3.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.1",
+      "target": "3.NBT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.1",
+      "target": "4.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.2",
+      "target": "2.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.A.2",
+      "target": "2.OA.C.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.NBT.B.5",
+      "target": "2.OA.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.NBT.B.7",
+      "target": "2.NBT.B.8",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.NBT.B.7",
+      "target": "2.NBT.B.9",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.NBT.B.7",
+      "target": "2.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.B.7",
+      "target": "3.NBT.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.NBT.B.8",
+      "target": "2.NBT.B.9",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.NBT.B.8",
+      "target": "3.NBT.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.OA.A.1",
+      "target": "2.MD.D.10",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.OA.A.1",
+      "target": "2.MD.C.8",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "2.OA.A.1",
+      "target": "3.OA.D.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.OA.A.1",
+      "target": "4.NF.B.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.OA.A.1",
+      "target": "4.NF.B.3.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.OA.A.1",
+      "target": "4.NF.B.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.OA.B.2",
+      "target": "2.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.OA.C.3",
+      "target": "3.OA.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.OA.C.3",
+      "target": "3.OA.D.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "2.OA.C.4",
+      "target": "3.OA.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.G.A.1",
+      "target": "4.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.G.A.1",
+      "target": "5.G.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.A.2",
+      "target": "3.OA.D.8",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.MD.A.2",
+      "target": "4.MD.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.A.2",
+      "target": "3.NF.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.MD.B.4",
+      "target": "4.MD.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.5",
+      "target": "3.MD.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.5",
+      "target": "3.MD.C.7.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.5",
+      "target": "3.MD.D.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.5",
+      "target": "5.MD.C.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.6",
+      "target": "3.MD.C.7.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.7.a",
+      "target": "3.MD.C.7.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.7.a",
+      "target": "3.MD.C.7.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.7.b",
+      "target": "3.MD.C.7.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.7.b",
+      "target": "4.MD.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.7.b",
+      "target": "5.NF.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.C.7.c",
+      "target": "3.MD.C.7.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.MD.D.8",
+      "target": "4.MD.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NBT.A.1",
+      "target": "4.NBT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NBT.A.2",
+      "target": "4.NBT.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NBT.A.2",
+      "target": "4.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NBT.A.2",
+      "target": "4.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NBT.A.3",
+      "target": "4.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.1",
+      "target": "3.G.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.1",
+      "target": "3.NF.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.NF.A.1",
+      "target": "3.NF.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.1",
+      "target": "4.NF.B.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.1",
+      "target": "4.NF.B.3.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.1",
+      "target": "4.NF.B.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.1",
+      "target": "4.NF.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.1",
+      "target": "5.NF.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.2",
+      "target": "3.MD.B.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.NF.A.2",
+      "target": "3.NF.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.2",
+      "target": "4.NF.B.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.2",
+      "target": "4.NF.B.3.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.2",
+      "target": "4.NF.B.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.2",
+      "target": "5.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.2",
+      "target": "5.G.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.2",
+      "target": "6.NS.C.6.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.NF.A.3",
+      "target": "4.NF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "3.OA.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "3.OA.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "3.OA.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "3.OA.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "4.NF.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "4.OA.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "5.NF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.2",
+      "target": "5.NF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.1",
+      "target": "5.NF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "5.NF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "5.NF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.2",
+      "target": "5.NF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.1",
+      "target": "5.NF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "5.NF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "5.NF.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.2",
+      "target": "5.NF.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.1",
+      "target": "5.NF.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "5.NF.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.1",
+      "target": "5.OA.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.2",
+      "target": "5.OA.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.1",
+      "target": "5.OA.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "5.OA.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.2",
+      "target": "3.OA.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.2",
+      "target": "3.OA.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.2",
+      "target": "3.OA.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.A.3",
+      "target": "3.OA.A.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.A.3",
+      "target": "3.OA.D.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.3",
+      "target": "4.NF.B.4.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.3",
+      "target": "4.OA.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.3",
+      "target": "4.OA.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.A.3",
+      "target": "3.OA.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.A.4",
+      "target": "3.OA.C.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.A.4",
+      "target": "4.MD.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.5",
+      "target": "3.MD.C.7.c",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.B.5",
+      "target": "3.NBT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.5",
+      "target": "3.OA.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.5",
+      "target": "3.OA.D.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.5",
+      "target": "4.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.5",
+      "target": "4.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.5",
+      "target": "5.MD.C.5.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.5",
+      "target": "6.EE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.5",
+      "target": "6.EE.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.6",
+      "target": "3.OA.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.6",
+      "target": "5.NF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.6",
+      "target": "5.NF.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.B.6",
+      "target": "6.NS.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.C.7",
+      "target": "3.OA.D.8",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.C.7",
+      "target": "4.MD.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.C.7",
+      "target": "4.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.C.7",
+      "target": "4.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.C.7",
+      "target": "4.OA.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.D.8",
+      "target": "3.MD.B.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.D.8",
+      "target": "3.MD.C.7.d",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.D.8",
+      "target": "3.MD.D.8",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "3.OA.D.8",
+      "target": "4.OA.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "3.OA.D.9",
+      "target": "4.OA.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.G.A.1",
+      "target": "4.G.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.G.A.1",
+      "target": "4.MD.C.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "4.G.A.2",
+      "target": "5.G.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.A.1",
+      "target": "4.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.A.1",
+      "target": "5.MD.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.A.1",
+      "target": "6.RP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.A.2",
+      "target": "4.NF.B.3.d",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "4.MD.A.2",
+      "target": "5.MD.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.A.2",
+      "target": "5.NF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.A.2",
+      "target": "5.NF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.A.2",
+      "target": "5.NF.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.A.3",
+      "target": "5.MD.C.5.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.A.3",
+      "target": "6.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.B.4",
+      "target": "4.NF.B.3.d",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "4.MD.B.4",
+      "target": "5.MD.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.C.5",
+      "target": "4.G.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "4.MD.C.5",
+      "target": "4.MD.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.C.5",
+      "target": "4.MD.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.C.7",
+      "target": "7.G.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.C.5",
+      "target": "HSG.C.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.MD.C.5",
+      "target": "HSG.CO.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.1",
+      "target": "4.NBT.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.1",
+      "target": "4.NBT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.1",
+      "target": "4.NBT.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.1",
+      "target": "4.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.1",
+      "target": "4.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.1",
+      "target": "5.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.2",
+      "target": "4.NBT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.2",
+      "target": "5.NBT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.3",
+      "target": "4.OA.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.A.3",
+      "target": "5.NBT.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.B.4",
+      "target": "5.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.B.4",
+      "target": "5.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.B.4",
+      "target": "5.NBT.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.B.5",
+      "target": "4.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.B.5",
+      "target": "5.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.B.6",
+      "target": "4.OA.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NBT.B.6",
+      "target": "5.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.A.1",
+      "target": "4.NF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.A.1",
+      "target": "4.NF.B.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.A.1",
+      "target": "4.NF.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.A.1",
+      "target": "5.NF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.A.1",
+      "target": "5.NF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.A.2",
+      "target": "4.NF.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.A.2",
+      "target": "5.NF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.a",
+      "target": "4.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.b",
+      "target": "4.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.c",
+      "target": "4.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.a",
+      "target": "4.NF.B.3.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.b",
+      "target": "4.NF.B.3.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.c",
+      "target": "4.NF.B.3.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.a",
+      "target": "4.NF.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.b",
+      "target": "4.NF.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.c",
+      "target": "4.NF.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.a",
+      "target": "5.NF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.b",
+      "target": "5.NF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.c",
+      "target": "5.NF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.3.d",
+      "target": "5.NF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.4",
+      "target": "5.NF.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.4",
+      "target": "5.NF.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.4.a",
+      "target": "4.NF.B.4.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.B.4.a",
+      "target": "4.NF.B.4.c",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "4.NF.B.4.b",
+      "target": "4.NF.B.4.c",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "4.NF.B.4.c",
+      "target": "4.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.C.5",
+      "target": "4.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.C.5",
+      "target": "5.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.C.6",
+      "target": "4.MD.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.C.6",
+      "target": "4.NF.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.C.6",
+      "target": "5.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.C.7",
+      "target": "5.NBT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.NF.C.7",
+      "target": "5.NBT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "4.MD.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "4.NF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "4.NF.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "6.RP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "6.RP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.2",
+      "target": "8.EE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.A.3",
+      "target": "4.MD.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "4.OA.A.3",
+      "target": "7.NS.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.B.4",
+      "target": "6.EE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.B.4",
+      "target": "6.NS.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "4.OA.C.5",
+      "target": "5.OA.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.G.A.1",
+      "target": "5.G.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.G.A.1",
+      "target": "6.NS.C.6.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.G.A.1",
+      "target": "6.NS.C.6.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.G.A.2",
+      "target": "6.G.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.G.A.2",
+      "target": "6.NS.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.G.A.2",
+      "target": "6.RP.A.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.G.B.3",
+      "target": "5.G.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.B.2",
+      "target": "6.SP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.B.2",
+      "target": "6.SP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.B.2",
+      "target": "6.SP.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.C.3",
+      "target": "5.MD.C.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.C.3",
+      "target": "5.MD.C.5.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.C.3",
+      "target": "5.MD.C.5.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.C.4",
+      "target": "5.MD.C.5.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.C.5.a",
+      "target": "5.MD.C.5.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.C.5.a",
+      "target": "6.G.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.C.5.b",
+      "target": "5.MD.C.5.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.MD.C.5.b",
+      "target": "6.G.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.A.1",
+      "target": "5.NBT.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.A.1",
+      "target": "5.NBT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.A.1",
+      "target": "5.NBT.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.A.1",
+      "target": "5.NBT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.A.1",
+      "target": "5.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.A.1",
+      "target": "5.NBT.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.A.2",
+      "target": "5.NBT.B.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NBT.A.2",
+      "target": "5.NBT.B.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NBT.A.2",
+      "target": "6.EE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.A.2",
+      "target": "8.EE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.A.3",
+      "target": "5.NBT.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.B.5",
+      "target": "5.NBT.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.B.5",
+      "target": "5.NBT.B.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NBT.B.5",
+      "target": "6.NS.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.B.6",
+      "target": "5.NBT.B.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NBT.B.6",
+      "target": "6.NS.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.B.6",
+      "target": "6.NS.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.B.7",
+      "target": "5.MD.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NBT.B.7",
+      "target": "6.NS.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.A.1",
+      "target": "5.NBT.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.A.1",
+      "target": "5.NF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.A.1",
+      "target": "6.EE.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.A.1",
+      "target": "7.NS.A.1.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.A.2",
+      "target": "5.MD.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.3",
+      "target": "5.NF.B.4.a",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NF.B.3",
+      "target": "5.NF.B.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NF.B.3",
+      "target": "6.RP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.3",
+      "target": "7.NS.A.2.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.4",
+      "target": "5.NBT.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.4",
+      "target": "5.NF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.4",
+      "target": "5.NF.B.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NF.B.4",
+      "target": "6.EE.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.4",
+      "target": "6.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.4",
+      "target": "7.NS.A.2.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.4",
+      "target": "7.SP.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.4.a",
+      "target": "5.NF.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.4.a",
+      "target": "5.NF.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NF.B.5",
+      "target": "5.OA.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NF.B.5",
+      "target": "6.RP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.6",
+      "target": "5.MD.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.6",
+      "target": "5.NF.B.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NF.B.6",
+      "target": "5.NF.B.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NF.B.6",
+      "target": "5.NF.B.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "5.NF.B.7",
+      "target": "5.NBT.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.7",
+      "target": "6.NS.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.7",
+      "target": "6.RP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.NF.B.7.c",
+      "target": "5.MD.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.OA.A.1",
+      "target": "5.OA.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.OA.A.2",
+      "target": "6.EE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.OA.A.2",
+      "target": "6.EE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.OA.A.2",
+      "target": "6.EE.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.OA.A.2",
+      "target": "6.NS.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.OA.B.3",
+      "target": "6.EE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.OA.B.3",
+      "target": "6.EE.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "5.OA.B.3",
+      "target": "6.RP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.A.1",
+      "target": "6.EE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.A.1",
+      "target": "8.EE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.A.2",
+      "target": "6.EE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.A.2",
+      "target": "6.EE.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.A.2",
+      "target": "6.EE.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.A.2",
+      "target": "6.EE.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.A.2",
+      "target": "HSA.SSE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.A.3",
+      "target": "7.EE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.A.4",
+      "target": "7.EE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.B.5",
+      "target": "6.EE.B.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.EE.B.5",
+      "target": "6.EE.B.8",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.EE.B.5",
+      "target": "8.EE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.B.5",
+      "target": "8.EE.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.B.5",
+      "target": "HSA.REI.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.B.5",
+      "target": "HSA.REI.D.10",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.B.6",
+      "target": "6.EE.B.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.EE.B.6",
+      "target": "7.EE.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.B.6",
+      "target": "7.EE.B.4.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.B.7",
+      "target": "7.EE.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.B.7",
+      "target": "6.EE.C.9",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.EE.B.7",
+      "target": "6.RP.A.3.b",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.EE.B.8",
+      "target": "7.EE.B.4.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.EE.C.9",
+      "target": "6.RP.A.3.b",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.G.A.1",
+      "target": "6.G.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.G.A.1",
+      "target": "7.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.G.A.1",
+      "target": "7.G.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.G.A.1",
+      "target": "7.G.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.G.A.1",
+      "target": "HSG.MG.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.G.A.2",
+      "target": "7.G.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.G.A.3",
+      "target": "8.G.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.G.A.3",
+      "target": "8.G.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.G.A.4",
+      "target": "7.G.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.A.1",
+      "target": "6.EE.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.A.1",
+      "target": "7.NS.A.2.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.A.1",
+      "target": "7.SP.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.B.2",
+      "target": "6.NS.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.B.3",
+      "target": "7.NS.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.B.4",
+      "target": "6.EE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.B.4",
+      "target": "6.EE.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.5",
+      "target": "6.NS.C.6.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.5",
+      "target": "7.NS.A.1.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.a",
+      "target": "6.EE.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.a",
+      "target": "6.NS.C.6.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.a",
+      "target": "6.NS.C.6.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.a",
+      "target": "6.NS.C.7.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.a",
+      "target": "7.NS.A.1.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.a",
+      "target": "7.NS.A.1.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.b",
+      "target": "6.NS.C.6.c",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.NS.C.6.b",
+      "target": "6.NS.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.c",
+      "target": "6.EE.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.c",
+      "target": "6.NS.C.7.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.6.c",
+      "target": "6.NS.C.7.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.7.a",
+      "target": "6.EE.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.7.a",
+      "target": "6.NS.C.7.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.7.b",
+      "target": "6.EE.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.7.b",
+      "target": "6.NS.C.7.a",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.NS.C.7.b",
+      "target": "6.NS.C.7.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.7.c",
+      "target": "6.NS.C.7.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.7.c",
+      "target": "7.NS.A.1.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.7.c",
+      "target": "7.NS.A.1.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.NS.C.8",
+      "target": "6.G.A.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.NS.C.8",
+      "target": "8.SP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.1",
+      "target": "6.RP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.1",
+      "target": "6.RP.A.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.2",
+      "target": "6.RP.A.3.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.2",
+      "target": "6.RP.A.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.2",
+      "target": "6.RP.A.3.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.2",
+      "target": "7.RP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.2",
+      "target": "7.RP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.3",
+      "target": "7.RP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.3",
+      "target": "7.RP.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.3",
+      "target": "HSN.Q.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.3.a",
+      "target": "6.EE.C.9",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.RP.A.3.a",
+      "target": "6.RP.A.3.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.RP.A.3.c",
+      "target": "6.EE.B.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.SP.A.1",
+      "target": "6.SP.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.1",
+      "target": "7.SP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.2",
+      "target": "6.SP.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.2",
+      "target": "6.SP.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.2",
+      "target": "7.SP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.2",
+      "target": "7.SP.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.2",
+      "target": "HSS.ID.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.2",
+      "target": "HSS.ID.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.2",
+      "target": "HSS.ID.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.3",
+      "target": "6.SP.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.A.3",
+      "target": "HSS.ID.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.B.4",
+      "target": "6.SP.B.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "6.SP.B.4",
+      "target": "HSS.ID.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.B.5",
+      "target": "HSS.IC.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.B.5",
+      "target": "HSS.ID.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "6.SP.B.5",
+      "target": "HSS.ID.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.1",
+      "target": "7.EE.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "7.EE.A.1",
+      "target": "8.EE.C.7.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.1",
+      "target": "HSA.APR.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.1",
+      "target": "HSA.SSE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.1",
+      "target": "HSA.SSE.B.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.1",
+      "target": "HSA.SSE.B.3.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.1",
+      "target": "HSF.IF.C.8.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.1",
+      "target": "HSF.IF.C.8.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.1",
+      "target": "HSN.CN.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.2",
+      "target": "HSA.SSE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.2",
+      "target": "HSA.SSE.B.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.2",
+      "target": "HSA.SSE.B.3.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.A.2",
+      "target": "HSA.SSE.B.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.B.3",
+      "target": "8.EE.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.B.4",
+      "target": "HSA.CED.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.B.4",
+      "target": "HSA.REI.D.12",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.B.4.a",
+      "target": "7.EE.B.4.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.B.4.a",
+      "target": "8.EE.C.7.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.EE.B.4.a",
+      "target": "8.EE.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.A.1",
+      "target": "8.EE.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.A.1",
+      "target": "HSG.MG.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.A.2",
+      "target": "8.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.A.2",
+      "target": "HSG.CO.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.A.2",
+      "target": "HSG.CO.D.12",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.A.3",
+      "target": "HSG.GMD.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.B.4",
+      "target": "HSG.GMD.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.B.4",
+      "target": "HSG.MG.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.B.4",
+      "target": "HSG.MG.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.B.5",
+      "target": "8.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.B.5",
+      "target": "HSG.CO.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.B.6",
+      "target": "8.G.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.B.6",
+      "target": "HSG.MG.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.G.B.6",
+      "target": "HSG.MG.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.1.a",
+      "target": "7.NS.A.1.b",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "7.NS.A.1.b",
+      "target": "7.NS.A.1.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.1.b",
+      "target": "7.NS.A.1.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.1.c",
+      "target": "7.NS.A.1.d",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.1.d",
+      "target": "7.NS.A.2.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.1.d",
+      "target": "7.NS.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.2.a",
+      "target": "7.NS.A.2.b",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "7.NS.A.2.a",
+      "target": "7.NS.A.2.c",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "7.NS.A.2.c",
+      "target": "7.NS.A.2.b",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "7.NS.A.2.c",
+      "target": "7.NS.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.2.d",
+      "target": "7.NS.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.2.d",
+      "target": "8.NS.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.3",
+      "target": "7.EE.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.3",
+      "target": "7.EE.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.NS.A.3",
+      "target": "8.EE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.1",
+      "target": "7.RP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.1",
+      "target": "HSG.MG.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.1",
+      "target": "HSN.Q.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.2",
+      "target": "7.EE.B.4.a",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "7.RP.A.2",
+      "target": "7.G.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.2",
+      "target": "7.RP.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.2",
+      "target": "8.EE.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.2",
+      "target": "8.EE.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.2",
+      "target": "8.F.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.2",
+      "target": "8.F.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.2",
+      "target": "8.F.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.2",
+      "target": "HSG.SRT.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.3",
+      "target": "7.SP.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.3",
+      "target": "7.SP.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.3",
+      "target": "7.SP.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.3",
+      "target": "HSA.SSE.B.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.RP.A.3",
+      "target": "HSF.IF.C.8.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.A.1",
+      "target": "7.SP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.A.1",
+      "target": "HSS.IC.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.A.1",
+      "target": "HSS.IC.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.A.2",
+      "target": "7.SP.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.A.2",
+      "target": "HSS.IC.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.B.3",
+      "target": "7.SP.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.B.3",
+      "target": "HSS.ID.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.B.4",
+      "target": "HSS.IC.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.B.4",
+      "target": "HSS.ID.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.C.5",
+      "target": "7.SP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.C.5",
+      "target": "7.SP.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.C.6",
+      "target": "7.SP.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.C.7",
+      "target": "7.SP.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.C.7",
+      "target": "HSS.IC.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.C.8",
+      "target": "HSS.CP.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.C.8",
+      "target": "HSS.CP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "7.SP.C.8",
+      "target": "HSS.CP.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.1",
+      "target": "8.EE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.1",
+      "target": "8.EE.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.1",
+      "target": "HSA.APR.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.1",
+      "target": "HSN.RN.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.2",
+      "target": "8.G.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.EE.A.2",
+      "target": "8.G.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.2",
+      "target": "HSA.CED.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.2",
+      "target": "HSA.REI.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.2",
+      "target": "HSA.REI.B.4.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.2",
+      "target": "HSN.RN.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.A.3",
+      "target": "8.EE.A.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.EE.A.4",
+      "target": "HSN.Q.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.B.5",
+      "target": "8.EE.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.EE.B.5",
+      "target": "8.F.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.B.5",
+      "target": "HSA.REI.D.10",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.B.6",
+      "target": "8.EE.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.B.6",
+      "target": "8.F.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.B.6",
+      "target": "8.F.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.B.6",
+      "target": "HSA.REI.D.10",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.B.6",
+      "target": "HSG.GPE.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.7",
+      "target": "HSA.CED.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.7",
+      "target": "HSA.REI.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.7",
+      "target": "HSA.REI.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.7.a",
+      "target": "8.EE.C.7.b",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.EE.C.7.b",
+      "target": "8.SP.A.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.EE.C.8",
+      "target": "HSA.CED.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.8",
+      "target": "HSA.CED.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.8",
+      "target": "HSA.REI.C.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.8",
+      "target": "HSA.REI.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.8",
+      "target": "HSA.REI.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.8",
+      "target": "HSA.REI.D.10",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.8",
+      "target": "HSA.REI.D.12",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.EE.C.8",
+      "target": "HSG.GPE.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.1",
+      "target": "8.F.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.1",
+      "target": "8.F.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.1",
+      "target": "8.F.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.1",
+      "target": "HSF.IF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.1",
+      "target": "HSG.C.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.1",
+      "target": "HSG.CO.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.2",
+      "target": "8.F.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.2",
+      "target": "8.F.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.2",
+      "target": "HSF.IF.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.3",
+      "target": "8.F.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.3",
+      "target": "8.F.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.A.3",
+      "target": "HSF.LE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.4",
+      "target": "HSA.CED.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.4",
+      "target": "HSF.BF.A.1.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.4",
+      "target": "HSF.BF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.4",
+      "target": "HSF.IF.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.4",
+      "target": "HSF.LE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.4",
+      "target": "HSF.LE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.4",
+      "target": "HSF.LE.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.4",
+      "target": "HSS.ID.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.5",
+      "target": "8.F.B.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.F.B.5",
+      "target": "HSF.IF.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.5",
+      "target": "HSF.LE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.F.B.5",
+      "target": "HSF.LE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.1",
+      "target": "8.G.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.1",
+      "target": "8.G.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.1",
+      "target": "HSG.C.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.1",
+      "target": "HSG.CO.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.1",
+      "target": "HSG.CO.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.2",
+      "target": "8.G.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.2",
+      "target": "8.G.A.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.2",
+      "target": "HSG.CO.A.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.2",
+      "target": "HSG.CO.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.3",
+      "target": "8.G.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.3",
+      "target": "HSG.CO.A.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.3",
+      "target": "HSG.SRT.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.4",
+      "target": "8.G.A.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.4",
+      "target": "HSG.SRT.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.5",
+      "target": "8.EE.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.5",
+      "target": "HSG.CO.C.10",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.5",
+      "target": "HSG.CO.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.A.5",
+      "target": "HSG.SRT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.B.6",
+      "target": "8.G.B.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.G.B.6",
+      "target": "HSG.SRT.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.B.7",
+      "target": "8.G.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.B.7",
+      "target": "HSF.TF.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.B.7",
+      "target": "HSG.SRT.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.B.8",
+      "target": "HSG.GPE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.B.8",
+      "target": "HSG.GPE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.B.8",
+      "target": "HSG.GPE.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.B.8",
+      "target": "HSG.GPE.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.C.9",
+      "target": "HSG.GMD.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.C.9",
+      "target": "HSG.GMD.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.C.9",
+      "target": "HSG.MG.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.G.C.9",
+      "target": "HSG.MG.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.NS.A.1",
+      "target": "8.EE.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.NS.A.1",
+      "target": "8.NS.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.NS.A.1",
+      "target": "HSN.RN.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.NS.A.2",
+      "target": "8.EE.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.SP.A.1",
+      "target": "8.SP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.1",
+      "target": "HSS.ID.B.6.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.1",
+      "target": "HSS.ID.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.2",
+      "target": "8.F.B.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.SP.A.2",
+      "target": "8.SP.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.2",
+      "target": "HSS.ID.B.6.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.2",
+      "target": "HSS.ID.B.6.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.2",
+      "target": "HSS.ID.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.3",
+      "target": "8.F.B.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "8.SP.A.3",
+      "target": "HSS.ID.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.4",
+      "target": "HSS.CP.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.4",
+      "target": "HSS.ID.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "8.SP.A.4",
+      "target": "HSS.ID.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.APR.A.1",
+      "target": "HSA.SSE.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.APR.B.2",
+      "target": "HSA.APR.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.APR.B.2",
+      "target": "HSN.CN.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.APR.B.3",
+      "target": "HSF.IF.C.7.c",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.APR.D.6",
+      "target": "HSA.APR.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.APR.D.6",
+      "target": "HSA.SSE.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.CED.A.1",
+      "target": "HSF.LE.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.CED.A.1",
+      "target": "HSF.LE.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.CED.A.2",
+      "target": "HSA.CED.A.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.REI.A.1",
+      "target": "HSA.REI.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.A.1",
+      "target": "HSA.REI.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.A.1",
+      "target": "HSA.REI.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.A.1",
+      "target": "HSA.REI.B.4.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.A.2",
+      "target": "HSF.BF.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.B.3",
+      "target": "HSA.CED.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.B.3",
+      "target": "HSA.CED.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.B.3",
+      "target": "HSF.BF.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.B.4.a",
+      "target": "HSA.REI.B.4.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.B.4.a",
+      "target": "HSA.SSE.B.3.b",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.REI.B.4.a",
+      "target": "HSG.GPE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.B.4.b",
+      "target": "HSA.CED.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.B.4.b",
+      "target": "HSA.REI.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.B.4.b",
+      "target": "HSA.SSE.B.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.B.4.b",
+      "target": "HSN.CN.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.C.5",
+      "target": "HSA.REI.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.C.6",
+      "target": "HSA.CED.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.C.6",
+      "target": "HSA.REI.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.C.6",
+      "target": "HSA.REI.D.12",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.CED.A.3",
+      "target": "HSA.REI.C.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.REI.C.7",
+      "target": "HSG.GPE.B.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.REI.D.10",
+      "target": "HSA.CED.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.D.10",
+      "target": "HSA.REI.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.D.10",
+      "target": "HSA.REI.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.D.10",
+      "target": "HSA.REI.D.11",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.D.10",
+      "target": "HSA.REI.D.12",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.D.10",
+      "target": "HSG.GPE.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.D.10",
+      "target": "HSG.GPE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.REI.D.12",
+      "target": "HSA.CED.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.A.1",
+      "target": "HSA.CED.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.A.1",
+      "target": "HSA.CED.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.A.1",
+      "target": "HSA.CED.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.A.1",
+      "target": "HSA.CED.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.A.1",
+      "target": "HSF.BF.B.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.SSE.A.1",
+      "target": "HSF.LE.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.A.2",
+      "target": "HSA.APR.C.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.A.2",
+      "target": "HSA.APR.D.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.A.2",
+      "target": "HSA.SSE.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.A.2",
+      "target": "HSN.CN.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.B.3.a",
+      "target": "HSA.APR.B.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSA.SSE.B.3.a",
+      "target": "HSF.IF.C.8.a",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.SSE.B.3.b",
+      "target": "HSF.IF.C.8.a",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.SSE.B.3.c",
+      "target": "HSF.IF.C.8.b",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSA.SSE.B.4",
+      "target": "HSF.LE.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.BF.A.1.a",
+      "target": "HSF.BF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.BF.A.1.a",
+      "target": "HSF.LE.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.BF.A.1.b",
+      "target": "HSF.BF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.BF.A.1.b",
+      "target": "HSF.LE.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.BF.A.2",
+      "target": "HSF.LE.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.BF.A.2",
+      "target": "HSF.LE.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.BF.B.3",
+      "target": "HSF.TF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.BF.B.3",
+      "target": "HSS.ID.B.6.a",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.BF.B.4",
+      "target": "HSF.LE.A.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.BF.A.1.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.BF.A.1.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.BF.B.4.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.IF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.IF.A.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.IF.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.IF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.IF.C.7.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.IF.C.7.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.IF.C.7.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.IF.C.7.e",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.IF.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSF.TF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSG.C.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.1",
+      "target": "HSG.CO.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.2",
+      "target": "HSF.BF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.2",
+      "target": "HSF.IF.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.2",
+      "target": "HSG.C.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.2",
+      "target": "HSG.CO.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.3",
+      "target": "HSF.BF.A.1.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.3",
+      "target": "HSF.BF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.A.3",
+      "target": "HSF.IF.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.IF.B.4",
+      "target": "HSF.IF.B.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.IF.B.4",
+      "target": "HSF.IF.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.IF.B.4",
+      "target": "HSF.LE.B.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.IF.B.4",
+      "target": "HSF.TF.B.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.IF.C.7.a",
+      "target": "HSF.BF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.C.7.b",
+      "target": "HSF.BF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.C.7.c",
+      "target": "HSF.BF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.C.7.d",
+      "target": "HSF.BF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.C.7.e",
+      "target": "HSF.BF.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.C.7.e",
+      "target": "HSF.LE.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.IF.C.7.e",
+      "target": "HSF.TF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.LE.A.1",
+      "target": "HSF.LE.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.LE.A.2",
+      "target": "HSF.LE.B.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.LE.A.2",
+      "target": "HSS.ID.B.6.a",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.LE.A.4",
+      "target": "HSA.CED.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.LE.A.4",
+      "target": "HSF.BF.B.4.a",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSF.TF.A.1",
+      "target": "HSF.TF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.TF.A.2",
+      "target": "HSF.TF.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.TF.A.2",
+      "target": "HSF.TF.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSF.TF.C.9",
+      "target": "HSN.CN.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.C.B.5",
+      "target": "HSF.TF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.A.1",
+      "target": "HSF.TF.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.A.1",
+      "target": "HSG.C.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.A.1",
+      "target": "HSG.CO.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.A.1",
+      "target": "HSG.CO.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.A.2",
+      "target": "HSG.CO.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.A.2",
+      "target": "HSG.CO.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.A.4",
+      "target": "HSG.CO.A.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.A.5",
+      "target": "HSG.CO.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.A.5",
+      "target": "HSG.CO.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.B.6",
+      "target": "HSG.CO.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.B.6",
+      "target": "HSG.CO.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.B.6",
+      "target": "HSG.CO.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.B.7",
+      "target": "HSG.CO.B.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.B.8",
+      "target": "HSG.CO.C.10",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.B.8",
+      "target": "HSG.SRT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.C.10",
+      "target": "HSG.CO.C.11",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.C.10",
+      "target": "HSG.SRT.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.C.10",
+      "target": "HSG.SRT.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.C.9",
+      "target": "HSG.CO.C.10",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.C.9",
+      "target": "HSG.CO.C.11",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.CO.D.12",
+      "target": "HSG.CO.D.13",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.GMD.A.1",
+      "target": "HSG.GMD.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.GMD.A.3",
+      "target": "HSG.MG.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSG.GPE.A.1",
+      "target": "HSA.REI.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.GPE.A.1",
+      "target": "HSG.GPE.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.MG.A.1",
+      "target": "HSG.MG.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSG.SRT.A.1",
+      "target": "HSG.CO.A.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.A.1",
+      "target": "HSG.SRT.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.A.2",
+      "target": "HSG.SRT.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.A.3",
+      "target": "HSG.SRT.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.A.3",
+      "target": "HSG.SRT.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.A.3",
+      "target": "HSG.SRT.C.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.B.5",
+      "target": "HSG.GPE.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.B.5",
+      "target": "HSG.GPE.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.C.6",
+      "target": "HSF.TF.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.C.6",
+      "target": "HSF.TF.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.C.6",
+      "target": "HSG.SRT.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.C.6",
+      "target": "HSG.SRT.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSG.SRT.C.7",
+      "target": "HSG.SRT.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.A.1",
+      "target": "HSN.CN.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.A.1",
+      "target": "HSN.CN.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.A.1",
+      "target": "HSN.CN.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.A.2",
+      "target": "HSN.CN.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.A.2",
+      "target": "HSN.CN.C.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.A.2",
+      "target": "HSN.CN.C.8",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.A.3",
+      "target": "HSN.CN.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.A.3",
+      "target": "HSN.CN.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.B.4",
+      "target": "HSN.CN.B.5",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.B.5",
+      "target": "HSN.CN.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.C.7",
+      "target": "HSA.REI.B.4.b",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSN.CN.C.7",
+      "target": "HSA.SSE.B.3.a",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.C.7",
+      "target": "HSN.CN.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.CN.C.8",
+      "target": "HSN.CN.C.9",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.Q.A.1",
+      "target": "HSA.CED.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSN.Q.A.1",
+      "target": "HSG.MG.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSN.Q.A.1",
+      "target": "HSG.MG.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSN.Q.A.2",
+      "target": "HSG.MG.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSN.Q.A.2",
+      "target": "HSG.MG.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSN.Q.A.3",
+      "target": "HSG.MG.A.1",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSN.Q.A.3",
+      "target": "HSG.MG.A.2",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSN.RN.A.1",
+      "target": "HSN.RN.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.RN.A.2",
+      "target": "HSA.REI.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.RN.A.2",
+      "target": "HSA.SSE.B.3.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.RN.A.2",
+      "target": "HSF.IF.C.8.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSN.RN.B.3",
+      "target": "HSN.CN.A.1",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.CP.A.1",
+      "target": "HSS.CP.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.CP.A.1",
+      "target": "HSS.CP.A.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.CP.A.1",
+      "target": "HSS.CP.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.CP.A.1",
+      "target": "HSS.CP.B.7",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.CP.A.2",
+      "target": "HSS.CP.A.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.CP.A.2",
+      "target": "HSS.CP.A.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.CP.A.2",
+      "target": "HSS.CP.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.CP.A.3",
+      "target": "HSS.CP.A.4",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.CP.A.3",
+      "target": "HSS.CP.A.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.CP.A.3",
+      "target": "HSS.CP.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.CP.A.4",
+      "target": "HSS.CP.A.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.CP.A.4",
+      "target": "HSS.CP.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.CP.A.5",
+      "target": "HSS.CP.B.6",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.IC.A.1",
+      "target": "HSS.IC.B.3",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.IC.A.1",
+      "target": "HSS.IC.B.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.IC.A.1",
+      "target": "HSS.IC.B.5",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.IC.B.3",
+      "target": "HSS.IC.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.IC.B.4",
+      "target": "HSS.IC.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.IC.B.5",
+      "target": "HSS.IC.B.6",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.IC.B.6",
+      "target": "HSS.ID.C.9",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.ID.C.7",
+      "target": "HSS.ID.C.9",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.ID.A.1",
+      "target": "HSS.ID.A.2",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.ID.A.2",
+      "target": "HSS.ID.A.3",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.ID.A.2",
+      "target": "HSS.ID.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.ID.B.5",
+      "target": "HSS.CP.A.4",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.ID.B.6.a",
+      "target": "HSS.ID.B.6.b",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.ID.B.6.b",
+      "target": "HSS.ID.B.6.c",
+      "relationship": "dependency"
+    },
+    {
+      "source": "HSS.ID.B.6.c",
+      "target": "HSS.ID.C.7",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.ID.B.6.c",
+      "target": "HSS.ID.C.8",
+      "relationship": "conceptual connection"
+    },
+    {
+      "source": "HSS.ID.C.9",
+      "target": "HSS.ID.C.7",
+      "relationship": "conceptual connection"
+    }
+  ]
+}

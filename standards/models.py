@@ -10,6 +10,14 @@ class CCSSMStandard(models.Model):
     substandard_counter = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField()
 
+    prerequisites = models.ManyToManyField(
+        'self',
+        symmetrical=False,
+        blank=True,
+        related_name='coherence_dependencies',
+        help_text="Dependencies as defined by the CCSS AchieveTheCore.org Coherence Map."
+    )
+
     class Meta:
         verbose_name = "CCSSM Standard"
         ordering = [

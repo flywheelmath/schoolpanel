@@ -158,7 +158,7 @@ class TaskPrerequisite(models.Model):
         return f"{self.whole_task.title} requires {self.prerequisite_task.title}"
 
 class ScaffoldLevel(models.TextChoices):
-    WORKED_EXAMPLE = 'WORKED_EXAMPLE', 'Worked Example)'
+    WORKED_EXAMPLE = 'WORKED_EXAMPLE', 'Worked Example'
     COMPLETION_TASK = 'COMPLETION_TASK', 'Completion Task'
     PRACTICE = 'PRACTICE', 'Practice'
     FLUENCY = 'FLUENCY', 'Fluency'
