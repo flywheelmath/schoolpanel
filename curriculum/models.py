@@ -156,3 +156,17 @@ class TaskPrerequisite(models.Model):
 
     def __str__(self):
         return f"{self.whole_task.title} requires {self.prerequisite_task.title}"
+
+class ScaffoldLevel(models.TextChoices):
+    WORKED_EXAMPLE = 'WORKED_EXAMPLE', 'Worked Example)'
+    COMPLETION_TASK = 'COMPLETION_TASK', 'Completion Task'
+    PRACTICE = 'PRACTICE', 'Practice'
+    FLUENCY = 'FLUENCY', 'Fluency'
+
+class LearningTask(models.Model):
+    task_class = models.ForeignKey(TaskClass, on_delete=models.CASCADE, related_name='learning_tasks')
+    scaffold_level = models.CharField(max_length=20, choices=ScaffoldLevel.choices)
+    content_payload = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+        ordering = ['task_class', 'scaffold_level']
