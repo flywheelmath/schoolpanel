@@ -1,6 +1,10 @@
 from django.db import models
 from django.db.models import Q
 
+class ProcessType(models.TextChoices):
+    RULE_BASED = 'RULE_BASED', 'Rule-based process'
+    SCHEMA_BASED = 'SCHEMA_BASED', 'Schema-based process'
+
 class Action(models.TextChoices):
     REWRITE = 'REWRITE', 'Rewrite'
     REPRESENT = 'REPRESENT', 'Represent'
@@ -47,8 +51,6 @@ class State(models.TextChoices):
 
     BEHAVIOR_CLASSIFICATION = 'BEHAVIOR_CLASSIFICATION','Behavior classification'
     SOLUTIONS_COUNT = 'SOLUTIONS_COUNT', 'Solutions count'
-
-
 
 class SyntacticStructure(models.TextChoices):
     EXPRESSION = 'EXPRESSION', 'Expression'
@@ -103,3 +105,54 @@ class MathObject(models.Model):
         syntactic_structure = self.get_syntactic_structure_display()
         type = self.get_family_display()
         return f"{type} {syntactic_structure}".strip()
+
+class TaskClass(models.Model):
+    title = models.CharField(max_length=255)
+    process_type = models.CharField(
+        max_length=50,
+        choices=ProcessType.choices,
+        default=ProcessType.RULE_BASED,
+        help_text="Defines whether the problem-solving process is rule-based (recurrent) or schema-based (non-recurrent)."
+    )
+    action = models.CharField(max_length=50, choices=Action.choices)
+    math_object = models.ForeignKey(MathObject, on_delete=models.PROTECT, related_name='task_classes')
+    given_state = models.CharField(max_length=50, choices=State.choices)
+    goal_state = models.CharField(max_length=50, choices=State.choices)
+    rep_in = models.CharField(max_length=50, choices=Modality.choices)
+    rep_out = models.CharField(max_length=50, choices=Modality.choices)
+    supportive_information = models.TextField(blank=True, help_text="Supportive Information for the task class.")
+    procedural_information = models.TextField(blank=True, help_text="Procedural Information for the task class.")
+    common_errors = models.JSONField(default=dict, blank=True, help_text="Anticipated misrules and misconceptions.")
+    prerequisites = models.ManyToManyField(
+        'self',
+        through='TaskPrerequisite',
+        symmetrical=False,
+        blank=True
+    )
+#    evidence_statements = models.ManyToManyField('standards.EvidenceStatement', blank=True, related_name="task_classes")
+    terminal_duration = models.PositiveIntegerField(help_text="Minutes allocated")
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=~Q(given_state=models.F('goal_state')),
+                name='task_class_must_transition_state'
+            )
+        ]
+
+    def __str__(self):
+        return self.title
+
+class TaskPrerequisite(models.Model):
+    whole_task = models.ForeignKey(TaskClass, on_delete=models.CASCADE, related_name='required_prerequisites')
+    prerequisite_task = models.ForeignKey(TaskClass, on_delete=models.CASCADE, related_name='required_by')
+    requires_automation = models.BooleanField(
+        default=False,
+        help_text="Defines whether the prerequisite task must be automated to a high degree of fluency."
+    )
+
+    class Meta:
+        unique_together = ['whole_task', 'prerequisite_task']
+
+    def __str__(self):
+        return f"{self.whole_task.title} requires {self.prerequisite_task.title}"
