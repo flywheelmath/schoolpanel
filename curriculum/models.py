@@ -129,7 +129,7 @@ class TaskClass(models.Model):
         symmetrical=False,
         blank=True
     )
-#    evidence_statements = models.ManyToManyField('standards.EvidenceStatement', blank=True, related_name="task_classes")
+    mcap_evidence_statements = models.ManyToManyField('standards.MCAPEvidenceStatement', blank=True, related_name="task_classes")
     terminal_duration = models.PositiveIntegerField(help_text="Minutes allocated")
 
     class Meta:
