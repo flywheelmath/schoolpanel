@@ -20,7 +20,8 @@ class Modality(models.TextChoices):
     MIXED = 'MIXED', 'Mixed'
 
 class State(models.TextChoices):
-    BRACKETED = 'BRACKETED', 'Bracketed' 
+    CONSTANT = "CONSTANT", "Constant"
+    BRACKETED = 'BRACKETED', 'Bracketed'
     RATIONAL = 'RATIONAL', 'Rational'
 
     UNCOMBINED_LIKE_TERMS = 'UNCOMBINED_LIKE_TERMS', 'Uncombined like terms'
@@ -28,6 +29,7 @@ class State(models.TextChoices):
 
     ONE_STEP_ADDITIVE = 'ONE_STEP_ADDITIVE', 'Additive one-step'
     ONE_STEP_MULTIPLICATIVE = 'ONE_STEP_MULTIPLICATIVE', 'Multiplicative one-step'
+    ONE_STEP = 'ONE_STEP', 'One-step'
     ONE_STEP_QUADRATIC = 'ONE_STEP_QUADRATIC', 'Quadratic one-step'
     ONE_STEP_RADICAL = 'ONE_STEP_RADICAL', 'Radical one-step'
     ONE_STEP_EXPONENTIAL = 'ONE_STEP_EXPONENTIAL', 'Exponential one-step'
@@ -73,11 +75,11 @@ class Behavior(models.TextChoices):
 
 class MathObject(models.Model):
     syntactic_structure = models.CharField(
-        max_length=50, 
+        max_length=50,
         choices=SyntacticStructure.choices
     )
     type = models.CharField(
-        max_length=50, 
+        max_length=50,
         choices=Behavior.choices,
         default=Behavior.NONE,
         blank=True
