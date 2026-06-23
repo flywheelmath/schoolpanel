@@ -1,0 +1,237 @@
+import re
+import math
+import json
+
+class TikzRenderer:
+    @staticmethod
+    def render_inline_macros(text):
+        if not text: return ""
+        text = re.sub(r"_{3,}\s*/\s*_{3,}", r"\\blankfraction[1]", text)
+        text = re.sub(r"_{3,}", r"\\blank[1]", text)
+        return text
+
+    @staticmethod
+    def _generate_ticks(vmin, vmax, step, label_step, hide_zero):
+        positions, labels = [], []
+        current = float(vmin)
+        while current <= vmax + (step / 10):
+            pos_val = int(current) if current.is_integer() else round(current, 3)
+            positions.append(str(pos_val))
+            is_label = any(math.isclose(current, i * label_step, abs_tol=1e-5) for i in range(-100, 100))
+            labels.append(str(pos_val) if is_label and not (pos_val == 0 and hide_zero) else "")
+            current += step
+        return ",".join(positions), ",".join(labels)
+
+    @staticmethod
+    def get_roman(num):
+        values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+        symbols = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I']
+        result = ""
+        i = 0
+        while num > 0:
+            for _ in range(num // values[i]):
+                res += symbols[i]
+                num -= values[i]
+            i += 1
+        return result
+
+    @classmethod
+    def get_counter_str(cls, index, counter_type):
+        match counter_type:
+            case 'arabic':
+                return str(index)
+            case 'Alph':
+                return chr(64 + index)
+            case 'roman':
+                return cls.get_roman(index)
+            case 'Roman':
+                return cls.get_roman(index).upper()
+            case _:
+                return chr(96 + index)
+
+    @classmethod
+    def format_latex_label(cls, counter_str, shape):
+        match shape:
+            case 'box':
+                return f"\\fbox{{\\strut\\makebox[\\widthof{{m}}][c]{{{counter_str}}}}}"
+            case 'circle':
+                return f"\\tikz[baseline=(char.base)] {{\\node[shape=circle, draw, inner sep=1pt, minimum size=1.5em] (char) {{{counter_str}}};}}"
+            case 'oval':
+                return f"\\tikz[baseline=(char.base)] {{\\node[shape=ellipse, draw, inner sep=2pt, minimum width=2em] (char) {{{counter_str}}};}}"
+            case _:
+                return f"({counter_str})"
+
+    @classmethod
+    def render_plot(cls, p):
+        tex_lines = []
+        color = p.get('color', 'black')
+        opacity = p.get('opacity', '0.2')
+
+        if p.get('fill_polygon'):
+            poly_coords = " -- ".join([f"(axis cs:{pt[0]},{pt[1]})" for pt in p['fill_polygon']])
+            tex_lines.append(f"    \\fill[{color}, opacity={opacity}] {poly_coords} -- cycle;")
+
+        arrows = p.get('arrows', '<->')
+        line_width = p.get('line_width', '2.5pt')
+        opts = [f"{arrows}", f"domain={p.get('d_min')}:{p.get('d_max')}", f"color={color}", f"line width={line_width}"]
+
+        if p.get('samples_at'):
+            opts.append(f"samples at={{{p['samples_at']}}}")
+        else:
+            ops.append(f"samples={p.get('samples', 101)}")
+
+        if p.get('smooth'): opts.append("smooth")
+        if p.get('dashed'): opts.append("dashed")
+        if p.get('dotted'): opts.append("dotted")
+
+        cmd = f"    \\addplot[{', '.join(opts)}] "
+        cmd += f"({{{p['x_expr']}}}, {{{p['y_expr']}}})" if p.get("is_parametric") else f"{{{p['eq']}}}"
+
+        pos = p.get('pos', '1')
+        font = p.get('font', '\\small')
+        if p.get('label'):
+            cmd += f"  node[pos={pos}, {p['label_pos']}, text={color}, font={font}] {{{p['label']}}};"
+        else:
+            cmd += ";"
+        tex_lines.append(cmd)
+        return "\n".join(tex_lines)
+
+    @classmethod
+    def render_point(cls, pt):
+        if 'x' not in pt or 'y' not in pt: return ""
+        color = pt.get('color', 'black')
+        font = pt.get('font', '\\small')
+        radius = pt.get('radius', '3pt')
+        label_pos = pt.get('label_pos', 'above right')
+        label_cmd = f"  node[{label_pos}, text={color}, font={font}] {{{pt['label']}}}" if pt.get('label') else ""
+        return f"    \\filldraw[{color}] ({pt['x']}, {pt['y']}) circle ({radius}){label_cmd};"
+
+    @classmethod
+    def render_graph(cls, config, *elements):
+        xmin, xmax = config['xmin'], config['xmax']
+        ymin, ymax = config['ymin'], config['ymax']
+        hide_zero = str(config['hide_zero']).lower() == 'true'
+        x_ticks, x_labels = cls._generate_ticks(xmin, xmax, config['xstep'], config['xlabel_step'], hide_zero)
+        y_ticks, y_labels = cls._generate_ticks(ymin, ymax, config['ystep'], config['ylabel_step'], hide_zero)
+
+        grid = config.get('grid', 'both')
+        grid_style = config.get('grid_style' 'dashed, gray!30')
+        axis_options = [
+            f"xmin={xmin}, xmax={xmax},",
+            f"ymin={ymin}, ymax={ymax},",
+            f"xtick={{{x_ticks}}},",
+            f"xticklabels={{{x_labels}}},",
+            f"ytick={{{y_ticks}}},",
+            f"yticklabels={{{y_labels}}},",
+            f"restrict y to domain={ymin}:{ymax},",
+        ]
+
+        if config.get('grid'):
+            axis_options.append(f"grid={config['grid']}")
+        if config.get('grid_style'):
+            axis_options.append(f"grid style={{{config['grid_style']}}}")
+        if config.get('axis_lines'):
+            axis_options.append(f"axis lines={config['axis_lines']}}}")
+        if config.get('tick_label_style'):
+            axis_options.append(f"tick label style={{{config['tick_label_style']}}}")
+
+        options_str = ",\n    ".join(axis_options)
+
+        tex_lines = [
+            "\\begin{tikzpicture}",
+            f"  \\begin{{axis}}[\n    {options_str}\n  ]"
+        ]
+
+        for el in elements:
+            if el:
+                tex_lines.append(el)
+
+        tex_lines.append("  \\end{axis}\n\\end{tikzpicture}")
+        return "\n".join(tex_lines)
+
+
+    @classmethod
+    def render_tasks(cls, prompt, matrices, kwargs):
+        prompt = cls.render_inline_macros(prompt)
+        col_align = kwargs.get('align', 'l')
+        row_space = kwargs.get('row_space', '3.5ex')
+        after_space = kwargs.get('after_space', '')
+
+        lines = [
+            "\\noindent\\begin{minipage}{\\linewidth}",
+            f"{prompt}\n\\vspace{{1ex}}\n\\begin{{center}}",
+            f"\\begin{{tabular}}{{{' {col_align} ' * kwargs.get('cols', 1)}}}"
+        ]
+        global_idx = 1
+        for matrix in matrices:
+            for row in matrix:
+                row_strings = []
+                for item in row:
+                    if item:
+                        item = cls.render_inline_macros(item)
+                        c_str = cls.get_counter_str(global_idx, kwargs.get('counter', 'alph'))
+                        label = cls.format_latex_label(c_str, kwargs.get('shape', 'box'))
+                        row_strings.append(f"{label} {item}")
+                        global_idx += 1
+                    else:
+                        row_strings.append("")
+                lines.append(" & ".join(row_strings) + " \\\\")
+                lines.append("\\rule{0pt}{{{row_space}}} \\\\")
+
+        lines.extend(["\\end{tabular}", "\\end{center}"])
+
+        if after_space:
+            lines_append(f"\\vspace{{{after_space}}}")
+        lines.append("\\end{minipage}")
+        return "\n".join(lines)
+
+    @classmethod
+    def render_table(cls, headers, rows, deltas, config):
+        transpose = str(config.get('transpose', False)).lower() == 'true'
+        align = config.get('align', 'c')
+        line_width = config.get('line_width', '.4pt')
+
+        tex_lines = [
+            f"\\begin{tikzpicture}[style={{line width={{line width}}}}, ampersand replacement=\\&, baseline=(current bounding box)]",
+            "  \\matrix (mat) [matrix of nodes, nodes in empty cells, column sep=-\\pgflinewidth, row sep=-\\pgflinewidth, ",
+            f"nodes={{draw, text depth=.4ex, text height=1.2ex, minimum width=2em, align={align}}}]"
+        ]
+        if not transpose:
+            tex_lines.append(f"    {' \\& '.join(['$' + h + '$' for h in headers])} \\\\")
+            if deltas:
+                tex_lines.append(f"    {' \\& '.join(['' for _ in headers])} \\\\")
+                for r in rows:
+                    tex_lines.append(f"    {' \\\& '.join(['$' + cell + '$' for cell in r])} \\\\")
+                tex_lines.append("  };")
+
+                if deltas:
+                    for i, row_deltas in enumerate(deltas):
+                        row_idx = i + 2
+                        if len(row_deltas) > 0 and row_deltas[0]:
+                            tex_lines.append(f"  \\draw[line width=1pt, -{{To}}] (mat-{row_idx}-1.190) [bend right, xshift=-1em] to node[left] {{${row_deltas[0]}$}} (mat-{row_idx+1}-1.170);")
+                        if len(row_deltas) > 1 and row_deltas[1]:
+                            tex_lines.append(f"  \\draw[line width=1pt, -{{To}}] (mat-{row_idx}-2.350) [bend left, xshift=1em] to node[right] {{${row_deltas[1]}$}} (mat-{row_idx+1}-2.10);")
+            else:
+                grid = []
+                for col_idx, h in enumerate(headers):
+                    grid_row = [f"${h}$"]
+                    if deltas:
+                        grid_row.append("")
+                    for r in rows:
+                        grid_row.append(f"${r[col_idx]}$" if col_idx < len(r) else "")
+                    grid.append(grid_row)
+
+                for grid_row in grid:
+                    tex_lines.append(f"    {' \\& '.join(grid_row)} \\\\")
+                tex_lines.append("  };")
+
+                if deltas:
+                    for i, row_deltas in enumerate(deltas):
+                        col_idx = i + 3
+                        if len(row_deltas) > 0 and row_deltas[0]:
+                            tex_lines.append(f"  \\draw[line width=1pt, -{{To}} (mat-1-{col_idx}.100) [bend left=45, yshift=1ex] to node[above] {{${row_deltas[0]}$}} (mat-1-{col_idx+1}.80);")
+                        if len(row_deltas) > 1 and row_deltas[1]:
+                            tex_lines.append(f"  \\draw[line width=1pt, -{{To}} (mat-2-{col_idx}.260) [bend right=45, yshift=-1ex] to node[below] {{${row_deltas[1]}$}} (mat-2-{col_idx+1}.280);")
+
+            tex_lines.append("\\end{tikzpicture}")
+            return "\n".join(tex_lines)
