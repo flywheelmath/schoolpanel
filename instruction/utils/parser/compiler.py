@@ -1,6 +1,5 @@
 import re
 import math
-from itertools import zip_longest
 
 from .lexer import Lexer
 from .math_engine import MathEngine
@@ -19,7 +18,7 @@ def compile_document(raw_text, target='vue'):
                 'ystep':1,
                 'xlabel_step':2,
                 'ylabel_step':2,
-                'hide_zero':'True'
+                'hide_zero':True
             }
         )
         raw_plots = [Lexer.parse_kwargs(m.group(1))
@@ -33,7 +32,12 @@ def compile_document(raw_text, target='vue'):
         plots = MathEngine.enrich_plots(raw_plots, config)
         points = MathEngine.enrich_points(raw_poitns, config)
 
-        return VueRenderer.render_graph(config, plots, points) if target == 'vue' else TikzRenderer.render_graph(config, plots, points)
+        if target == 'tex':
+            rendered_elements = [TikzRenderer.render_plot(p) for p in plots] + [TikzRenderer.render_point(pt) for pt in points]
+            return TikzRenderer.render_graph(config, *rendered_elements)
+        elif target == 'vue':
+            rendered_elements = [VueRenderer.render_plot(p) for p in plots] + [VueRenderer.render_point(pt) for pt in points]
+            return VueRenderer.render_graph(config, *rendered_elements)
 
     def table_replacer(match):
         config_str, content_str = Lexer.split_config_block(match.group(1))
