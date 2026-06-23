@@ -38,9 +38,9 @@ def compile_document(raw_text, target="vue"):
         ]
 
         plots = MathEngine.enrich_plots(raw_plots, config)
-        points = MathEngine.enrich_points(raw_poitns, config)
+        points = MathEngine.enrich_points(raw_points, config)
 
-        if target == "tex":
+        if target == "tikz":
             rendered_elements = [TikzRenderer.render_plot(p) for p in plots] + [
                 TikzRenderer.render_point(pt) for pt in points
             ]
@@ -78,7 +78,7 @@ def compile_document(raw_text, target="vue"):
         )
         cols = kwargs["cols"]
 
-        if "max_rows_tex" in kwargs and target == "tex":
+        if "max_rows_tex" in kwargs and target == "tikz":
             max_rows_tex = kwargs["max_rows_tex"]
         else:
             max_rows_tex = max(max_rowspan, 3)
@@ -88,7 +88,7 @@ def compile_document(raw_text, target="vue"):
         else:
             max_rows_vue = max_rowspan
 
-        if target == "tex":
+        if target == "tikz":
             max_rows = max_rows_tex
             kwargs["max_rows"] = max_rows
         elif target == "vue":
@@ -150,7 +150,7 @@ def compile_document(raw_text, target="vue"):
             for i in range(0, len(virtual_grid), max_rows):
                 matrices.append(virtual_grid[i : i + max_rows])
 
-            if target == "tex":
+            if target == "tikz":
                 return TikzRenderer.render_tasks(prompt, matrices, kwargs)
             elif target == "vue":
                 return VueRenderer.render_tasks(prompt, matrices, kwargs)
