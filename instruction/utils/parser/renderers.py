@@ -5,14 +5,6 @@ import json
 
 class TikzRenderer:
     @staticmethod
-    def render_inline_macros(text):
-        if not text:
-            return ""
-        text = re.sub(r"_{3,}\s*/\s*_{3,}", r"\\blankfraction[1]", text)
-        text = re.sub(r"_{3,}", r"\\blank[1]", text)
-        return text
-
-    @staticmethod
     def _generate_ticks(vmin, vmax, step, label_step, hide_zero):
         positions, labels = [], []
         current = float(vmin)
@@ -197,7 +189,6 @@ class TikzRenderer:
 
     @classmethod
     def render_tasks(cls, prompt, matrices, kwargs):
-        prompt = cls.render_inline_macros(prompt)
         col_align = kwargs.get("align", "l")
         row_space = kwargs.get("row_space", "3.5ex")
         after_space = kwargs.get("after_space", "")
@@ -205,15 +196,19 @@ class TikzRenderer:
         lines = [
             "\\noindent\\begin{minipage}{\\linewidth}",
             f"{prompt}\n\\vspace{{1ex}}\n\\begin{{center}}",
-            f"\\begin{{tabular}}{{{' {col_align} ' * kwargs.get('cols', 1)}}}",
         ]
+
         global_idx = 1
-        for matrix in matrices:
+        for i, matrix in enumerate(matrices):
+            if i > 0:
+                lines.append("\\vspace{2em}")
+
+            lines.append(f"\\begin{{tabular}}{{{f' {col_align} ' * kwargs.get('cols', 1)}}}")
+
             for row in matrix:
                 row_strings = []
                 for item in row:
                     if item:
-                        item = cls.render_inline_macros(item)
                         c_str = cls.get_counter_str(
                             global_idx, kwargs.get("counter", "alph")
                         )
@@ -227,10 +222,13 @@ class TikzRenderer:
                 lines.append(" & ".join(row_strings) + " \\\\")
                 lines.append("\\rule{0pt}{{{row_space}}} \\\\")
 
-        lines.extend(["\\end{tabular}", "\\end{center}"])
+            lines.append("\\end{tabular}")
+
+        lines.extend("\\end{center}")
 
         if after_space:
             lines_append(f"\\vspace{{{after_space}}}")
+
         lines.append("\\end{minipage}")
         return "\n".join(lines)
 
@@ -245,7 +243,7 @@ class TikzRenderer:
         tex_lines = [
             f"\\begin{tikzpicture}[style={{line width={{line width}}}}, ampersand replacement=\\&, baseline=(current bounding box)]",
             "  \\matrix (mat) [matrix of nodes, nodes in empty cells, column sep=-\\pgflinewidth, row sep=-\\pgflinewidth, ",
-            f"nodes={{draw, text depth=.4ex, text height=1.2ex, minimum width=2em, align={align}}}]",
+            f"nodes={{draw, text depth=.4ex, text height=1.2ex, minimum width=2em, align={align}}}]" + " {",
         ]
         if not transpose:
             tex_lines.append(
@@ -298,3 +296,76 @@ class TikzRenderer:
 
         tex_lines.append("\\end{tikzpicture}")
         return "\n".join(tex_lines)
+
+class VueRenderer:
+    @staticmethod
+    def _build_vue_props(kwargs, exclude=None):
+        exclude = exclude or []
+        props = []
+        for k, v in kwargs.items():
+            if k in exclude: continue
+            html_k = k.replace('_', '-')
+
+            if isinstance(v, bool):
+                props.append(f":{html_k}=\"{str(v).lower()}\"")
+            elif isinstance(v, (int, float)):
+                props.append(f":{html_k}=\"{v}\"")
+            elif isinstance(v, (list, dict)):
+                props.append(f":{html_k}='{json.dumps(v)}'")
+            else:
+                props.append(f"{html_k}=\"{v}\"")
+        return props
+
+    @classmethod
+    def render_plot(cls, p):
+        return {"type": "plot", "data": p}
+
+    @classmethod
+    def render_point(cls, pt):
+        return {"type": "point", "data": pt}
+
+    @classmethod
+    def render_graph(cls, config, *elements):
+        plots = [el["data"] for el in elements if isinstance(el, dict) and el.get("type") == "plot"]
+        points = [el["data"] for el in elements if isinstance(el, dict) and el.get("type") == "point"]
+        config_copy = config.copy()
+        if 'hide_zero' not in config_copy:
+            config_copy['hide_zero'] = True
+
+        props = cls._build_vue_props(config_copy)
+        props.append(f":plots='{json.dumps(plots)}'")
+        props.append(f":points='{json.dumps(points)}'")
+
+        return f"<CoordinateGrid {' '.join(props)} />"
+
+    @classmethod
+    def render_tasks(cls, prompt, matrices, kwargs):
+        slides = []
+        global_idx = 1
+
+        props = cls._build_vue_props(kwargs)
+
+        for matrix in matrices:
+            block = [f"{prompt}\n", f'<TaskGrid {" ".join(props)}>']
+            for row in matrix:
+                for item in row:
+                    if item:
+                        block.append(f'  <TaskItem :index="{global_idx}">{item}</TaskItem>')
+                        global_idx += 1
+                    else:
+                        block.append('  <TaskItem :empty="true" />')
+            block.append("</TaskGrid>")
+            slides.append("\n".join(block))
+
+        return "\n\n---\n\n".join(slides)
+
+    @classmethod
+    def render_table(cls, headers, rows, deltas, config):
+        props = cls._build_vue_props(config, exclude=['arrows'])
+        props.append(f":headers='{json.dumps(headers)}'")
+        props.append(F":rows='{json.dumps(rows)}'")
+
+        if deltas:
+            props.append(f":deltas='{json.dumps(deltas)}'")
+
+        return f"<DeltaTable {' '.join(props)} />"
