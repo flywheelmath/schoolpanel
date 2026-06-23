@@ -1,6 +1,7 @@
 import math
 import json
 
+
 class TikzRenderer:
     @staticmethod
     def _generate_ticks(vmin, vmax, step, label_step, hide_zero):
@@ -201,18 +202,22 @@ class TikzRenderer:
             if i > 0:
                 lines.append("\\vspace{2em}")
 
-            lines.append(f"\\begin{{tabular}}{{{f' {col_align} ' * kwargs.get('cols', 1)}}}")
+            lines.append(
+                f"\\begin{{tabular}}{{{f' {col_align} ' * kwargs.get('cols', 1)}}}"
+            )
 
             for row in matrix:
                 row_strings = []
 
                 for item in row:
-                    if item == "COL_BLOCKED": continue
-                    elif item == "ROW_BLOCKED": row_strings.append("")
+                    if item == "COL_BLOCKED":
+                        continue
+                    elif item == "ROW_BLOCKED":
+                        row_strings.append("")
                     elif item:
-                        content = item['content']
-                        colspan = item['config'].get('colspan', 1)
-                        rowspan = item['config'].get('rowspan', 1)
+                        content = item["content"]
+                        colspan = item["config"].get("colspan", 1)
+                        rowspan = item["config"].get("rowspan", 1)
 
                         c_str = cls.get_counter_str(
                             global_idx, kwargs.get("counter", "alph")
@@ -252,7 +257,7 @@ class TikzRenderer:
         align = config.get("align", "c")
 
         def fmt(text):
-            return str(text).replace('<br>', '\\\\')
+            return str(text).replace("<br>", "\\\\")
 
         line_width = config.get("line_width", ".4pt")
         delta_arrow_width = config.get("delta_arrow_width", "1pt")
@@ -261,7 +266,8 @@ class TikzRenderer:
         tex_lines = [
             f"\\begin{tikzpicture}[style={{line width={{line width}}}}, ampersand replacement=\\&, baseline=(current bounding box)]",
             "  \\matrix (mat) [matrix of nodes, nodes in empty cells, column sep=-\\pgflinewidth, row sep=-\\pgflinewidth, ",
-            f"nodes={{draw, text depth=.4ex, text height=1.2ex, minimum width=2em, align={align}}}]" + " {",
+            f"nodes={{draw, text depth=.4ex, text height=1.2ex, minimum width=2em, align={align}}}]"
+            + " {",
         ]
 
         if not transpose:
@@ -316,25 +322,27 @@ class TikzRenderer:
         tex_lines.append("\\end{tikzpicture}")
         return "\n".join(tex_lines)
 
+
 class VueRenderer:
     @staticmethod
     def _build_vue_props(kwargs, exclude=None):
         exclude = exclude or []
         props = []
         for k, v in kwargs.items():
-            if k in exclude: continue
-            html_k = k.replace('_', '-')
+            if k in exclude:
+                continue
+            html_k = k.replace("_", "-")
 
             if isinstance(v, bool):
-                props.append(f":{html_k}=\"{str(v).lower()}\"")
+                props.append(f':{html_k}="{str(v).lower()}"')
             elif isinstance(v, (int, float)):
-                props.append(f":{html_k}=\"{v}\"")
+                props.append(f':{html_k}="{v}"')
             elif isinstance(v, (list, dict)):
                 safe_json = json.dumps(v).replace("'", "&#39;")
                 props.append(f":{html_k}='{safe_json}'")
             else:
-                safe_v = str(v).replace('"', '&quot;')
-                props.append(f"{html_k}=\"{safe_v}\"")
+                safe_v = str(v).replace('"', "&quot;")
+                props.append(f'{html_k}="{safe_v}"')
         return props
 
     @classmethod
@@ -347,11 +355,19 @@ class VueRenderer:
 
     @classmethod
     def render_graph(cls, config, *elements):
-        plots = [el["data"] for el in elements if isinstance(el, dict) and el.get("type") == "plot"]
-        points = [el["data"] for el in elements if isinstance(el, dict) and el.get("type") == "point"]
+        plots = [
+            el["data"]
+            for el in elements
+            if isinstance(el, dict) and el.get("type") == "plot"
+        ]
+        points = [
+            el["data"]
+            for el in elements
+            if isinstance(el, dict) and el.get("type") == "point"
+        ]
         config_copy = config.copy()
-        if 'hide_zero' not in config_copy:
-            config_copy['hide_zero'] = True
+        if "hide_zero" not in config_copy:
+            config_copy["hide_zero"] = True
 
         props = cls._build_vue_props(config_copy)
         props.append(f":plots='{json.dumps(plots)}'")
@@ -370,16 +386,19 @@ class VueRenderer:
             block = [f"{prompt}\n", f'<TaskGrid {" ".join(props)}>']
             for row in matrix:
                 for item in row:
-                    if item in ("COL_BLOCKED", "ROW_BLOCKED"): continue
+                    if item in ("COL_BLOCKED", "ROW_BLOCKED"):
+                        continue
                     elif item:
-                        content = item['content']
-                        colspan = item['config'].get('colspan', 1)
-                        rowspan = item['config'].get('rowspan', 1)
+                        content = item["content"]
+                        colspan = item["config"].get("colspan", 1)
+                        rowspan = item["config"].get("rowspan", 1)
 
-                        col_prop = f' :colspan="{colspan}"' if colspan > 1 else ''
-                        row_prop = f' :rowspan="{rowspan}"' if rowspan > 1 else ''
+                        col_prop = f' :colspan="{colspan}"' if colspan > 1 else ""
+                        row_prop = f' :rowspan="{rowspan}"' if rowspan > 1 else ""
 
-                        block.append(f'  <TaskItem :index="{global_idx}"{col_prop}{row_prop}>{content}</TaskItem>')
+                        block.append(
+                            f'  <TaskItem :index="{global_idx}"{col_prop}{row_prop}>{content}</TaskItem>'
+                        )
 
                         global_idx += 1
                     else:
@@ -391,7 +410,7 @@ class VueRenderer:
 
     @classmethod
     def render_table(cls, headers, rows, deltas, config):
-        props = cls._build_vue_props(config, exclude=['arrows'])
+        props = cls._build_vue_props(config, exclude=["arrows"])
         props.append(f":headers='{json.dumps(headers)}'")
         props.append(f":rows='{json.dumps(rows)}'")
 

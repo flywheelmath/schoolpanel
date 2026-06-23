@@ -21,7 +21,7 @@ class Lexer:
         kwargs, {}
         matches = cls.KWARG_REGEX.findall(arg_string)
         for key, value in matches:
-            val = value.strip('"\'')
+            val = value.strip("\"'")
             try:
                 kwargs[key] = ast.literal_eval(val)
             except (ValueError, SyntaxError):
@@ -86,7 +86,7 @@ class Lexer:
 
     @classmethod
     def parse_task_content(cls, content_str):
-        raw_items = re.split(r'\n\s*-\s+', '\n' + content_str.strip())[1:]
+        raw_items = re.split(r"\n\s*-\s+", "\n" + content_str.strip())[1:]
 
         parsed_items = []
         for item in raw_items:
@@ -97,6 +97,6 @@ class Lexer:
             else:
                 item_cfg = {}
                 content = item.strip()
-            parsed_items.append({'content': content, 'config': item_cfg})
+            parsed_items.append({"content": content, "config": item_cfg})
 
         return parsed_items
