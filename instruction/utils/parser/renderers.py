@@ -1,7 +1,5 @@
-import re
 import math
 import json
-
 
 class TikzRenderer:
     @staticmethod
@@ -56,9 +54,9 @@ class TikzRenderer:
             case "Alph":
                 return chr(64 + index)
             case "roman":
-                return cls.get_roman(index)
+                return cls.get_roman(index).lower()
             case "Roman":
-                return cls.get_roman(index).upper()
+                return cls.get_roman(index)
             case _:
                 return chr(96 + index)
 
@@ -207,15 +205,31 @@ class TikzRenderer:
 
             for row in matrix:
                 row_strings = []
+
                 for item in row:
-                    if item:
+                    if item == "COL_BLOCKED": continue
+                    elif item == "ROW_BLOCKED": row_strings.append("")
+                    elif item:
+                        content = item['content']
+                        colspan = item['config'].get('colspan', 1)
+                        rowspan = item['config'].get('rowspan', 1)
+
                         c_str = cls.get_counter_str(
                             global_idx, kwargs.get("counter", "alph")
                         )
                         label = cls.format_latex_label(
                             c_str, kwargs.get("shape", "box")
                         )
-                        row_strings.append(f"{label} {item}")
+                        cell_str = f"{label} {content}"
+
+                        if rowspan > 1:
+                            cell_str = f"\\multirow{{{rowspan}}}{{*}}{{{cell_str}}}"
+
+                        if colspan > 1:
+                            cell_str = f"\\multicolumn{{{colspan}}}{{{col_align}}}{{{cell_str}}}"
+                            skip_next = colspan - 1
+
+                        row_strings.append(cell_str)
                         global_idx += 1
                     else:
                         row_strings.append("")
@@ -236,6 +250,10 @@ class TikzRenderer:
     def render_table(cls, headers, rows, deltas, config):
         transpose = str(config.get("transpose", False)).lower() == "true"
         align = config.get("align", "c")
+
+        def fmt(text):
+            return str(text).replace('<br>', '\\\\')
+
         line_width = config.get("line_width", ".4pt")
         delta_arrow_width = config.get("delta_arrow_width", "1pt")
         delta_arrow_color = config.get("delta_arrow_color", "blue")
@@ -245,15 +263,16 @@ class TikzRenderer:
             "  \\matrix (mat) [matrix of nodes, nodes in empty cells, column sep=-\\pgflinewidth, row sep=-\\pgflinewidth, ",
             f"nodes={{draw, text depth=.4ex, text height=1.2ex, minimum width=2em, align={align}}}]" + " {",
         ]
+
         if not transpose:
             tex_lines.append(
-                f"    {' \\& '.join(['$' + h + '$' for h in headers])} \\\\"
+                f"    {' \\& '.join([f'${fmt(h)}$' for h in headers])} \\\\"
             )
             if deltas:
                 tex_lines.append(f"    {' \\& '.join(['' for _ in headers])} \\\\")
             for r in rows:
                 tex_lines.append(
-                    f"    {' \\\& '.join(['$' + cell + '$' for cell in r])} \\\\"
+                    f"    {' \\\& '.join(['${fmt(cell)$' for cell in r])} \\\\"
                 )
             tex_lines.append("  };")
 
@@ -311,9 +330,11 @@ class VueRenderer:
             elif isinstance(v, (int, float)):
                 props.append(f":{html_k}=\"{v}\"")
             elif isinstance(v, (list, dict)):
-                props.append(f":{html_k}='{json.dumps(v)}'")
+                safe_json = json.dumps(v).replace("'", "&#39;")
+                props.append(f":{html_k}='{safe_json}'")
             else:
-                props.append(f"{html_k}=\"{v}\"")
+                safe_v = str(v).replace('"', '&quot;')
+                props.append(f"{html_k}=\"{safe_v}\"")
         return props
 
     @classmethod
@@ -349,8 +370,17 @@ class VueRenderer:
             block = [f"{prompt}\n", f'<TaskGrid {" ".join(props)}>']
             for row in matrix:
                 for item in row:
-                    if item:
-                        block.append(f'  <TaskItem :index="{global_idx}">{item}</TaskItem>')
+                    if item in ("COL_BLOCKED", "ROW_BLOCKED"): continue
+                    elif item:
+                        content = item['content']
+                        colspan = item['config'].get('colspan', 1)
+                        rowspan = item['config'].get('rowspan', 1)
+
+                        col_prop = f' :colspan="{colspan}"' if colspan > 1 else ''
+                        row_prop = f' :rowspan="{rowspan}"' if rowspan > 1 else ''
+
+                        block.append(f'  <TaskItem :index="{global_idx}"{col_prop}{row_prop}>{content}</TaskItem>')
+
                         global_idx += 1
                     else:
                         block.append('  <TaskItem :empty="true" />')
@@ -363,7 +393,7 @@ class VueRenderer:
     def render_table(cls, headers, rows, deltas, config):
         props = cls._build_vue_props(config, exclude=['arrows'])
         props.append(f":headers='{json.dumps(headers)}'")
-        props.append(F":rows='{json.dumps(rows)}'")
+        props.append(f":rows='{json.dumps(rows)}'")
 
         if deltas:
             props.append(f":deltas='{json.dumps(deltas)}'")
