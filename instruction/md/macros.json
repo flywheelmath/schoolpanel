@@ -1,0 +1,12 @@
+{
+  "\\blank": {
+    "args": 1,
+    "tex": "\\ensuremath{\\vcenter{\\hbox{\\begin{tikzpicture}[scale=.7]\\filldraw[blue!12] (0,0) rectangle (#1,1);\\end{tikzpicture}}}}}",
+    "vue": "\\colorbox{#f1f5f9}{\\phantom{\\rule{3em}{1.5ex}}}"
+  },
+  "\\blankfraction": {
+    "args": 1,
+    "tex": "\\ensuremath{\\frac{\\blank[#1]}{\\blank[#1]}}",
+    "vue": "\\frac{\\colorbox{#f1f5f9}{\\phantom{\\rule{2em}{1.5ex}}}}{\\colorbox{#f1f5f9}{\\phantom{\\rule{2em}{1.5ex}}}}"
+  }
+}
