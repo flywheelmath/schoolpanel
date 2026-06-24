@@ -3,7 +3,7 @@ import ast
 
 
 class Lexer:
-    KWARG_REGEX = re.compile(r"(\w+)\s*=\s*('[^']*'|\"[^\"]*\"|\[[^\]](\]|[^,]+)")
+    KWARG_REGEX = re.compile(r"(\w+)\s*=\s*('[^']*'|\"[^\"]*\"|\[[^\]]*\]|[^,]+)")
 
     @classmethod
     def split_config_block(cls, content):
@@ -39,24 +39,24 @@ class Lexer:
             if not line:
                 continue
 
-        domain_match = re.match(
-            r"(-?\d+\.?\d*)\s*(<|<=)\s*(x|y)\s*(<|<=)\s*(-?\d+\.?\d*)", line
-        )
-        if domain_match:
-            min_val, _, axis, _, max_val = domain_match.groups()
-            prefix = "x" if axis == "x" else "y"
-            kwargs[f"{prefix}min"] = float(min_val) if "." in min_val else int(min_val)
-            kwargs[f"{prefix}min"] = float(max_val) if "." in max_val else int(max_val)
-            continue
+            domain_match = re.match(
+                r"(-?\d+\.?\d*)\s*(<|<=)\s*(x|y)\s*(<|<=)\s*(-?\d+\.?\d*)", line
+            )
+            if domain_match:
+                min_val, _, axis, _, max_val = domain_match.groups()
+                prefix = "x" if axis == "x" else "y"
+                kwargs[f"{prefix}min"] = float(min_val) if "." in min_val else int(min_val)
+                kwargs[f"{prefix}min"] = float(max_val) if "." in max_val else int(max_val)
+                continue
 
-        kv_match = re.match(r"(\w+)\s*=\s*(.+)", line)
-        if kv_match:
-            k, v = kv_match.groups()
-            val = v.strip("\"'")
-            try:
-                kwargs[k] = ast.literal_eval(val)
-            except (ValueError, SyntaxError):
-                kwargs[k] = val
+            kv_match = re.match(r"(\w+)\s*=\s*(.+)", line)
+            if kv_match:
+                k, v = kv_match.groups()
+                val = v.strip("\"'")
+                try:
+                    kwargs[k] = ast.literal_eval(val)
+                except (ValueError, SyntaxError):
+                    kwargs[k] = val
         return kwargs
 
     @classmethod

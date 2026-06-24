@@ -38,7 +38,7 @@ class MathEngine:
             )
         return default_min, default_max, "<->"
 
-    @sstaticmethod
+    @staticmethod
     def get_behavior_settings(behavior, eq_string):
         if behavior == "linear":
             return 2, False

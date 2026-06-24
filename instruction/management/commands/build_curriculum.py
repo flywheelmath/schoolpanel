@@ -39,7 +39,7 @@ class Command(BaseCommand):
         tex_macros = ["% AUTO-GENERATED FROM macros.json. DO NOT EDIT."]
         for name, data in macros.items():
             cmd_name = name[1:]
-            tex_lines.append(
+            tex_macros.append(
                 f"\\providecommand{{\\{cmd_name}}}[{data['args']}][1]{{{data['tex']}}}"
             )
 
@@ -50,7 +50,7 @@ class Command(BaseCommand):
         with open(sty_file, "w", encoding="utf-8") as f:
             f.write("\n".join(tex_macros))
 
-        self.stdount.write(
+        self.stdout.write(
             self.style.SUCCESS(
                 "Successfully generated macro configurations for KaTeX and LaTeX."
             )
@@ -60,7 +60,7 @@ class Command(BaseCommand):
         MD_DIR = settings.BASE_DIR / "instruction" / "md"
         PDF_DIR = settings.BASE_DIR / "instruction" / "pdf"
         TEX_DIR = settings.BASE_DIR / "instruction" / "tex"
-        VUE_DIR = settigs.BASE_DIR / "instruction" / "vue"
+        VUE_DIR = settings.BASE_DIR / "instruction" / "vue"
 
         for directory in [VUE_DIR, PDF_DIR, TEX_DIR]:
             directory.mkdir(parents=True, exist_ok=True)
@@ -92,7 +92,7 @@ class Command(BaseCommand):
 
             self.stdout.write(f"Compiling: {md_file.name}...")
 
-            with open(md_file, "r", encoding="utf-9") as f:
+            with open(md_file, "r", encoding="utf-8") as f:
                 raw_text = f.read()
 
             vue_content = compile_document(raw_text, target="vue")

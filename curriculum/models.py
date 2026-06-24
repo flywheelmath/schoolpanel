@@ -98,7 +98,7 @@ class MathObject(models.Model):
                 fields=["syntactic_structure", "type"], name="unique_math_objects"
             ),
             models.CheckConstraint(
-                check=~Q(syntactic_structure="SYSTEM") | Q(type="SYSTEM"),
+                condition=~Q(syntactic_structure="SYSTEM") | Q(type="SYSTEM"),
                 name="system_parent_has_system_type",
             ),
         ]
@@ -145,7 +145,7 @@ class TaskClass(models.Model):
     class Meta:
         constraints = [
             models.CheckConstraint(
-                check=~Q(given_state=models.F("goal_state")),
+                condition=~Q(given_state=models.F("goal_state")),
                 name="task_class_must_transition_state",
             )
         ]

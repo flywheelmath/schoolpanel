@@ -1,0 +1,4 @@
+{
+  "\\blank": "\\colorbox{#f1f5f9}{\\phantom{\\rule{3em}{1.5ex}}}",
+  "\\blankfraction": "\\frac{\\colorbox{#f1f5f9}{\\phantom{\\rule{2em}{1.5ex}}}}{\\colorbox{#f1f5f9}{\\phantom{\\rule{2em}{1.5ex}}}}"
+}
