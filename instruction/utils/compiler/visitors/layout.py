@@ -1,0 +1,28 @@
+from core.ast_models import Subtask, TaskBlock
+
+class LayoutVisitor:
+    def visit(self, ast_nodes: list):
+        for node in ast_nodes:
+            self._dispatch(node)
+
+    def _dispatch(self, node):
+        if isinstance(node, TaskBlock):
+            self.visit_task_block(node)
+
+    def visit_task_block(self, block: TaskBlock):
+        max_cols = block.config.get("cols_tex", 4)
+
+        current_row = 0
+        current_col = 0
+
+        for subtask in block.processed_subtasks:
+            span = subtask.col_span
+
+            if current_col + span > max_cols:
+                current_row += 1
+                current_col = 0
+
+            subtask.row_tex = current_row
+            subtask.col_tex = current_col
+
+            current_col += span

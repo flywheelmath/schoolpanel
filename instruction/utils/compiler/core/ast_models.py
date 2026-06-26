@@ -3,19 +3,6 @@ from typing import List, Optional, Union
 from abc import ABC
 
 @dataclass
-class LabelCounter:
-    counter_type: str = "alph"
-    shape: str = "block"
-    prefix: str = ""
-    current_value: int = 1
-
-    def increment(self):
-        self.current_value += 1
-
-    def format(self) -> str:
-        pass
-
-@dataclass
 class EmbeddableBlock(ABC):
     config: dict = field(default_factory=dict)
     raw_body: str = ""

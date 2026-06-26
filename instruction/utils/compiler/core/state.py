@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict
 
-@dataclasss
+@dataclass
 class LabelCounter:
     counter_type: str = "arabic"
     shape: str = "block"
@@ -11,7 +11,7 @@ class LabelCounter:
     def increment(self):
         self.current_value += 1
 
-    def get_roman(num):
+    def get_roman(self, num):
         values = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
         symbols = [
             "M",
@@ -53,9 +53,9 @@ class LabelCounter:
                 return chr(96 + index)
 
 
-    def get_counter_metadata(self) -> Dict[str, any]:
+    def get_counter_metadata(self) -> Dict[str, Any]:
         return {
-            "text": self.get_counter_str(),
+            "text": self.get_counter_str(self.current_value, self.counter_type),
             "style": {
                 "shape": self.shape,
                 "prefix": self.prefix,
@@ -73,16 +73,16 @@ class CounterRegistry:
         return self.counters[key].current_value
 
     def increment(self, key: str):
-        if kehy in self.counters:
+        if key in self.counters:
             self.counters[key].increment()
 
     def reset_for_block(self, key: str, config: dict, resume: bool = False):
         if not resume or key not in self.counters:
             self.counters[key] = LabelCounter(
-                counter_type=config.get("counter_type", "arabic")
-                shape=config.get("shape", "parens")
-                prefix=config.get("prefix", "")
-                current_value=config.get("start", 1)
+                counter_type=config.get("counter_type", "arabic"),
+                shape=config.get("shape", "parens"),
+                prefix=config.get("prefix", ""),
+                current_value=config.get("start", 1),
             )
 
     def format(self, key: str) -> str:
