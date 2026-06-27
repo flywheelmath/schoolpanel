@@ -2,15 +2,14 @@ from base import BaseVisitor
 from core.ast_models import Subtask, TaskBlock
 
 class LayoutVisitor(BaseVisitor):
-    def visit(self, ast_nodes: list):
-        for node in ast_nodes:
-            self._dispatch(node)
-
     def generic_visit(self, node):
         pass
 
     def visit_taskblock(self, block: TaskBlock):
         max_cols = block.config.get("cols_tex", 4)
+
+        block.config['col_width_pct'] = 1 / max_cols
+        block.config['col_width_tex'] = f"\\textwidth / {max_cols}"
 
         current_row = 0
         current_col = 0

@@ -5,6 +5,7 @@ from core.state import CounterRegistry
 from visitors.compute import ComputationVisitor
 from visitors.layout import LayoutVisitor
 from visitors.numbering import NumberingVisitor
+from visitors.table_layout import TableLayoutVisitor
 
 def compile(raw_md: str):
     raw_chunks = lex_markdown(raw_md)
@@ -15,5 +16,6 @@ def compile(raw_md: str):
     NumberingVisitor(registry).visit(ast)
     LayoutVisitor().visit(ast)
     ComputationVisitor().visit(ast)
+    TableLayoutVisitor().visit(ast)
 
     return ast
