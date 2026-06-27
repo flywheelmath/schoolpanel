@@ -1,14 +1,10 @@
-from base import BaseVisitor
+from .base import BaseVisitor
 from core.ast_models import Subtask, TaskBlock
 from core.state import CounterRegistry
 
 class NumberingVisitor(BaseVisitor):
     def __init__(self, registry: CounterRegistry):
         self.registry = registry
-
-    def visit(self, ast_nodes: list):
-        for node in ast_nodes:
-            self._dispatch(node)
 
     def generic_visit(self, node):
         pass

@@ -1,7 +1,6 @@
 from core.ast_models import TaskBlock
-from visitors.base import BaseVisitor
 
-class RenderTexVisitor(BaseVisitor):
+def render_tex(block: TaskBlock) -> str:
     output = []
 
     cols = block.config.get("cols_tex", 4)

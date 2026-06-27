@@ -1,4 +1,4 @@
-from base import BaseVisitor
+from .base import BaseVisitor
 from core.ast_models import GraphBlock
 from plugins.graphs.compute import compute_graph
 

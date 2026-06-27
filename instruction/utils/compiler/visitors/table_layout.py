@@ -1,4 +1,4 @@
-from base import BaseVisitor
+from .base import BaseVisitor
 from core.ast_models import TableBlock
 
 class TableLayoutVisitor(BaseVisitor):
