@@ -1,6 +1,7 @@
+from base import BaseVisitor
 from core.ast_models import Subtask, TaskBlock
 
-class LayoutVisitor:
+class LayoutVisitor(BaseVisitor):
     def visit(self, ast_nodes: list):
         for node in ast_nodes:
             self._dispatch(node)

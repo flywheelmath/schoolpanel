@@ -2,11 +2,12 @@ import re
 import numpy as np
 import sympy
 import matplotlib.pyplot as plt
+from base import BaseVisitor
 from core.ast_models import GraphBlock
 
 SAMPLES_COUNT = 501
 
-class ComputationVisitor:
+class ComputationVisitor(BaseVisitor):
     def visit(self, ast_nodes: list):
         for node in ast_nodes:
             if isinstance(node, GraphBlock):
@@ -54,14 +55,6 @@ class ComputationVisitor:
                 except Exception as e:
                     print(f"Math Error ({plot['original_expr']}): {e}")
 
-            elif plot["type"] == "inequality":
-                op_match = re.search(r'(<=|>=|<|>)', plot["original_expr"])
-                op = op_match.group(1)
-                lhs, rhs = plot["original_expr"].split(op)
-
-                boundary_expr = f"({rhs} - ({lhs})"
-                plot["fill_polygon"] = "(-5, -5) (5, -5) (-5, 5)" # placeholder
-
             elif plot["type"] == "implicit":
                 lhs, rhs = plot["original_expr"].split("=")
                 implicit_expr = f"({lhs}) - ({rhs})"
@@ -92,6 +85,14 @@ class ComputationVisitor:
 
                 except Exception as e:
                     print(f"Implicit Math Error ({plot['original_expr']}): {e}")
+
+            elif plot["type"] == "inequality":
+                op_match = re.search(r'(<=|>=|<|>)', plot["original_expr"])
+                op = op_match.group(1)
+                lhs, rhs = plot["original_expr"].split(op)
+
+                boundary_expr = f"({rhs} - ({lhs})"
+                plot["fill_polygon"] = "(-5, -5) (5, -5) (-5, 5)" # placeholder
 
             if plot.get("label") and not plot.get("label_pos") and terminal_pt:
                 t_x, t_y = terminal_pt

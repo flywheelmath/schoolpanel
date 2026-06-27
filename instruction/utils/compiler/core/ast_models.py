@@ -84,3 +84,7 @@ class TaskBlock:
     task_counter_value: int = 1
     label: str = ""
     label_width: float = 0.0
+
+@dataclass
+class CompositeBlock:
+    children: List[Union[TaskBlock, GraphBlock, TableBlock]] = field(default_factory=list)

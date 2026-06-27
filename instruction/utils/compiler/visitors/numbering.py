@@ -1,7 +1,8 @@
+from base import BaseVisitor
 from core.ast_models import Subtask, TaskBlock
 from core.state import CounterRegistry
 
-class NumberingVisitor:
+class NumberingVisitor(BaseVisitor):
     def __init__(self, registry: CounterRegistry):
         self.registry = registry
 
