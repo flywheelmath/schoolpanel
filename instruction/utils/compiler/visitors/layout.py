@@ -6,11 +6,10 @@ class LayoutVisitor(BaseVisitor):
         for node in ast_nodes:
             self._dispatch(node)
 
-    def _dispatch(self, node):
-        if isinstance(node, TaskBlock):
-            self.visit_task_block(node)
+    def generic_visit(self, node):
+        pass
 
-    def visit_task_block(self, block: TaskBlock):
+    def visit_taskblock(self, block: TaskBlock):
         max_cols = block.config.get("cols_tex", 4)
 
         current_row = 0

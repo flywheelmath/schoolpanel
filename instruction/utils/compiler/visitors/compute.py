@@ -11,9 +11,9 @@ class ComputationVisitor(BaseVisitor):
     def visit(self, ast_nodes: list):
         for node in ast_nodes:
             if isinstance(node, GraphBlock):
-                self.visit_graph_block(node)
+                self.visit_graphblock(node)
 
-    def visit_graph_block(self, block: GraphBlock):
+    def visit_graphblock(self, block: GraphBlock):
         xmin = float(block.config.get("xmin", -5))
         xmax = float(block.config.get("xmax", 5))
         ymin = float(block.config.get("ymin", -5))
