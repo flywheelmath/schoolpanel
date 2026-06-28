@@ -1,14 +1,16 @@
-from plugins.tasks.parser import parse_task
 from plugins.graphs.parser import parse_graph
-#from plugins.tables import parse_table
+from plugins.tables.parser import parse_table
+from plugins.tasks.parser import parse_task
 
 def parse_chunks(raw_chunks: list):
-    ast_nodes = []
+    from plugins.composite.parser import parse_composite
 
+    ast_nodes = []
     dispatch_map = {
-        "tasks": parse_task,
+        "task": parse_task,
         "graph": parse_graph,
-#        "tables": parse_table
+        "table": parse_table,
+        "composite": parse_composite
     }
 
     for chunk in raw_chunks:

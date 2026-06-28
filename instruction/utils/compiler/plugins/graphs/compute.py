@@ -6,6 +6,10 @@ from core.ast_models import GraphBlock
 
 SAMPLES_COUNT = 201
 
+def sanitize_expr(expr_str):
+    expr_str = re.sub(r'(\d)([a-zA-Z\(])', r'\1*\2', expr_str)
+    return expr_str.replace("^", "**")
+
 def is_linear(safe_expr):
     x, y = sympy.symbols('x y')
     expr = sympy.sympify(safe_expr)
@@ -16,7 +20,7 @@ def is_linear(safe_expr):
     return dx.is_constant() and dy.is_constant()
 
 def compute_relation(plot):
-    expr_str = plot["original_expr"].replace("^", "**")
+    expr_str = sanitize_expr(plot["original_expr"])
 
     if any(rel in expr_str for rel in ["<=", ">="]):
         rel = next(r for r in ["<=", ">="] if r in expr_str)
