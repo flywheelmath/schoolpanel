@@ -4,7 +4,7 @@ import sympy
 import matplotlib.pyplot as plt
 from core.ast_models import GraphBlock
 
-SAMPLES_COUNT = 501
+SAMPLES_COUNT = 201
 
 def is_linear(safe_expr):
     x, y = sympy.symbols('x y')
@@ -40,7 +40,7 @@ def compute_relation(plot):
         plot["rel"], plot["safe_expr"] = "=", f"y - ({expr_str})"
         plot["relation_type"] = "equation"
 
-    plot["dashed"] = "strict" in plot["relation_type"] 
+    plot["dashed"] = plot["relation_type"] == "strict_inequality"
     return plot["relation_type"]
 
 def compute_graph(block: GraphBlock):
@@ -93,9 +93,12 @@ def compute_graph(block: GraphBlock):
             contour_set = plt.contour(X, Y, Z, levels=[0])
             for path in contour_set.get_paths():
                 v = path.vertices
+                v_list = [tuple(p) for p in v]
+                simplified = rdp(v_list, epsilon=0.001)
+
                 mask = (v[:,0] >= d_min) & (v[:,0] <= d_max) & (v[:,1] >= ymin) & (v[:,1] <= ymax)
                 if np.any(mask):
-                    plot["computed_paths"].append(" -- ".join([f"({vx:.3f},{vy:.3f})" for vx, vy in v[mask]]))
+                    plot["computed_paths"].append(" -- ".join([f"({vx:.3f},{vy:.3f})" for vx, vy in simplified]))
 
             if "inequality" in relation_type:
                 is_greater = any(rel in plot["rel"] for rel in [">", ">="])
@@ -106,7 +109,9 @@ def compute_graph(block: GraphBlock):
                 for path in cf.get_paths():
                     for poly in path.to_polygons():
                         if len(poly) > 2:
-                            plot["fill_polygons"].append(" -- ".join([f"({vx:.3f},{vy:.3f})" for vx, vy in poly]))
+                            poly_list = [tuple(p) for p in poly]
+                            simplified = rdp(poly_list, epsilon=0.05)
+                            plot["fill_polygons"].append(" -- ".join([f"({vx:.2f},{vy:.2f})" for vx, vy in simplified]))
 
             plt.close()
 
@@ -143,7 +148,7 @@ def compute_linear_graph(plot, xmin, xmax, ymin, ymax):
 
     if len(unique_intersections) >= 2:
         p1, p2 = unique_intersections[0], unique_intersections[1]
-        plot["computed_paths"].append(f"({p1[0]:.3f},{p1[1]:.3f}) -- ({p2[0]:.3f},{p2[1]:.3f})")
+        plot["computed_paths"].append(f"({p1[0]:.2f},{p1[1]:.2f}) -- ({p2[0]:.2f},{p2[1]:.2f})")
 
         if "inequality" in plot["relation_type"]:
             import math
@@ -165,5 +170,36 @@ def compute_linear_graph(plot, xmin, xmax, ymin, ymax):
             all_pts.sort(key=lambda p: math.atan2(p[1] - cy_centroid, p[0] - cx_centroid))
             all_pts.append(all_pts[0])
 
-            plot["fill_polygons"].append(" -- ".join([f"({vx:.3f},{vy:.3f})" for vx, vy in all_pts]))
+            plot["fill_polygons"].append(" -- ".join([f"({vx:.2f},{vy:.2f})" for vx, vy in all_pts]))
             plt.close()
+
+def distance_from_line(point, start, end):
+    px, py = point
+    sx, sy = start
+    ex, ey = end
+
+    dx = ex - sx
+    dy = ey - sy
+
+    if dx == 0 and dy == 0:
+        return np.sqrt((px - sx)**2 + (py - sy)**2)
+
+    num = abs(dy * px - dx * py + ex * sy - ey * sx)
+    den = np.sqrt(dx**2 + dy**2)
+
+    return num / den
+
+def rdp(points, epsilon):
+    """
+    Simplifies path of points using Ramer-Douglas-Peucker algorithm.
+    epsilon: max distance to allow deviation
+    """
+    if len(points) < 3: return points
+
+    distances = [distance_from_line(p, points[0], points[-1]) for p in points]
+    index = np.argmax(distances)
+
+    if distances[index] > epsilon:
+        return rdp(points[:index+1], epsilon)[:-1] + rdp(points[index:], epsilon)
+    else:
+        return [points[0], points[-1]]
