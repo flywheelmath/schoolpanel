@@ -5,13 +5,6 @@ from plugins.tasks.parser import parse_config
 def parse_graph(body: str, config_str: str) -> GraphBlock:
     config = parse_config(config_str)
     
-    config.setdefault("xmin", -5)
-    config.setdefault("xmax", 5)
-    config.setdefault("ymin", -5)
-    config.setdefault("ymax", 5)
-    config.setdefault("x_step", 1)
-    config.setdefault("y_step", 1)
-
     plots = []
     points = []
 
@@ -32,11 +25,8 @@ def parse_graph(body: str, config_str: str) -> GraphBlock:
                     "label": plot_config.get("label", "")
                 }
 
-                if re.search(r'(<=|>=|<|>)', expr):
-                    plot_data["type"] = "inequality"
-                    plot_data["dashed"] = bool(re.search(r'[^=]=[^=]', expr) is None and "=" not in expr)
-                elif "=" in expr:
-                    plot_data["type"] = "implicit"
+                if ">" in expr or "<" in expr:
+                    plot_data["dashed"] = bool("=" not in expr)
                 else:
                     plot_data["type"] = "function"
 

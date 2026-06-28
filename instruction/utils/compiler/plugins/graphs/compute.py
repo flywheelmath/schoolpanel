@@ -6,86 +6,164 @@ from core.ast_models import GraphBlock
 
 SAMPLES_COUNT = 501
 
+def is_linear(safe_expr):
+    x, y = sympy.symbols('x y')
+    expr = sympy.sympify(safe_expr)
+
+    dx = sympy.diff(expr, x)
+    dy = sympy.diff(expr, y)
+
+    return dx.is_constant() and dy.is_constant()
+
+def compute_relation(plot):
+    expr_str = plot["original_expr"].replace("^", "**")
+
+    if any(rel in expr_str for rel in ["<=", ">="]):
+        rel = next(r for r in ["<=", ">="] if r in expr_str)
+        lhs, rhs = expr_str.split(rel)
+        plot["rel"], plot["safe_expr"] = rel, f"({lhs.strip()}) - ({rhs.strip()})"
+        plot["relation_type"] = "nonstrict_inequality"
+    elif any(rel in expr_str for rel in ["<", ">"]):
+        rel = next(r for r in ["<", ">"] if r in expr_str)
+        lhs, rhs = expr_str.split(rel)
+        plot["rel"], plot["safe_expr"] = rel, f"({lhs.strip()}) - ({rhs.strip()})"
+        plot["relation_type"] = "strict_inequality"
+    elif "=" in expr_str:
+        lhs, rhs = expr_str.split("=")
+        plot["rel"], plot["safe_expr"] = "=", f"({lhs.strip()}) - ({rhs.strip()})"
+        plot["relation_type"] = "equation"
+    elif "t" in expr_str.lower():
+        x_expr, y_expr = expr_str.split(",")
+        plot["safe_x_expr"], plot["safe_y_expr"] = x_expr.strip(), y_expr.strip()
+        plot["relation_type"] = "parametric"
+    else:
+        plot["rel"], plot["safe_expr"] = "=", f"y - ({expr_str})"
+        plot["relation_type"] = "equation"
+
+    plot["dashed"] = "strict" in plot["relation_type"] 
+    return plot["relation_type"]
+
 def compute_graph(block: GraphBlock):
     xmin = float(block.config.get("xmin", -5))
     xmax = float(block.config.get("xmax", 5))
     ymin = float(block.config.get("ymin", -5))
     ymax = float(block.config.get("ymax", 5))
-    pad = 1.0
-
-    x_range = np.linspace(xmin - pad, xmax + pad, 300)
-    y_range = np.linspace(ymin - pad, ymax + pad, 300)
-    X, Y = np.meshgrid(x_range, y_range)
 
     for plot in block.plots:
-        d_min, d_max = xmin, xmax
-        if plot.get("domain"):
-            match = re.search(r'(-?\d+\.?\d*)\s*(<|<=)\s*[x]\s*(<|<=)\s*(-?\d+\.?\d*)', plot["domain"])
-            if match:
-                d_min, d_max = float(match.group(1)), float(match.group(4))
-
         plot["computed_paths"] = []
         plot["fill_polygons"] = []
+        relation_type = compute_relation(plot)
 
-        if plot["type"] == "function":
-            x_vals = np.linspace(d_min, d_max, SAMPLES_COUNT)
-            safe_expr = plot["original_expr"].replace('^', '**')
-            try:
-                f = sympy.lambdify(sympy.Symbol('x'), sympy.sympify(safe_expr), "numpy")
-                y_vals = f(x_vals)
-                valid_mask = (y_vals >= ymin) & (y_vals <= ymax) & (x_vals >= xmin) & (x_vals <= xmax)
-                valid_indices = np.where(valid_mask)[0]
+        if relation_type == "parametric":
+            t_min, t_max = 0, 2 * np.pi
 
-                if len(valid_indices) > 0:
-                    segments = np.split(valid_indices, np.where(np.diff(valid_indices) != 1)[0] + 1)
-                    for seg in segments:
-                        if len(seg) > 1:
-                            path_str = " ".join([f"({x_vals[i]:.3f}, {y_vals[i]:.3f})" for i in seg])
-                            plot["computed_paths"].append(path_str)
-            except Exception as e:
-                print(f"Math Error ({plot['original_expr']}): {e}")
+            if plot.get("domain"):
+                match = re.search(r'(-?\d+\.?\d*)\s*(<|<=)\s*[t]\s*(<|<=)\s*(-?\d+\.?\d*)', plot["domain"])
+                if match:
+                    t_min, t_max = float(match.group(1)), float(match.group(4))
 
-        elif plot["type"] == "implicit":
-            lhs, rhs = plot["original_expr"].split("=")
-            safe_expr = f"({lhs}) - ({rhs})".replace('^', '**')
-            try:
-                f = sympy.lambdify(sympy.symbols('x y'), sympy.sympify(safe_expr), "numpy")
-                Z = f(X, Y)
-                contour_set = plt.contour(X, Y, Z, levels=[0])
-                for path in contour_set.get_paths():
-                    if len(path.vertices) > 1:
-                        path_str = " ".join([f"({vx:.3f}, {vy:.3f})" for vx, vy in path.vertices])
-                        plot["computed_paths"].append(path_str)
-            except Exception as e:
-                print(f"Implicit Math Error ({plot['original_expr']}): {e}")
+            t_vals = np.linspace(t_min, t_max, SAMPLES_COUNT)
 
-        elif plot["type"] == "inequality":
-            op_match = re.search(r'(<=|>=|<|>)', plot["original_expr"])
-            op = op_match.group(1)
-            lhs, rhs = plot["original_expr"].split(op)
-            safe_expr = f"({lhs}) - ({rhs})".replace('^', '**')
-            plot["dashed"] = op in ["<", ">"]
+            fx = sympy.lambdify(sympy.Symbol('t'), sympy.sympify(plot["safe_x_expr"]), "numpy")
+            fy = sympy.lambdify(sympy.Symbol('t'), sympy.sympify(plot["safe_y_expr"]), "numpy")           
 
-            try:
-                f = sympy.lambdify(sympy.symbols('x y'), sympy.sympify(safe_expr), "numpy")
+            x_vals, y_vals = fx(t_vals), fy(t_vals)
+            valid_mask = (y_vals >= ymin) & (y_vals <= ymax) & (x_vals >= xmin) & (x_vals <= xmax)
+            path_str = " -- ".join([f"({vx:.3f},{vy:.3f})" for vx, vy in zip(x_vals[valid_mask], y_vals[valid_mask])])
+            plot["computed_paths"].append(path_str)
+
+        elif is_linear(plot["safe_expr"]):
+            d_min, d_max = xmin, xmax
+            if plot.get("domain"):
+                match = re.search(r'(-?\d+\.?\d*)\s*(<|<=)\s*x\s*(<|<=)\s*(-?\d+\.?\d*)', plot["domain"])
+                if match: d_min, d_max = float(match.group(1)), float(match.group(4))
+
+            compute_linear_graph(plot, xmin, xmax, ymin, ymax)
+
+        else:
+            d_min, d_max = xmin, xmax
+            if plot.get("domain"):
+                match = re.search(r'(-?\d+\.?\d*)\s*(<|<=)\s*x\s*(<|<=)\s*(-?\d+\.?\d*)', plot["domain"])
+                if match: d_min, d_max = float(match.group(1)), float(match.group(4))
                 
-                X, Y = np.meshgrid(np.linspace(xmin, xmax, 100), np.linspace(ymin, ymax, 100))
-                Z = f(X, Y)
-                
+            f = sympy.lambdify(sympy.symbols('x y'), sympy.sympify(plot["safe_expr"]), "numpy")
+            X, Y = np.meshgrid(np.linspace(xmin, xmax, SAMPLES_COUNT), np.linspace(ymin, ymax, SAMPLES_COUNT))
+            Z = f(X, Y)
+
+            contour_set = plt.contour(X, Y, Z, levels=[0])
+            for path in contour_set.get_paths():
+                v = path.vertices
+                mask = (v[:,0] >= d_min) & (v[:,0] <= d_max) & (v[:,1] >= ymin) & (v[:,1] <= ymax)
+                if np.any(mask):
+                    plot["computed_paths"].append(" -- ".join([f"({vx:.3f},{vy:.3f})" for vx, vy in v[mask]]))
+
+            if "inequality" in relation_type:
+                is_greater = any(rel in plot["rel"] for rel in [">", ">="])
                 z_min, z_max = np.min(Z), np.max(Z)
-                levels = [0.0, max(1.0, z_max * 2.0)] if op in [">", ">="] else [min(-1.0, z_min * 2.0), 0.0]
+                levels =  [0, max(1.0, z_max + 1)] if is_greater else [min(-1.0, z_min - 1), 0]
 
                 cf = plt.contourf(X, Y, Z, levels=levels)
                 for path in cf.get_paths():
                     for poly in path.to_polygons():
                         if len(poly) > 2:
-                            plot["fill_polygons"].append(" -- ".join([f"({vx:.2f}, {vy:.2f})" for vx, vy in poly]))
+                            plot["fill_polygons"].append(" -- ".join([f"({vx:.3f},{vy:.3f})" for vx, vy in poly]))
 
-                cl = plt.contour(X, Y, Z, levels=[0])
-                for path in cl.get_paths():
-                    if len(path.vertices) > 1:
-                        plot["computed_paths"].append(" -- ".join([f"({vx:.2f}, {vy:.2f})" for vx, vy in path.vertices]))
+            plt.close()
 
-                plt.close()
-            except Exception as e:
-                print(f"Inequality Math Error ({plot['original_expr']}): {e}")
+def compute_linear_graph(plot, xmin, xmax, ymin, ymax):
+    x, y = sympy.symbols('x y')
+    expr = sympy.sympify(plot["safe_expr"])
+
+    A = float(sympy.diff(expr, x))
+    B = float(sympy.diff(expr, y))
+    C = float(expr.subs({x: 0, y: 0}))
+
+    intersections = []
+
+    if B != 0:
+        y_left = -(A * xmin + C) / B
+        if ymin <= y_left <= ymax: intersections.append((xmin, y_left))
+
+        y_right = -(A * xmax + C) / B
+        if ymin <= y_right <= ymax: intersections.append((xmax, y_right))
+
+    if A != 0:
+        x_bottom = -(B * ymin + C) / A
+        if xmin <= x_bottom <= xmax: intersections.append((x_bottom, ymin))
+
+        x_top = -(B * ymax + C) / A
+        if xmin <= x_top <= xmax: intersections.append((x_top, ymax))
+
+    intersections = list(set([(round(px, 3), round(py, 3)) for px, py in intersections]))
+
+    unique_intersections = []
+    for p in intersections:
+        if not any(np.allclose(p, u, atol=1e-3) for u in unique_intersections):
+            unique_intersections.append(p)
+
+    if len(unique_intersections) >= 2:
+        p1, p2 = unique_intersections[0], unique_intersections[1]
+        plot["computed_paths"].append(f"({p1[0]:.3f},{p1[1]:.3f}) -- ({p2[0]:.3f},{p2[1]:.3f})")
+
+        if "inequality" in plot["relation_type"]:
+            import math
+            is_greater = any(rel in plot["rel"] for rel in [">", ">="])
+            corners = [(xmin, ymin), (xmax, ymin), (xmax, ymax), (xmin, ymax)]
+            valid_corners = []
+
+            f_val = lambda cx, cy: A*cx + B*cy + C
+
+            for cx, cy in corners:
+                val = f_val(cx, cy)
+                if (is_greater and val >= 0) or (not is_greater and val <= 0):
+                    valid_corners.append((cx, cy))
+
+            all_pts = list(set([p1, p2] + valid_corners))
+
+            cx_centroid = sum(p[0] for p in all_pts) / len(all_pts)
+            cy_centroid = sum(p[1] for p in all_pts) / len(all_pts)
+            all_pts.sort(key=lambda p: math.atan2(p[1] - cy_centroid, p[0] - cx_centroid))
+            all_pts.append(all_pts[0])
+
+            plot["fill_polygons"].append(" -- ".join([f"({vx:.3f},{vy:.3f})" for vx, vy in all_pts]))
+            plt.close()

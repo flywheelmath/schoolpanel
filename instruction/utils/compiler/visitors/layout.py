@@ -1,27 +1,37 @@
 from .base import BaseVisitor
-from core.ast_models import Subtask, TaskBlock
+from core.ast_models import CompositeBlock, Subtask, TaskBlock
 
 class LayoutVisitor(BaseVisitor):
-    def generic_visit(self, node):
-        pass
+    def __init__(self):
+        self.context_stack = [{'row': 0, 'col': 0, 'max_cols': 4}]
+
+    def visit_compositeblock(self, block: CompositeBlock):
+        self.context_stack.append({
+            'row': 0,
+            'col': 0,
+            'max_cols': block.config.get("cols", 4)
+        })
+
+        for child in block.children:
+            self.visit(child)
+
+        self.context_stack.pop()
 
     def visit_taskblock(self, block: TaskBlock):
-        max_cols = block.config.get("cols_tex", 4)
+        ctx = self.context_stack[-1]
+        max_cols = ctx["max_cols"]
 
         block.config['col_width_pct'] = 1 / max_cols
         block.config['col_width_tex'] = f"\\textwidth / {max_cols}"
 
-        current_row = 0
-        current_col = 0
-
         for subtask in block.processed_subtasks:
             span = subtask.col_span
 
-            if current_col + span > max_cols:
-                current_row += 1
-                current_col = 0
+            if ctx['col'] + span > max_cols:
+                ctx['row'] += 1
+                ctx['col'] = 0
 
-            subtask.row_tex = current_row
-            subtask.col_tex = current_col
+            subtask.row_tex = ctx['row']
+            subtask.col_tex = ctx['col']
 
-            current_col += span
+            ctx['col'] += span

@@ -16,25 +16,34 @@ def render_tex(block: GraphBlock) -> str:
     output.append(f"\\draw[thick, <->] (0,{ymin}) -- (0,{ymax}) node[above] {{\\(y\\)}};")
 
     output.append(f"\\begin{{scope}}")
-    output.append(f"\\clip ({xmin},{ymin}) rectangle ({xmax},{ymax});")
+    output.append(f"\\clip ({xmin-0.5},{ymin-0.5}) rectangle ({xmax+0.5},{ymax+0.5});")
 
     for plot in block.plots:
         color = plot.get("color", "black")
         style = "dashed" if plot.get("dashed") else plot.get("line_style", "solid")
-        pattern = "north west lines"
+        angle = 45
         if plot.get("computed_paths"):
-            pts = plot["computed_paths"][0].replace("(", "").replace(")", "").split(" -- ")
+            pts = plot["computed_paths"][0].split(" -- ")
             if len(pts) >= 2:
-                y0 = float(pts[0].split(",")[1])
-                y1 = float(pts[-1].split(",")[1])
-                if y0 > y1:
-                    pattern = "north east lines"
+                p1 = [float(c) for c in pts[0].strip("()").split(",")]
+                p2 = [float(c) for c in pts[-1].strip("()").split(",")]
+                import math
+                if p2[0] == p1[0]:
+                    slope_angle = 90
+                else:
+                    slope_angle = math.degrees(math.atan2(p2[1] - p1[1], p2[0] - p1[0]))
+                angle = (slope_angle + 60) % 180
+                if angle in [0, 90]:
+                    angle = 45
 
         for poly_str in plot.get("fill_polygons", []):
-            output.append(f"\\fill[pattern={pattern}, pattern color={color}!40] {poly_str} -- cycle;")
+            output.append(
+                f"\\fill[pattern={{Lines[angle={angle:.0f}, distance=.2cm, line width=0.9pt]}}, "
+                f"pattern color={color}!40] {poly_str} -- cycle;"
+            )
 
         for path_str in plot.get("computed_paths", []):
-            output.append(f"\\draw[thick, {color}, {style}] {{{path_str}}};")
+            output.append(f"\\draw[thick, {color}, {style}] {path_str};")
 
     output.append(f"\\end{{scope}}")
 
