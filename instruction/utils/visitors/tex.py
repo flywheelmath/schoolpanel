@@ -1,3 +1,4 @@
+import re
 from .base import ASTVisitor
 from core.models import (
     Cell,
@@ -9,13 +10,129 @@ from core.models import (
     TextEntity,
 )
 
+def process_tex_text(content: str) -> str:
+    parts = re.split(r'(\\\[.*?\\\]|\\\(.*?\\\))', content, flags=re.DOTALL)
+
+    # Special LaTeX characters
+
+    for i in range(len(parts)):
+        if i % 2 == 0:
+            text = parts[i]
+            if not text: continue
+
+            text = re.sub(r'</?v-click>', '', text)
+
+            text = text.replace('\\', '\\textbackslash ')
+            text = re.sub(r'([&%$_{}])', r'\\\1', text)
+
+            text = re.sub(r'\*\*(.*?)\*\*', r'\\textbf{\1}', text)
+            text = re.sub(r'\*(.*?)\*', r'\\textit{\1}', text)
+            text = re.sub(r'==(.*?)==', r'\\colorbox{red}{\1}', text)
+
+            text = re.sub(r'(?m)^###\s+(.*)$', r'\\subsubsection*{\1}', text)
+            text = re.sub(r'(?m)^##\s+(.*)$', r'\\subsection*{\1n', text)
+            text = re.sub(r'(?m)^#\s+(.*)$', r'\\section*{\1}', text)
+
+            text = re.sub(r'(#)', r'\\\1', text)
+            text = text.replace('~', '\\textasciitilde{}')
+            text = text.replace('^', '\\textasciicircum{}')
+
+            parts[i] = text
+
+    assembled = "".join(parts)
+
+    # Markdown lists
+
+    lines = assembled.split('\n')
+    in_bullet_list = False
+    in_num_list = False
+    in_blockquote = False
+    out_lines = []
+
+    for line in lines:
+        stripped = line.strip()
+
+        if not stripped:
+            if in_bullet_list:
+                out_lines.append(r'\end{itemize}')
+                in_bullet_list = False
+            if in_num_list:
+                out_lines.append(r'\end{enumerate}')
+                in_num_list = False
+            if in_blockquote:
+                out_lines.append(r'\end{quote}')
+                in_blockquote = False
+            out_lines.append(line)
+            continue
+
+        is_bullet_trigger = bool(re.match(r'^\s*[-*]\s+', line))
+        is_num_trigger = bool(re.match(r'^\s*\d+\.\s+', line))
+        is_quote_trigger = bool(re.match(r'^\s*>\s*', line))
+
+        if is_bullet_trigger or is_num_trigger or is_quote_trigger:
+            if in_blockquote and not is_quote_trigger:
+                out_lines.append(r'\end{quote}')
+                in_blockquote = False
+
+        if is_quote_trigger:
+            if in_bullet_list:
+                out_lines.append(r'\end{itemize}')
+                in_bullet_list = False
+            if in_num_list:
+                out_lines.append(r'\end{enumerate}')
+                in_num_list = False
+            if not in_blockquote:
+                out_lines.append(r'\begin{quote}')
+                in_blockquote = True
+
+            clean_quote_line = re.sub(r'^\s*>\s*', '', line)
+            out_lines.append(f"  {clean_quote_line}")
+
+        elif is_bullet_trigger:
+            if in_num_list:
+                out_lines.append(r'\end{enumerate}')
+                in_num_list = False
+            if not in_bullet_list:
+                out_lines.append(r'\begin{itemize}')
+                in_bullet_list = True
+            item_text = re.sub(r'^\s*[-*]\s+(.*)', r'  \\item \1', line)
+            out_lines.append(item_text)
+
+        elif is_num_trigger:
+            if in_bullet_list:
+                out_lines_append(r'\end{itemize}')
+                in_bullet_list = False
+            if not in_num_list:
+                out_lines.append(r'\begin{enumerate}')
+                in_num_list = True
+            item_text = re.sub(r'^\s*\d+\.\s+(.*)', r'  \\item \1', line)
+            out_lines.append(item_text)
+
+        elif in_blockquote:
+            out_lines.append(f"  {line.strip()}")
+
+        elif in_bullet_list or in_num_list:
+            out_lines.append(f"    {line.strip()}")
+
+        else:
+            out_lines.append(line)
+
+    if in_bullet_list:
+        out_lines.append(r'\end{itemize}')
+    if in_num_list:
+        out_lines.append(r'\end{enumerate}')
+    if in_blockquote:
+        out_lines.append(r'\end{quote}')
+
+    return "\n".join(out_lines)
+
 
 class RenderTeXVisitor(ASTVisitor):
     def __init__(self):
         self.output = []
 
     def get_result(self) -> str:
-        return "\n".join(self.output)
+        return "".join(self.output)
 
     def visit_grid(self, node: Grid):
         self.output.append(r"% --- Start Grid ---")
@@ -32,10 +149,11 @@ class RenderTeXVisitor(ASTVisitor):
         self.output.append(r"\end{minipage}")
 
     def visit_textentity(self, node: TextEntity):
-        self.output.append(node.content + "\n")
+        clean_tex = process_tex_text(node.content)
+        self.output.append(clean_tex + "\n")
 
     def visit_taskentity(self, node: TaskEntity):
-        self.output.append(f"\\begin{{task}}{{{node.label}}}")
+        self.output.append(f"\n\\begin{{task}}{{{node.label}}}")
         self.output.append(node.content + "\n")
         self.generic_visit(node)
         self.output.append("\\end{task}\n")
@@ -55,3 +173,5 @@ class RenderTeXVisitor(ASTVisitor):
         self.output.append(r"% --- Start table ---")
         self.output.append(node.raw_body)
         self.output.append(r"% --- End table ---")
+
+

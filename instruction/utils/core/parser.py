@@ -115,26 +115,20 @@ class Parser:
 
         elif tag == "task":
             label = str(config.get("label", ""))
-            text_parts = [c.content for c in children if isinstance(c, TextEntity)]
-            content_str = "\n".join(text_parts).strip()
-            non_text_children = [c for c in children if not isinstance(c, TextEntity)]
             return TaskEntity(
                 config=config,
                 label=label,
-                content=content_str,
-                children=non_text_children,
+                content="",
+                children=children,
             )
 
         elif tag == "subtask":
             label = str(config.get("label", ""))
-            text_parts = [c.content for c in children if isinstance(c, TextEntity)]
-            content_str = "\n".join(text_parts).strip()
-            non_text_children = [c for c in children if not isinstance(c, TextEntity)]
             return SubtaskEntity(
                 config=config,
                 label=label,
-                content=content_str,
-                children=non_text_children,
+                content="",
+                children=children,
             )
 
         elif tag == "graph":

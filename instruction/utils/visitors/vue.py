@@ -12,53 +12,40 @@ from core.models import (
 
 class RenderVueVisitor(ASTVisitor):
     def __init__(self):
+        super().__init__()
         self.output = []
 
     def get_result(self) -> str:
         content = "\n".join(self.output)
-        return f'<template>\n  <div class="curriculum-task">\n{content}\n  </div>\n</template>'
+        return content
 
     def visit_grid(self, node: Grid):
-        self.output.append("    ")
-        self.output.append(
-            '    <div style="display: flex; flex-wrap: wrap; width: 100%;">'
-        )
-
+        self.output.append('<Grid>')
         for child in node.children:
             self.visit(child)
-
-        self.output.append("    </div>")
-        self.output.append("    ")
+        self.output.append("</Grid>")
 
     def visit_cell(self, node: Cell):
         percentage = node.width_fraction * 100
-        self.output.append(
-            f'      <div style="width: {percentage:.5f}%; box-sizing: border-box; padding-right: 1rem;">'
-        )
-
+        self.output.append(f'  <GridCell :width-percent="{percentage:.5f}">')
         for child in node.children:
             self.visit(child)
-
-        self.output.append("      </div>")
+        self.output.append(f'  </GridCell>')
 
     def visit_taskentity(self, node: TaskEntity):
-        self.output.append('    <div class="task-block" style="margin-bottom: 2rem;">')
-        self.output.append(f"      <h3>{node.label}</h3>")
-        self.output.append(f'      <div class="task-content">{node.content}</div>')
+        self.output.append('\n---\n')
+        self.output.append(f'### {node.label} {node.content}')
         self.generic_visit(node)
-        self.output.append("    </div>")
 
     def visit_subtaskentity(self, node: SubtaskEntity):
-        self.output.append('    <div class="subtask-block" style="margin-top: 1rem;">')
-        self.output.append(f'      <div class="task-content">{node.content}</div>')
+        self.output.append(f'\n**{node.label}** {node.content}')
         self.generic_visit(node)
-        self.output.append("    </div>")
 
     def visit_textentity(self, node: TextEntity):
-        self.output.append(f"      <p>{node.content}</p>")
+        self.output.append(node.content)
 
     def visit_graphentity(self, node: GraphEntity):
-        self.output.append(f'      <GraphRenderer :raw-data="`{node.raw_body}`" />')
+        self.output.append(f'<GraphRenderer :raw-data="`{node.raw_body}`" />')
 
     def visit_tableentity(self, node: TableEntity):
-        self.output.append(f'      <TableRenderer :raw-data="`{node.raw_body}`" />')
+        self.output.append(f'<TableRenderer :raw-data="`{node.raw_body}`" />')
