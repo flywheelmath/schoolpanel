@@ -10,21 +10,23 @@ from .models import (
     TableEntity,
 )
 
+
 def parse_config(config_str: str) -> dict:
     if not config_str or not config_str.strip():
         return {}
     config_dict = {}
-    pairs = config_str.split(',')
+    pairs = config_str.split(",")
     for pair in pairs:
-        if '=' in pair:
-            key, value = pair.split('=', 1)
-        elif ':' in pair:
-            key, value = pair.split(':', 1)
+        if "=" in pair:
+            key, value = pair.split("=", 1)
+        elif ":" in pair:
+            key, value = pair.split(":", 1)
         if key is not None and value is not None:
             val = value.strip()
             val = val.strip('"').strip("'")
             config_dict[key.strip()] = int(val) if val.isdigit() else val
     return config_dict
+
 
 @dataclass
 class Token:
@@ -33,13 +35,14 @@ class Token:
     config: dict = None
     value: str = ""
 
+
 class Tokenizer:
     def __init__(self, content: str):
         self.content = content
 
     def tokenize(self) -> list[Token]:
         tokens = []
-        pattern = re.compile(r':::\s*(\w+)?\s*(?:\{(.*?)\})?\s*\n?')
+        pattern = re.compile(r":::\s*(\w+)?\s*(?:\{(.*?)\})?\s*\n?")
 
         last_end = 0
         for match in pattern.finditer(self.content):
@@ -53,11 +56,13 @@ class Tokenizer:
             config_str = match.group(2)
 
             if tag:
-                tokens.append(Token(
-                    type="OPEN",
-                    tag=tag.lower(),
-                    config=parse_config(config_str),
-                ))
+                tokens.append(
+                    Token(
+                        type="OPEN",
+                        tag=tag.lower(),
+                        config=parse_config(config_str),
+                    )
+                )
             else:
                 tokens.append(Token(type="CLOSE"))
 
@@ -68,6 +73,7 @@ class Tokenizer:
             tokens.append(Token(type="TEXT", value=remaining_text))
 
         return tokens
+
 
 class Parser:
     def __init__(self, content: str):
@@ -112,14 +118,24 @@ class Parser:
             text_parts = [c.content for c in children if isinstance(c, TextEntity)]
             content_str = "\n".join(text_parts).strip()
             non_text_children = [c for c in children if not isinstance(c, TextEntity)]
-            return TaskEntity(config=config, label=label, content=content_str, children=non_text_children)
+            return TaskEntity(
+                config=config,
+                label=label,
+                content=content_str,
+                children=non_text_children,
+            )
 
         elif tag == "subtask":
             label = str(config.get("label", ""))
             text_parts = [c.content for c in children if isinstance(c, TextEntity)]
             content_str = "\n".join(text_parts).strip()
             non_text_children = [c for c in children if not isinstance(c, TextEntity)]
-            return SubtaskEntity(config=config, label=label, content=content_str, children=non_text_children)
+            return SubtaskEntity(
+                config=config,
+                label=label,
+                content=content_str,
+                children=non_text_children,
+            )
 
         elif tag == "graph":
             text_parts = [c.content for c in children if isinstance(c, TextEntity)]
@@ -128,6 +144,5 @@ class Parser:
         elif tag == "table":
             text_parts = [c.content for c in children if isinstance(c, TextEntity)]
             return TableEntity(config=config, raw_body="\n".join(text_parts).strip())
-
 
         return None

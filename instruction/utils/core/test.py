@@ -1,5 +1,16 @@
 from parser import Parser
-from models import Node, DomainEntity, LayoutNode, Cell, Grid, TaskEntity, SubtaskEntity, GraphEntity, TableEntity, TextEntity
+from models import (
+    Node,
+    DomainEntity,
+    LayoutNode,
+    Cell,
+    Grid,
+    TaskEntity,
+    SubtaskEntity,
+    GraphEntity,
+    TableEntity,
+    TextEntity,
+)
 
 test_md = """
 ::: task {label="2."}
@@ -45,38 +56,42 @@ bounds_y = [-5, 25]
 :::
 """
 
+
 def print_ast(node, level=0):
     indent = "  " * level
-    
+
     # Check if it's a Layout or Domain node for visualization
     node_type = "Layout" if isinstance(node, LayoutNode) else "Domain"
-    
+
     if isinstance(node, TaskEntity):
-        print(f"{indent}[{node_type}] TaskEntity (Label: {node.label}) -> Prompt: '{node.content[:20]}...'")
+        print(
+            f"{indent}[{node_type}] TaskEntity (Label: {node.label}) -> Prompt: '{node.content[:20]}...'"
+        )
         for child in node.children:
             print_ast(child, level + 1)
-            
-    elif hasattr(node, 'children') and isinstance(node.children, list):
+
+    elif hasattr(node, "children") and isinstance(node.children, list):
         # Grids
-        span_info = f"span={node.col_span}" if hasattr(node, 'col_span') else ""
+        span_info = f"span={node.col_span}" if hasattr(node, "col_span") else ""
         print(f"{indent}[{node_type}] {type(node).__name__} {span_info}")
         for child in node.children:
             print_ast(child, level + 1)
-            
+
     elif isinstance(node, Cell):
         print(f"{indent}[{node_type}] Cell (span={node.col_span})")
         for child in node.children:
             print_ast(child, level + 1)
-            
+
     else:
         # Leaves (Graph, Text)
-        body = getattr(node, 'content', getattr(node, 'raw_body', ''))
+        body = getattr(node, "content", getattr(node, "raw_body", ""))
         print(f"{indent}[{node_type}] {type(node).__name__} -> '{body[:2000]}...'")
+
 
 if __name__ == "__main__":
     parser = Parser(test_md)
     ast = parser.parse()
-    
+
     print("=== PIPELINE STAGE 1: RAW AST ===")
     for node in ast:
         print_ast(node)

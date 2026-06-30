@@ -1,9 +1,9 @@
-# test_pipeline.py
+# test.py
 from core.parser import Tokenizer, Parser
 from visitors.layout import LayoutVisitor
 from visitors.tex import RenderTeXVisitor
+from visitors.vue import RenderVueVisitor
 
-# The ultimate stress test: nested grids, 12-column snapping, and domain entities
 test_md = """
 ::: task {label="2."}
 Analyze the trajectory of the projectile.
@@ -15,6 +15,7 @@ Determine the maximum height.
 ::: grid {cols=4}
 ::: cell {col_span=4}
 *Hint: Find the vertex.*
+:::
 :::
 :::
 :::
@@ -36,10 +37,15 @@ layout_engine = LayoutVisitor()
 for node in ast:
     layout_engine.visit(node)
 
-# 3. Render Pass (LaTeX String Generation)
+# 3. Render Passes
 tex_engine = RenderTeXVisitor()
+vue_engine = RenderVueVisitor()
+
 for node in ast:
     tex_engine.visit(node)
+    vue_engine.visit(node)
 
 print("=== GENERATED LATEX OUTPUT ===")
 print(tex_engine.get_result())
+print("\n=== GENERATED VUE TEMPLATE ===")
+print(vue_engine.get_result())

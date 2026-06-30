@@ -1,5 +1,14 @@
 from .base import ASTVisitor
-from core.models import Cell, Grid, SubtaskEntity, TaskEntity, TextEntity
+from core.models import (
+    Cell,
+    Grid,
+    GraphEntity,
+    SubtaskEntity,
+    TableEntity,
+    TaskEntity,
+    TextEntity,
+)
+
 
 class RenderTeXVisitor(ASTVisitor):
     def __init__(self):
@@ -10,12 +19,16 @@ class RenderTeXVisitor(ASTVisitor):
 
     def visit_grid(self, node: Grid):
         self.output.append(r"% --- Start Grid ---")
-        self.generic_visit(node)
+        for child in node.children:
+            self.visit(child)
         self.output.append(r"% --- End Grid ---")
 
     def visit_cell(self, node: Cell):
-        self.output.append(f"\\begin{{minipage}}[t]{{{node.width_fraction:.5f}\\textwidth}}")
-        self.generic_visit(node)
+        self.output.append(
+            f"\\begin{{minipage}}[t]{{{node.width_fraction:.5f}\\textwidth}}"
+        )
+        for child in node.children:
+            self.visit(child)
         self.output.append(r"\end{minipage}")
 
     def visit_textentity(self, node: TextEntity):
@@ -32,3 +45,13 @@ class RenderTeXVisitor(ASTVisitor):
         self.output.append(node.content)
         self.generic_visit(node)
         self.output.append("\\end{subtask}")
+
+    def visit_graphentity(self, node: GraphEntity):
+        self.output.append(r"% --- Start graph ---")
+        self.output.append(node.raw_body)
+        self.output.append(r"% --- End graph ---")
+
+    def visit_tableentity(self, node: TableEntity):
+        self.output.append(r"% --- Start table ---")
+        self.output.append(node.raw_body)
+        self.output.append(r"% --- End table ---")
