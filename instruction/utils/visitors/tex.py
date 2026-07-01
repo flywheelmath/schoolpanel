@@ -58,7 +58,7 @@ def process_tex_text(content: str) -> str:
                 clean_target = target.replace('\\', '')
                 return f"\\url{{{clean_target}}}"
 
-            text = re.sub(r'(?m)(?<!\{)(https?://[^\s<]+)', handle_bare_url, text)  
+            text = re.sub(r'(?m)(?<!\{)(https?://[^\s<]+)', handle_bare_url, text)
 
             text = re.sub(r'"([^"]*)"', r"``\1''", text)
             text = text.replace('--', '---')
@@ -211,4 +211,27 @@ class RenderTeXVisitor(ASTVisitor):
         self.output.append(node.raw_body)
         self.output.append(r"% --- End table ---")
 
+class LayoutGridTracker:
+    def __init__(self, total_cols=12):
+        self.total_cols = total_cols
+        self.matrix = []
 
+    def _ensure_row_exists(self, row_idx):
+        while len(self.matrix) <= row_idx:
+            self.matrix.append([False] * self.total_cols)
+
+    def find_next_available_slot(self):
+        row_idx = 0
+        while True:
+            self._ensure_row_exists(row_idx)
+            for col_idx in range(self.total_cols):
+                if not self.matrix[row_idx][col_idx]:
+                    return row_idx, col_idx
+            row_idx += 1
+
+    def occupy_space(self, start_row, start_col, row_span, col_span):
+        for r in range(start_row, start_row + row_span):
+            self._ensure_row_exists(r)
+            for c in range(start_col, start_col + col_span):
+                if c < self.total_cols:
+                    self.matrix[r][c] = True
