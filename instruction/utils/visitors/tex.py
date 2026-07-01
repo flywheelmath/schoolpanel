@@ -21,6 +21,13 @@ def process_tex_text(content: str) -> str:
             if not text: continue
 
             text = re.sub(r'</?v-click>', '', text)
+            text = re.sub(r'(?m)^---\s*$', r'\n\n', text)
+
+            code_blocks = []
+            def shield_code(match):
+                code_blocks.append(match.group(1))
+                return f"CODEPLACEHOLDER{len(code_blocks)-1}"
+            text = re.sub(r'`([^`]+)`', shield_code, text)
 
             text = text.replace('\\', '\\textbackslash ')
             text = re.sub(r'([&%$_{}])', r'\\\1', text)
@@ -30,12 +37,42 @@ def process_tex_text(content: str) -> str:
             text = re.sub(r'==(.*?)==', r'\\colorbox{red}{\1}', text)
 
             text = re.sub(r'(?m)^###\s+(.*)$', r'\\subsubsection*{\1}', text)
-            text = re.sub(r'(?m)^##\s+(.*)$', r'\\subsection*{\1n', text)
+            text = re.sub(r'(?m)^##\s+(.*)$', r'\\subsection*{\1}', text)
             text = re.sub(r'(?m)^#\s+(.*)$', r'\\section*{\1}', text)
+
 
             text = re.sub(r'(#)', r'\\\1', text)
             text = text.replace('~', '\\textasciitilde{}')
             text = text.replace('^', '\\textasciicircum{}')
+
+            def handle_markdown_links(match):
+                display_text = match.group(1)
+                address_target = match.group(2)
+                clean_address = address_target.replace('\\', '')
+                return f"\\href{{{clean_address}}}{{{display_text}}}"
+
+            text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', handle_markdown_links, text)
+
+            def handle_bare_url(match):
+                target = match.group(1)
+                clean_target = target.replace('\\', '')
+                return f"\\url{{{clean_target}}}"
+
+            text = re.sub(r'(?m)(?<!\{)(https?://[^\s<]+)', handle_bare_url, text)  
+
+            text = re.sub(r'"([^"]*)"', r"``\1''", text)
+            text = text.replace('--', '---')
+            text = text.replace('[Blank]', r'\blank')
+
+            for idx, raw_code in enumerate(code_blocks):
+                escaped_code = (raw_code.replace('&', '\\&')
+                                        .replace('%', '\\%')
+                                        .replace('$', '\\$')
+                                        .replace('_', '\\_')
+                                        .replace('#', '\\#')
+                                        .replace('{', '\\{')
+                                        .replace('}', '\\}'))
+                text = text.replace(f"CODEPLACEHOLDER{idx}", f"\\texttt{{{escaped_code}}}")
 
             parts[i] = text
 
@@ -100,7 +137,7 @@ def process_tex_text(content: str) -> str:
 
         elif is_num_trigger:
             if in_bullet_list:
-                out_lines_append(r'\end{itemize}')
+                out_lines.append(r'\end{itemize}')
                 in_bullet_list = False
             if not in_num_list:
                 out_lines.append(r'\begin{enumerate}')

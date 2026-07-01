@@ -3,55 +3,40 @@ from core.parser import Tokenizer, Parser
 from visitors.tex import RenderTeXVisitor
 
 test_md = r"""
-# Section 1
+::: task {label="4."}
+# Advanced Markdown and Special Character Stress Test
 
-::: task {label="3."}
-Here is a comprehensive test of the **Text Rendering Engine**.
+Welcome to the ultimate test of the pipeline engine. Here is a baseline horizontal rule:
 
-<v-click>This sentence should appear, but the Slidev tags should vanish.</v-click>
+---
 
-Let's test special characters outside of math mode:
-Fifty % of the time, it works 100% of the time!
-We know that A & B are sets, and #1 is the best.
-Watch out for underscores_outside_math and {curly braces}.
+Let's verify that inline verbatim code blocks shield characters from the TeX escaper:
+We want `A & B` to have an escaped ampersand, but `x_i` shouldn't get an escaped underscore. 
+Even a code block containing **bold** text inside backticks, like `**don't change me**`, should remain unmutated text.
 
-But inside math mode, these exact same characters must remain untouched:
-Let \(x_1\) be a variable, and consider the matrix:
-\[
-\begin{bmatrix}
-a & b \\
-c & d_{2}
-\end{bmatrix}
-\]
+## Link, URL, and Contact Detection Pass
+1. Here is a named markdown link: Check out [SchoolPanel](https://schoolpanel.com/dashboard?user=math&dept=lead).
+2. Here is a bare URL with active query parameters: https://baltimorecitypublicschools.org/search?q=curriculum&grade=9
+3. Drop an email link here to test the mailto wrapper: [contact_department@bcps.edu](mailto:contact_department@bcps.edu) for department questions.
 
-## Don't go chasing waterfalls
+## Multi-line Blockquote and Lazy Continuation Test
+> This is the first line of an authoritative instructional rule block.
+This second line doesn't have a leading chevron, but it belongs to the blockquote.
+And this third line wraps it up nicely before a hard line break.
 
-*Here* is an italicized word, and ==here is a highlighted word==.
+Back to a baseline text paragraph with standard straight quotes: "The root of a function is where f(x) = 0." We can also use double-dashes to render an em-dash like this--it looks much cleaner on paper.
 
-### test this out
-not sure
+## Mixed Nested List Continua
+* This is an unordered item containing an explicit link [District Portal](http://district.domain/path)
+* This is a multi-line bullet item
+  and this line continues the same exact bullet item without closing the itemize environment prematurely
+* The third bullet concludes the group.
 
-We're #1 or are we.
+1. Let's swap immediately into an ordered list.
+2. Step two contains inline math \( y = mx + b \) and a trailing bare URL: https://desmos.com
+   along with an indented lazy continuation line that must remain in the enumerate block.
 
-> This is a scaffolding hint blockquote.
-> So is this.
-
-Here is a list of things to remember:
-- First item with inline math \(y_2\)
-- Second item with **bold text**
-* Third item using an asterisk
-testing
-
-testing2
-
-Here is a numbered list:
-1. option A
-
-> test
-test
-
-1. option B
-2. option C
+Final line of text outside all structural containers.
 :::
 """
 
