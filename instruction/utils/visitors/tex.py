@@ -19,7 +19,7 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
         out = visitor.output
         out.append("% --- Begin Tree-Partition Lookahead Grid ---\n")
 
-        cells = [child for child in node.children if isinstance(child, Cell)]
+        cells = [child for child in node.children if isinstance(child, (Cell, TaskEntity))]
 
         while cells:
             current_line_cells = []
@@ -60,18 +60,21 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
             left_width_cols = sum(int(c.config.get("col_span", 1)) for c in left_partition)
             right_width_cols = sum(int(c.config.get("col_span", 1)) for c in right_partition)
 
-            left_width_fraction = max((left_width_cols / 12.0) - 0.02, 0)
-            right_width_fraction = max((right_width_cols / 12.0) - 0.02, 0)
+            left_width_fraction = max((left_width_cols / 12.0), 0)
+            right_width_fraction = max((right_width_cols / 12.0), 0)
 
-            out.append("\\noindent\n")
+            out.append("\\begin{gridrow}\n")
 
             if left_max == right_max or len(left_partition) == 0 or len(right_partition) == 0:
                 for cell in current_line_cells:
                     span = int(cell.config.get("col_span", 1))
-                    width_fraction = max((span / 12.0) - 0.02, 0)
-                    out.append(f"\\begin{{minipage}}[t]{{{width_fraction:.4f}\\textwidth}}\n")
-                    visitor.generic_visit(cell)
-                    out.append("\n\\end{minipage}\\hfill\n")
+                    width_fraction = max((span / 12.0), 0)
+                    out.append(f"  \\begin{{gridcell}}[{width_fraction:.4f}]\n")
+                    if isinstance(cell, TaskEntity):
+                        visitor.visit_taskentity(cell)
+                    else:
+                        visitor.generic_visit(cell)
+                    out.append("  \\end{gridcell}\n")
             else:
                 is_left_taller = left_max > right_max
                 taller_partition = left_partition if is_left_taller else right_partition
@@ -82,26 +85,36 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
                 shorter_width_cols = right_width_cols if is_left_taller else left_width_cols
 
                 taller_width_fraction = left_width_fraction if is_left_taller else right_width_fraction
-                out.append(f"\\begin{{minipage}}[t]{{{taller_width_fraction:.4f}\\textwidth}}\n")
+                out.append(f"  \\begin{{gridcell}}[{taller_width_fraction:.4f}]\n")
+                out.append(f"    \\begin{{grid}}\n")
                 for cell in taller_partition:
                     span = int(cell.config.get("col_span", 1))
                     parent_width = sum(int(x.config.get("col_span", 1)) for x in taller_partition)
                     inner_width = span / parent_width
-                    out.append(f"\\begin{{minipage}}[t]{{{inner_width:.4f}\\linewidth}}\n")
-                    visitor.generic_visit(cell)
-                    out.append("\n\end{minipage}\\hfill\n")
-                out.append("\\end{minipage}\\hfill\n")
+                    out.append(f"      \\begin{{gridcell}}[{inner_width:.4f}]\n")
+                    if isinstance(cell, TaskEntity):
+                        visitor.visit_taskentity(cell)
+                    else:
+                        visitor.generic_visit(cell)
+                    out.append("      \\end{gridcell}\n")
+                out.append("    \\end{grid}\n")
+                out.append("  \\end{gridcell}\n")
 
                 smaller_width_fraction = right_width_fraction if is_left_taller else left_width_fraction
-                out.append(f"\\begin{{minipage}}[t]{{{smaller_width_fraction:.4f}\\textwidth}}\n")
-                out.append("\\begin{minipage}[t]{\\linewidth}\n")
+                out.append(f"  \\begin{{gridcell}}[{smaller_width_fraction:.4f}]\n")
+                out.append("    \\begin{gridrow}\n")
+                out.append("      \\begin{grid}\n")
                 for cell in shorter_partition:
                     span = int(cell.config.get("col_span", 1))
                     inner_width = span / shorter_width_cols if shorter_width_cols > 0 else 1.0
-                    out.append(f"\\begin{{minipage}}[t]{{{inner_width:.4f}\\linewidth}}\n")
-                    visitor.generic_visit(cell)
-                    out.append("\n\\end{minipage}\\hfill\n")
-                out.append("\\end{minipage}\\par\\vspace{1.5ex}\n")
+                    out.append(f"        \\begin{{gridcell}}[{inner_width:.4f}]\n")
+                    if isinstance(cell, TaskEntity):
+                        visitor.visit_taskentity(cell)
+                    else:
+                        visitor.generic_visit(cell)
+                    out.append("        \\end{gridcell}\n")
+                out.append("      \\end{grid}\n")
+                out.append("    \\end{gridrow}\n")
 
                 remaining_space = taller_max - shorter_max
 
@@ -113,12 +126,17 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
                     if next_span <= shorter_width_cols:
                         if next_row_span <= remaining_space + 1:
                             cells.pop(0)
-                            out.append("\\begin{minipage}[t]{\\linewidth}\n")
+                            out.append("    \\begin{gridrow}\n")
+                            out.append("      \\begin{grid}\n")
                             inner_width = next_span / shorter_width_cols if shorter_width_cols > 0 else 1.0
-                            out.append(f"\\begin{{minipage}}[t]{{{inner_width:.4f}\\linewidth}}\n")
-                            visitor.generic_visit(next_cell)
-                            out.append("\n\\end{minipage}\\hfill\n")
-                            out.append("\\end{minipage}\\par\\vspace{1.5ex}\n")
+                            out.append(f"        \\begin{{gridcell}}[{inner_width:.4f}]\n")
+                            if isinstance(cell, TaskEntity):
+                                visitor.visit_taskentity(cell)
+                            else:
+                                visitor.generic_visit(cell)
+                            out.append("        \\end{gridcell}\n")
+                            out.append("      \\end{grid}\n")
+                            out.append("    \\end{gridrow}\n")
 
                             if next_row_span == remaining_space + 1:
                                 remaining_space = 0
@@ -129,9 +147,9 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
                     else:
                         break
                     
-                out.append("\\end{minipage}\n")
+                out.append("  \\end{gridcell}\n")
 
-            out.append("\n\\par\\vspace{2.5ex}\\noindent\n")
+            out.append("\\end{gridrow}\n")
 
         out.append("% --- End Tree-Partition Lookahead Grid ---\n")
 
@@ -331,20 +349,34 @@ class RenderTeXVisitor(ASTVisitor):
         self.output.append(r"\end{minipage}")
     
     def visit_textentity(self, node: TextEntity):
-        clean_tex = process_tex_text(node.content)
-        self.output.append(clean_tex + "\n")
+        if node.content.strip().startswith('\\'):
+            self.output.append(node.content + "\n")
+        else:
+            clean_tex = process_tex_text(node.content)
+            self.output.append(clean_tex + "\n")
 
     def visit_taskentity(self, node: TaskEntity):
-        self.output.append(f"\n\\begin{{task}}{{{node.label}}}")
-        self.output.append(node.content + "\n")
+        self.output.append(f"\\begin{{task}}[1.0000]\n")
+        parent_span = int(node.config.get("col_span", 12))
+        prompt_span = int(node.config.get("prompt_col_span", parent_span))
+        prompt_width_fraction = (prompt_span / parent_span) if parent_span > 0 else 1.0
+
+        for child in node.children:
+            if isinstance(child, SubtaskEntity):
+                child_span = int(child.config.get("col_span", 12))
+                child._computed_width = (child_span / parent_span) if parent_span > 0 else 1.0
+        self.output.append(f"  \\begin{{prompt}}[{prompt_width_fraction:.4f}]\n")
+        self.output.append(f"    {node.content}\n")
+        self.output.append("  \\end{prompt}\n")
         self.generic_visit(node)
         self.output.append("\\end{task}\n")
 
     def visit_subtaskentity(self, node: SubtaskEntity):
-        self.output.append(f"\\begin{{subtask}}{{{node.label}}}")
-        self.output.append(node.content)
+        width_fraction = getattr(node, "_computed_width", 1.0)
+        self.output.append(f"  \\begin{{subtask}}[{width_fraction:.4f}]\n")
+        self.output.append(f"    {node.content}\n")
         self.generic_visit(node)
-        self.output.append("\\end{subtask}")
+        self.output.append("  \\end{subtask}\n")
 
     def visit_graphentity(self, node: GraphEntity):
         self.output.append(r"% --- Start graph ---")
