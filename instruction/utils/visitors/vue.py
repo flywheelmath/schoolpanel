@@ -1,4 +1,4 @@
-from .base import ASTVisitor
+from .base import BaseRenderVistor
 from core.models import (
     Cell,
     Grid,
@@ -10,7 +10,7 @@ from core.models import (
 )
 
 
-class RenderVueVisitor(ASTVisitor):
+class RenderVueVisitor(BaseRenderVisitor):
     def __init__(self):
         super().__init__()
         self.output = []

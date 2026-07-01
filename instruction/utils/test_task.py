@@ -45,7 +45,7 @@ right_task_a = create_task_node(8, 1, 8, "Given the linear transformation matrix
 task_b_subtasks = [
     create_subtask_node(8, 1, "Prove convergence using the Ratio Test.")
 ]
-right_task_b = create_task_node(8, 2, 8, "Analyze the behavior of the infinite power series expression:", task_b_subtasks)
+right_task_b = create_task_node(8, 2, 4, "Analyze the behavior of the infinite power series expression:", task_b_subtasks)
 
 # Global Grid Root Node Assembly
 global_grid = Grid()

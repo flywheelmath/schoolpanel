@@ -1,5 +1,5 @@
 import re
-from .base import ASTVisitor
+from .base import BaseRenderVisitor 
 from core.models import (
     Cell,
     Grid,
@@ -69,12 +69,8 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
                 for cell in current_line_cells:
                     span = int(cell.config.get("col_span", 1))
                     width_fraction = max((span / 12.0), 0)
-                    out.append(f"  \\begin{{gridcell}}[{width_fraction:.4f}]\n")
-                    if isinstance(cell, TaskEntity):
-                        visitor.visit_taskentity(cell)
-                    else:
-                        visitor.generic_visit(cell)
-                    out.append("  \\end{gridcell}\n")
+                    visitor.context.set_width(cell, width_fraction)
+                    visitor.visit(cell)
             else:
                 is_left_taller = left_max > right_max
                 taller_partition = left_partition if is_left_taller else right_partition
@@ -107,12 +103,8 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
                 for cell in shorter_partition:
                     span = int(cell.config.get("col_span", 1))
                     inner_width = span / shorter_width_cols if shorter_width_cols > 0 else 1.0
-                    out.append(f"        \\begin{{gridcell}}[{inner_width:.4f}]\n")
-                    if isinstance(cell, TaskEntity):
-                        visitor.visit_taskentity(cell)
-                    else:
-                        visitor.generic_visit(cell)
-                    out.append("        \\end{gridcell}\n")
+                    visitor.context.set_width(cell, inner_width)
+                    visitor.visit(cell)
                 out.append("      \\end{grid}\n")
                 out.append("    \\end{gridrow}\n")
 
@@ -129,12 +121,8 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
                             out.append("    \\begin{gridrow}\n")
                             out.append("      \\begin{grid}\n")
                             inner_width = next_span / shorter_width_cols if shorter_width_cols > 0 else 1.0
-                            out.append(f"        \\begin{{gridcell}}[{inner_width:.4f}]\n")
-                            if isinstance(cell, TaskEntity):
-                                visitor.visit_taskentity(cell)
-                            else:
-                                visitor.generic_visit(cell)
-                            out.append("        \\end{gridcell}\n")
+                            visitor.context.set_width(next_cell, inner_width)
+                            visitor.visit(next_cell)
                             out.append("      \\end{grid}\n")
                             out.append("    \\end{gridrow}\n")
 
@@ -152,31 +140,6 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
             out.append("\\end{gridrow}\n")
 
         out.append("% --- End Tree-Partition Lookahead Grid ---\n")
-
-class LayoutGridTracker:
-    def __init__(self, total_cols=12):
-        self.total_cols = total_cols
-        self.matrix = []
-
-    def _ensure_row_exists(self, row_idx):
-        while len(self.matrix) <= row_idx:
-            self.matrix.append([False] * self.total_cols)
-
-    def find_next_available_slot(self):
-        row_idx = 0
-        while True:
-            self._ensure_row_exists(row_idx)
-            for col_idx in range(self.total_cols):
-                if not self.matrix[row_idx][col_idx]:
-                    return row_idx, col_idx
-            row_idx += 1
-
-    def occupy_space(self, start_row, start_col, row_span, col_span):
-        for r in range(start_row, start_row + row_span):
-            self._ensure_row_exists(r)
-            for c in range(start_col, start_col + col_span):
-                if c < self.total_cols:
-                    self.matrix[r][c] = True
 
 def process_tex_text(content: str) -> str:
     parts = re.split(r'(\\\[.*?\\\]|\\\(.*?\\\))', content, flags=re.DOTALL)
@@ -331,13 +294,10 @@ def process_tex_text(content: str) -> str:
 
     return "\n".join(out_lines)
 
-class RenderTeXVisitor(ASTVisitor):
-    def __init__(self, grid_strategy: BaseGridRenderStrategy = None):
-        self.output = []
+class RenderTeXVisitor(BaseRenderVisitor):
+    def __init__(self, context=None, grid_strategy: BaseGridRenderStrategy = None):
+        super().__init__(context=context)
         self.grid_strategy = grid_strategy or DualHeightRowsGridStrategy()
-
-    def get_result(self) -> str:
-        return "".join(self.output)
 
     def visit_grid(self, node: Grid):
         self.grid_strategy.render(node, self)
@@ -355,29 +315,6 @@ class RenderTeXVisitor(ASTVisitor):
             clean_tex = process_tex_text(node.content)
             self.output.append(clean_tex + "\n")
 
-    def visit_taskentity(self, node: TaskEntity):
-        self.output.append(f"\\begin{{task}}[1.0000]\n")
-        parent_span = int(node.config.get("col_span", 12))
-        prompt_span = int(node.config.get("prompt_col_span", parent_span))
-        prompt_width_fraction = (prompt_span / parent_span) if parent_span > 0 else 1.0
-
-        for child in node.children:
-            if isinstance(child, SubtaskEntity):
-                child_span = int(child.config.get("col_span", 12))
-                child._computed_width = (child_span / parent_span) if parent_span > 0 else 1.0
-        self.output.append(f"  \\begin{{prompt}}[{prompt_width_fraction:.4f}]\n")
-        self.output.append(f"    {node.content}\n")
-        self.output.append("  \\end{prompt}\n")
-        self.generic_visit(node)
-        self.output.append("\\end{task}\n")
-
-    def visit_subtaskentity(self, node: SubtaskEntity):
-        width_fraction = getattr(node, "_computed_width", 1.0)
-        self.output.append(f"  \\begin{{subtask}}[{width_fraction:.4f}]\n")
-        self.output.append(f"    {node.content}\n")
-        self.generic_visit(node)
-        self.output.append("  \\end{subtask}\n")
-
     def visit_graphentity(self, node: GraphEntity):
         self.output.append(r"% --- Start graph ---")
         self.output.append(node.raw_body)
@@ -388,3 +325,19 @@ class RenderTeXVisitor(ASTVisitor):
         self.output.append(node.raw_body)
         self.output.append(r"% --- End table ---")
 
+    def render_semantic_environment(self, env_name, content, width_fraction):
+        self.output.append(f"  \\begin{{{env_name}}}[{width_fraction:.4f}]\n")
+        self.output.append(f"    {content}\n")
+        self.output.append(f"  \\end{{{env_name}}}\n")
+
+    def emit_task_start(self, node, width_fraction):
+        self.output.append(f"\\begin{{task}}[{width_fraction:.4f}]\n")
+
+    def emit_task_end(self, node):
+        self.output.append("\\end{task}\n")
+
+    def emit_prompt(self, node, width_fraction):
+        self.render_semantic_environment("prompt", node.content, width_fraction)
+
+    def emit_subtask(self, node, width_fraction):
+        self.render_semantic_environment("subtask", node.content, width_fraction)
