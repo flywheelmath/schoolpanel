@@ -10,6 +10,31 @@ from core.models import (
     TextEntity,
 )
 
+class LayoutGridTracker:
+    def __init__(self, total_cols=12):
+        self.total_cols = total_cols
+        self.matrix = []
+
+    def _ensure_row_exists(self, row_idx):
+        while len(self.matrix) <= row_idx:
+            self.matrix.append([False] * self.total_cols)
+
+    def find_next_available_slot(self):
+        row_idx = 0
+        while True:
+            self._ensure_row_exists(row_idx)
+            for col_idx in range(self.total_cols):
+                if not self.matrix[row_idx][col_idx]:
+                    return row_idx, col_idx
+            row_idx += 1
+
+    def occupy_space(self, start_row, start_col, row_span, col_span):
+        for r in range(start_row, start_row + row_span):
+            self._ensure_row_exists(r)
+            for c in range(start_col, start_col + col_span):
+                if c < self.total_cols:
+                    self.matrix[r][c] = True
+
 def process_tex_text(content: str) -> str:
     parts = re.split(r'(\\\[.*?\\\]|\\\(.*?\\\))', content, flags=re.DOTALL)
 
@@ -163,27 +188,48 @@ def process_tex_text(content: str) -> str:
 
     return "\n".join(out_lines)
 
-
 class RenderTeXVisitor(ASTVisitor):
     def __init__(self):
         self.output = []
+        self.grid_tracker = None
 
     def get_result(self) -> str:
         return "".join(self.output)
 
     def visit_grid(self, node: Grid):
-        self.output.append(r"% --- Start Grid ---")
+        self.output.append("% --- Start Grid ---\n")
+        old_tracker = getattr(self, "grid_tracker", None)
+        self.grid_tracker = LayoutGridTracker(total_cols=12)
+
         for child in node.children:
             self.visit(child)
-        self.output.append(r"% --- End Grid ---")
+
+        self.grid_tracker = old_tracker
+        self.output.append("% --- End Grid ---\n")
 
     def visit_cell(self, node: Cell):
-        self.output.append(
-            f"\\begin{{minipage}}[t]{{{node.width_fraction:.5f}\\textwidth}}"
-        )
-        for child in node.children:
-            self.visit(child)
-        self.output.append(r"\end{minipage}")
+        if not getattr(self, "grid_tracker", None):
+            self.output.append("\\noindent\n\\begin{minipage}{\\linewidth}\n")
+            self.generic_visit(node)
+            self.output.append("\\end{minipage}\n")
+            return
+
+        col_span = int(node.config.get("col_span", 1))
+        row_span = int(node.config.get("row_span", 1))
+
+        start_row, start_col = self.grid_tracker.find_next_available_slot()
+        self.grid_tracker.occupy_space(start_row, start_col, row_span, col_span)
+
+        width_fraction = (col_span / 12.0) - 0.025
+        if width_fraction <= 0:
+            width_fraction = 0.95
+
+        if start_col == 0 and start_row > 0:
+            self.output.append("\\par\\vspace{1.5ex}\\noindent\n")
+
+        self.output.append(f"\\begin{{minipage}}[t]{{{width_fraction:.4f}\\textwidth}}\n")
+        self.generic_visit(node)
+        self.output.append("\\end{minipage}\n")
 
     def visit_textentity(self, node: TextEntity):
         clean_tex = process_tex_text(node.content)
@@ -211,27 +257,3 @@ class RenderTeXVisitor(ASTVisitor):
         self.output.append(node.raw_body)
         self.output.append(r"% --- End table ---")
 
-class LayoutGridTracker:
-    def __init__(self, total_cols=12):
-        self.total_cols = total_cols
-        self.matrix = []
-
-    def _ensure_row_exists(self, row_idx):
-        while len(self.matrix) <= row_idx:
-            self.matrix.append([False] * self.total_cols)
-
-    def find_next_available_slot(self):
-        row_idx = 0
-        while True:
-            self._ensure_row_exists(row_idx)
-            for col_idx in range(self.total_cols):
-                if not self.matrix[row_idx][col_idx]:
-                    return row_idx, col_idx
-            row_idx += 1
-
-    def occupy_space(self, start_row, start_col, row_span, col_span):
-        for r in range(start_row, start_row + row_span):
-            self._ensure_row_exists(r)
-            for c in range(start_col, start_col + col_span):
-                if c < self.total_cols:
-                    self.matrix[r][c] = True
