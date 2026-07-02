@@ -60,12 +60,31 @@ class RenderVueVisitor(BaseRenderVisitor):
     def visit_subtaskentity(self, node: SubtaskEntity):
         label = chr(ord("a") + self.subtask_counter)
         self.subtask_counter += 1
+
         subtask_content = node.content if isinstance(node.content, str) else ""
         if not subtask_content and hasattr(node, "children"):
             text_parts = [c.content for c in node.children if isinstance(c, TextEntity)]
             subtask_content = "\n".join(text_parts).strip()
 
-        self.output.append(f"- ({label}) {subtask_content}\n")
+        lines = subtask_content.strip().split("\n")
+        if not lines:
+            return
+
+        formatted_body = []
+        first_line = lines[0].strip()
+        formatted_body.append(f"- ({label}) {first_line}")
+
+        for line in lines[1:]:
+            if not line.strip():
+                formatted_body.append("")
+                continue
+
+            if line.startswith("  ") or line.startswith("\t"):
+                formatted_body.append(f"  {line}")
+            else:
+                formatted_body.append(f"  {line}")
+
+        self.output.append("\n".join(formatted_body) + "\n")
 
     def visit_textentity(self, node: TextEntity):
         if not self.in_subtask_scope:
