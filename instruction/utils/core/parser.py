@@ -125,33 +125,33 @@ class Parser:
 
         for line in lines:
             line_stripped = line.strip()
-            if not line_stripped or line.startswith("  ") or line.startswith("\t"):
+            if not line_stripped:
                 current_content.append(line)
                 continue
 
-            config = {}
-            config_match = re.search(r"\{(.*?)\}\s*$", line_stripped)
-            if config_match:
-                config = parse_config(config_match.group(1))
-                line = re.sub(r"\{(.*?)\}\s*$", "", line_stripped).strip()
-
-            if line_stripped.startswith("#") and parent_tag == "task":
-                commit_current()
-                content = line_stripped.lstrip("#").strip()
-                current_node = TaskPromptEntity(config=config, content=content)
-                current_content = []
+            if line.startswith("  ") or line.startswith("\t"):
+                current_content.append(line)
                 continue
 
-            if (
-                line_stripped.startswith("- ")
-                or line_stripped.startswith("* ")
-                and parent_tag == "task"
-            ):
-                commit_current()
-                content = line_stripped.lstrip("-* ").strip()
-                current_node = SubtaskEntity(config=config, content=content)
-                current_content = []
-                continue
+            config_match = re.match(r'^([#\-*]\s*)\[([^\]]+)\]\s*(.*)$', line_stripped)
+
+            if config_match and parent_tag == "task":
+                prefix_marker = config_match.group(1).strip()
+                config = parse_config(config_match.group(2))
+                line_body = config_match.group(3).strip()
+
+                if prefix_marker == "#":
+                    commit_current()
+                    content = line_body.lstrip("#").strip()
+                    current_node = TaskPromptEntity(config=config, content=content)
+                    current_content = []
+                    continue
+
+                if prefix_marker in ("-", "*"):
+                    commit_current()
+                    current_node = SubtaskEntity(config=config, content=line_body)
+                    current_content = []
+                    continue
 
             current_content.append(line)
 

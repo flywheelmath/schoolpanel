@@ -24,10 +24,7 @@ class RenderTeXVisitor(BaseRenderVisitor):
         self.grid_strategy.render(node, self)
 
     def visit_cell(self, node: Cell):
-        width = getattr(node, "width_fraction", 1.00)
-        self.output.append(f"\\begin{{minipage}}[t]{{{width:.4f}\\textwidth}}\n")
         self.generic_visit(node)
-        self.output.append(r"\end{minipage}")
 
     def emit_task_start(self, node, width_fraction):
         self.output.append(f"\\begin{{task}}[{width_fraction:.4f}]\n")
@@ -39,11 +36,32 @@ class RenderTeXVisitor(BaseRenderVisitor):
         parent_span = int(node.config.get("col_span", 12))
         task_fraction = parent_span / 12.0
         self.context.set_width(node, task_fraction)
+        self.current_task_span = parent_span
 
         self.emit_task_start(node, task_fraction)
 
-        self.current_task_span = parent_span
-        self.generic_visit(node)
+        prompts = [c for c in node.children if isinstance(c, TaskPromptEntity)]
+        for prompt in prompts:
+            self.visit(prompt)
+
+        layout_children = [c for c in node.children if not isinstance(c, TaskPromptEntity)]
+
+        synth_cells = []
+        for child in layout_children:
+            if isinstance(child, SubtaskEntity):
+                c_span = int(child.config.get("col_span", 4))
+                r_span = int(child.config.get("row_span", 1))
+
+                cell_node = Cell(config=child.config, col_span=c_span, children=[child])
+                cell_node.config["row_span"] = r_span
+                synth_cells.append(cell_node)
+            else:
+                synth_cells.append(child)
+
+        if synth_cells:
+            synth_grid = Grid(config=node.config, children=synth_cells)
+            self.visit_grid(synth_grid)
+
         self.emit_task_end(node)
 
     def visit_taskpromptentity(self, node: TaskPromptEntity):

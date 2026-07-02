@@ -1,7 +1,7 @@
 import re
 
 
-def process_md_lists_to_tex(text: str) -> str:
+def process_md_env_to_tex(text: str) -> str:
     if not text or not text.strip():
         return ""
 
@@ -100,7 +100,7 @@ def process_md_lists_to_tex(text: str) -> str:
 
 
 def process_md_to_tex(content: str) -> str:
-    parts = re.split(r"(\\\[.*?\\\]|\\\(.*?\\\)|\{.*?\})", content, flags=re.DOTALL)
+    parts = re.split(r"(\\\[.*?\\\]|\\\(.*?\\\)|\$.*?\$)", content, flags=re.DOTALL)
 
     # Special LaTeX characters
 
@@ -118,7 +118,6 @@ def process_md_to_tex(content: str) -> str:
             def shield_code(match):
                 code_blocks.append(match.group(1))
                 return f"CODEPLACEHOLDER{len(code_blocks)-1}"
-
             text = re.sub(r"`([^`]+)`", shield_code, text)
 
             text = text.replace("\\", "\\textbackslash ")
@@ -175,6 +174,6 @@ def process_md_to_tex(content: str) -> str:
 
     # Markdown lists
 
-    assembled = process_md_lists_to_tex(assembled)
+    assembled = process_md_env_to_tex(assembled)
 
     return assembled
