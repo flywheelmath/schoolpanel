@@ -1,5 +1,6 @@
 from core.models import Cell, Grid, TaskEntity
 
+
 class BaseGridRenderStrategy:
     def render(self, node: Grid, visitor: "RenderTeXVisitor"):
         raise NotImplementedError("Grid layout strategies must implement render()")
@@ -162,6 +163,3 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
             out.append("\\end{gridrow}\n")
 
         out.append("% --- End Tree-Partition Lookahead Grid ---\n")
-
-
-

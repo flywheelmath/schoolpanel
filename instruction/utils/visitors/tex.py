@@ -1,5 +1,5 @@
 import re
-from .md_to_tex import process_md_lists_to_tex, process_md_to_tex
+from .md_to_tex import process_md_to_tex
 from .base import BaseRenderVisitor
 from .layout import BaseGridRenderStrategy, DualHeightRowsGridStrategy
 from core.models import (
@@ -12,6 +12,7 @@ from core.models import (
     TaskPromptEntity,
     TextEntity,
 )
+
 
 class RenderTeXVisitor(BaseRenderVisitor):
     def __init__(self, context=None, grid_strategy: BaseGridRenderStrategy = None):
@@ -50,11 +51,9 @@ class RenderTeXVisitor(BaseRenderVisitor):
         prompt_span = int(node.config.get("col_span", parent_span))
         prompt_fraction = prompt_span / parent_span
 
-        clean_content = process_md_lists_to_tex(node.content)
+        clean_content = process_md_to_tex(node.content)
 
-        self.render_semantic_environment(
-            "prompt", clean_content, prompt_fraction
-        )
+        self.render_semantic_environment("prompt", clean_content, prompt_fraction)
 
     def visit_subtaskentity(self, node: SubtaskEntity):
         item_span = int(node.config.get("col_span", 12))
@@ -64,10 +63,8 @@ class RenderTeXVisitor(BaseRenderVisitor):
             text_parts = [c.content for c in node.children if isinstance(c, TextEntity)]
             subtask_text = "\n".join(text_parts).strip()
 
-        clean_content = process_md_lists_to_tex(subtask_text)
-        self.render_semantic_environment(
-            "subtask", clean_content, width_fraction
-        )
+        clean_content = process_md_to_tex(subtask_text)
+        self.render_semantic_environment("subtask", clean_content, width_fraction)
 
     def visit_textentity(self, node: TextEntity):
         if node.content.strip().startswith("\\"):

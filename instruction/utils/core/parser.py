@@ -82,21 +82,21 @@ class Parser:
         self.tokens = tokens
         self.pos = 0
 
-    def parse(self) -> list[Node]:
+    def parse(self, parent_tag: str = "") -> list[Node]:
         nodes = []
         while self.pos < len(self.tokens):
             token = self.tokens[self.pos]
 
             if token.type == "OPEN":
                 self.pos += 1
-                children = self.parse()
+                children = self.parse(parent_tag=token.tag)
                 node = self.create_node(token.tag, children, token.config)
                 if node:
                     nodes.append(node)
 
             elif token.type == "TEXT":
                 self.pos += 1
-                extracted_nodes = self.parse_text_blocks(token.value)
+                extracted_nodes = self.parse_text_blocks(token.value, parent_tag)
                 nodes.extend(extracted_nodes)
 
             elif token.type == "CLOSE":
@@ -105,7 +105,7 @@ class Parser:
 
         return nodes
 
-    def parse_text_blocks(self, text: str) -> list[Node]:
+    def parse_text_blocks(self, text: str, parent_tag: str) -> list[Node]:
         nodes = []
         lines = text.split("\n")
 
@@ -135,14 +135,18 @@ class Parser:
                 config = parse_config(config_match.group(1))
                 line = re.sub(r"\{(.*?)\}\s*$", "", line_stripped).strip()
 
-            if line_stripped.startswith("#"):
+            if line_stripped.startswith("#") and parent_tag == "task":
                 commit_current()
                 content = line_stripped.lstrip("#").strip()
                 current_node = TaskPromptEntity(config=config, content=content)
                 current_content = []
                 continue
 
-            if line_stripped.startswith("- ") or line_stripped.startswith("* "):
+            if (
+                line_stripped.startswith("- ")
+                or line_stripped.startswith("* ")
+                and parent_tag == "task"
+            ):
                 commit_current()
                 content = line_stripped.lstrip("-* ").strip()
                 current_node = SubtaskEntity(config=config, content=content)

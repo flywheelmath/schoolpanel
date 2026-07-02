@@ -1,18 +1,20 @@
 import re
 
+
 def process_md_lists_to_tex(text: str) -> str:
     if not text or not text.strip():
         return ""
 
     math_blocks = []
+
     def mask_math(match):
         placeholder = f"XXXMATHBLOCKXXX{len(math_blocks)}"
         math_blocks.append(match.group(0))
         return placeholder
 
-    masked_text = re.sub(r'(\$.*?\$|\\\(.*?\\\))', mask_math, text)
+    masked_text = re.sub(r"(\$.*?\$|\\\(.*?\\\))", mask_math, text)
 
-    lines = masked_text.split('\n')
+    lines = masked_text.split("\n")
     formatted_lines = []
     env_stack = []
 
@@ -22,50 +24,72 @@ def process_md_lists_to_tex(text: str) -> str:
             formatted_lines.append("")
             continue
 
-        bullet_match = re.match(r'(\s*)([-*])\s+(.*)$', line)
-        num_match = re.match(r'(\s*)([0-9a-zA-Z]+[\.)])\s+(.*)$', line)
-        quote_match = re.match(r'^(\s*)>\s*(.*)$', line)
-        active_match = bullet_match or num_match
+        bullet_match = re.match(r"(\s*)(?:[-*])\s+(.*)$", line)
+        num_match = re.match(r"(\s*)(?:\d+[\.)])\s+(.*)$", line)
+        quote_match = re.match(r"^(\s*)>\s*(.*)$", line)
 
-        if active_match:
-            leading_whitespace = len(active_match.group(1))
+        leading_spaces = len(line) - len(stripped)
 
-            if bullet_match:
-                target_env = "itemize"
-                content_body = bullet_match.group(3)
-            elif num_match:
-                target_env = "enumerate"
-                content_body = num_match.group(3)
-            elif quote_match:
-                target_env = "quote"
-                content_body = quote_match.group(3)
-                print("quote")
-                print(content_body)
-    
-            if not env_stack or leading_whitespace > env_stack[-1][0]:
-                formatted_lines.append(f"{' ' * (len(env_stack)*2)}  \\begin{{{target_env}}}")
-                env_stack.append((leading_whitespace, target_env))
-    
-            elif env_stack and leading_whitespace < env_stack[-1][0]:
-                while env_stack and leading_whitespace < env_stack[-1][0]:
-                    _, old_env = env_stack.pop()
-                    formatted_lines.append(f"{' ' * (len(env_stack)*2)}  \\end{{{old_env}}}")
-    
-            indent_spaces = " " * (len(env_stack) * 2)
-            if target_env == "quote":
-                formatted_lines.append(f"{indent_spaces} {content_body}")
-            else:
-                formatted_lines.append(f"{indent_spaces}  \\item {content_body}")
+        current_indent = 0
+        current_type = None
+        content = stripped
+
+        if bullet_match:
+            current_indent = len(bullet_match.group(1))
+            current_type = "itemize"
+            content = f"\\item {bullet_match.group(2)}"
+        elif num_match:
+            current_indent = len(num_match.group(1))
+            current_type = "enumerate"
+            content = f"\\item {num_match.group(2)}"
+        elif quote_match:
+            current_indent = len(quote_match.group(1))
+            current_type = "quote"
+            content = quote_match.group(2)
         else:
             if env_stack:
-                indent_spaces = " " * (len(env_stack) * 2)
-                formatted_lines.append(f"{indent_spaces}    {line.strip()}")
+                active_indent, active_type = env_stack[-1]
+                indent_prefix = " " * (len(env_stack) * 1) + "  "
+                formatted_lines.append(f"{indent_prefix}{stripped}")
+                continue
             else:
                 formatted_lines.append(line)
+                continue
+
+        while env_stack and env_stack[-1][0] > current_indent:
+            _, closed_env = env_stack.pop()
+            indent_prefix = " " * (len(env_stack) * 2)
+            formatted_lines.append(f"{indent_prefix}\\end{{{closed_env}}}")
+
+        if current_type:
+            if (
+                not env_stack
+                or env_stack[-1][1] != current_type
+                or env_stack[-1][0] < current_indent
+            ):
+                if (
+                    env_stack
+                    and env_stack[-1][0] == current_indent
+                    and env_stack[-1][1] != current_type
+                ):
+                    _, closed_env = env_stack.pop()
+                    indent_prefix = " " * (len(env_stack) * 2)
+                    formatted_lines.append(f"{indent_prefix}\\end{{{closed_env}}}")
+
+                env_stack.append((current_indent, current_type))
+                indent_prefix = " " * ((len(env_stack) - 1) * 2)
+                formatted_lines.append(f"{indent_prefix}\\begin{{{current_type}}}")
+
+            indent_prefix = " " * (len(env_stack) * 2)
+            formatted_lines.append(f"{indent_prefix}{content}")
+        else:
+            indent_prefix = " " * (len(env_stack) * 2)
+            formatted_lines.append(f"{indent_prefix}{stripped}")
 
     while env_stack:
-        _, old_env = env_stack.pop()
-        formatted_lines.append(f"{' ' * (len(env_stack)*2)}  \\end{{{old_env}}}")
+        _, closed_env = env_stack.pop()
+        indent_prefix = " " * (len(env_stack) * 2)
+        formatted_lines.append(f"{indent_prefix}\\end{{{closed_env}}}")
 
     final_tex = "\n".join(formatted_lines)
 
@@ -74,8 +98,9 @@ def process_md_lists_to_tex(text: str) -> str:
 
     return final_tex
 
+
 def process_md_to_tex(content: str) -> str:
-    parts = re.split(r"(\\\[.*?\\\]|\\\(.*?\\\))", content, flags=re.DOTALL)
+    parts = re.split(r"(\\\[.*?\\\]|\\\(.*?\\\)|\{.*?\})", content, flags=re.DOTALL)
 
     # Special LaTeX characters
 
@@ -152,5 +177,4 @@ def process_md_to_tex(content: str) -> str:
 
     assembled = process_md_lists_to_tex(assembled)
 
-
-    return assembled 
+    return assembled
