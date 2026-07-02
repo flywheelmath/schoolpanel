@@ -26,11 +26,13 @@ class SubtaskEntity(DomainEntity):
     content: DomainEntity = None
     children: List[DomainEntity] = field(default_factory=list)
 
+@dataclass
+class TaskPromptEntity(DomainEntity):
+    content: str = ""
 
 @dataclass
 class TextEntity(DomainEntity):
     content: str = ""
-
 
 @dataclass
 class GraphEntity(DomainEntity):

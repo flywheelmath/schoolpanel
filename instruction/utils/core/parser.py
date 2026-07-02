@@ -1,13 +1,15 @@
 import re
 from dataclasses import dataclass
 from .models import (
-    Grid,
     Cell,
-    TaskEntity,
-    SubtaskEntity,
-    TextEntity,
+    Grid,
+    Node,
     GraphEntity,
+    SubtaskEntity,
+    TaskEntity,
+    TaskPromptEntity,
     TableEntity,
+    TextEntity,
 )
 
 
@@ -76,33 +78,80 @@ class Tokenizer:
 
 
 class Parser:
-    def __init__(self, content: str):
-        self.tokens = Tokenizer(content).tokenize()
+    def __init__(self, tokens: list[Token]):
+        self.tokens = tokens
         self.pos = 0
 
-    def parse(self) -> list:
-        return self._parse_block()
-
-    def _parse_block(self) -> list:
+    def parse(self) -> list[Node]:
         nodes = []
         while self.pos < len(self.tokens):
             token = self.tokens[self.pos]
 
-            if token.type == "CLOSE":
+            if token.type == "OPEN":
                 self.pos += 1
-                break
-
-            elif token.type == "OPEN":
-                self.pos += 1
-                children = self._parse_block()
+                children = self.parse()
                 node = self.create_node(token.tag, children, token.config)
                 if node:
                     nodes.append(node)
 
             elif token.type == "TEXT":
                 self.pos += 1
-                nodes.append(TextEntity(content=token.value))
+                extracted_nodes = self.parse_text_blocks(token.value)
+                nodes.extend(extracted_nodes)
 
+            elif token.type == "CLOSE":
+                self.pos += 1
+                break
+
+        return nodes
+
+    def parse_text_blocks(self, text: str) -> list[Node]:
+        nodes = []
+        lines = text.split('\n')
+
+        current_node = None
+        current_content = []
+
+        def commit_current():
+            if current_node:
+                if current_content:
+                    current_node.content += "\n" + "\n".join(current_content)
+                current_node.content = current_node.content.strip()
+                nodes.append(current_node)
+            elif current_content:
+                content = "\n".join(current_content).strip()
+                if content:
+                    nodes.append(TextEntity(content=content))
+
+        for line in lines:
+            line_stripped = line.strip()
+            if not line_stripped or line.startswith("  ") or line.startswith("\t"):
+                current_content.append(line)
+                continue
+
+            config = {}
+            config_match = re.search(r'\{(.*?)\}\s*$', line_stripped)
+            if config_match:
+                config = parse_config(config_match.group(1))
+                line = re.sub(r'\{(.*?)\}\s*$', '', line_stripped).strip()
+
+            if line_stripped.startswith("#"):
+                commit_current()
+                content = line_stripped.lstrip("#").strip()
+                current_node = TaskPromptEntity(config=config, content=content)
+                current_content = []
+                continue
+
+            if line_stripped.startswith("- ") or line_stripped.startswith("* "):
+                commit_current()
+                content = line_stripped.lstrip("-* ").strip()
+                current_node = SubtaskEntity(config=config, content=content)
+                current_content = []
+                continue
+
+            current_content.append(line)
+
+        commit_current()
         return nodes
 
     def create_node(self, tag, children, config):

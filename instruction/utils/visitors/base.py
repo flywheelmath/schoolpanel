@@ -1,4 +1,5 @@
-from .core.models import (
+import os
+from core.models import (
     Node,
     Grid,
     Cell,
@@ -24,6 +25,7 @@ class BaseRenderVisitor:
     def __init__(self, context=None):
         self.output = []
         self.context = context or RenderContext()
+        self.file_extension = "txt"
 
     def get_result(self) -> str:
         return "".join(self.output)
@@ -38,28 +40,14 @@ class BaseRenderVisitor:
             for child in node.children:
                 self.visit(child)
 
-    def visit_taskentity(self, node: TaskEntity):
-        parent_span = int(node.config.get("col_span", 12))
-        task_fraction = parent_span / 12.0
-        self.context.set_width(node, task_fraction)
+    def write_to_dir(self, output_dir: str, filename_slug: str) -> str:
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
 
-        self.emit_task_start(node, task_fraction)
+        full_filename = f"{filename_slug}.{self.file_extension}"
+        target_path = os.path.join(output_dir, full_filename)
 
-        prompt_span = int(node.config.get("prompt_col_span", parent_span))
-        prompt_fraction = (prompt_span / parent_span)
-        self.emit_prompt(node, prompt_fraction)
+        with open(target_path, "w", encoding="utf-8") as f:
+            f.write(self.get_result())
 
-        self.generic_visit(node)
-
-        self.emit_task_end(node)
-
-    def visit_subtaskentity(self, node: SubtaskEntity):
-        width_fraction = self.context.get_width(node)
-        self.emit_subtask(node, width_fraction)
-
-    def emit_task_start(self, node: Node): pass
-    def emit_prompt(self, node: Node, width_fraction: float): pass
-    def emit_task_end(self, node: Node): pass
-    def emit_subtask(self, node: Node, width_fraction: float): pass
-
-
+        return target_path
