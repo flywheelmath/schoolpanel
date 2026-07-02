@@ -5,6 +5,7 @@ from core.parser import Parser, Tokenizer
 from visitors.vue import RenderVueVisitor
 from visitors.tex import RenderTeXVisitor
 
+
 def compile_custom_markdown(input_filepath: str, output_dir: str, filename_slug: str):
     if not os.path.exists(input_filepath):
         print(f"[ERROR] Source file not found at: {input_filepath}")
@@ -38,13 +39,14 @@ def compile_custom_markdown(input_filepath: str, output_dir: str, filename_slug:
     print(f"Vue path: {vue_path}")
     print(f"TeX path: {tex_path}")
 
+
 if __name__ == "__main__":
     if len(sys.argv) < 4:
-        print("Usage: python main.py [input_file.md] [output_directory] [filename_slug]")
+        print(
+            "Usage: python main.py [input_file.md] [output_directory] [filename_slug]"
+        )
         sys.exit(1)
 
     compile_custom_markdown(
-        input_filepath=sys.argv[1],
-        output_dir=sys.argv[2],
-        filename_slug=sys.argv[3]
+        input_filepath=sys.argv[1], output_dir=sys.argv[2], filename_slug=sys.argv[3]
     )

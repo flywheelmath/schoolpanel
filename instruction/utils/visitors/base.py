@@ -21,6 +21,7 @@ class RenderContext:
     def get_width(self, node) -> float:
         return self.widths.get(id(node), 1.0)
 
+
 class BaseRenderVisitor:
     def __init__(self, context=None):
         self.output = []

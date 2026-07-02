@@ -107,7 +107,7 @@ class Parser:
 
     def parse_text_blocks(self, text: str) -> list[Node]:
         nodes = []
-        lines = text.split('\n')
+        lines = text.split("\n")
 
         current_node = None
         current_content = []
@@ -130,10 +130,10 @@ class Parser:
                 continue
 
             config = {}
-            config_match = re.search(r'\{(.*?)\}\s*$', line_stripped)
+            config_match = re.search(r"\{(.*?)\}\s*$", line_stripped)
             if config_match:
                 config = parse_config(config_match.group(1))
-                line = re.sub(r'\{(.*?)\}\s*$', '', line_stripped).strip()
+                line = re.sub(r"\{(.*?)\}\s*$", "", line_stripped).strip()
 
             if line_stripped.startswith("#"):
                 commit_current()

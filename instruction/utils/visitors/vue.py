@@ -30,7 +30,7 @@ class RenderVueVisitor(BaseRenderVisitor):
         flow = node.config.get("flow", "row")
 
     def emit_subtask(self, node, width_fraction):
-        label = chr(ord('a') + self.subtask_counter)
+        label = chr(ord("a") + self.subtask_counter)
         self.subtask_counter += 1
         self.output.append(f"- **{label}.** {node.content}\n")
 
@@ -46,17 +46,19 @@ class RenderVueVisitor(BaseRenderVisitor):
         flow = node.config.get("flow", "row")
         self.output.append(f'<SubtaskGrid cols="{cols}" flow="{flow}">\n\n')
 
-        remaining_children = [c for c in node.children if not isinstance(c, TaskPromptEntity)]
+        remaining_children = [
+            c for c in node.children if not isinstance(c, TaskPromptEntity)
+        ]
         for child in remaining_children:
             self.visit(child)
 
-        self.output.append('\n</SubtaskGrid>\n\n')
+        self.output.append("\n</SubtaskGrid>\n\n")
 
     def visit_taskpromptentity(self, node: TaskPromptEntity):
         self.output.append(f"{node.content}\n\n")
 
     def visit_subtaskentity(self, node: SubtaskEntity):
-        label = chr(ord('a') + self.subtask_counter)
+        label = chr(ord("a") + self.subtask_counter)
         self.subtask_counter += 1
         subtask_content = node.content if isinstance(node.content, str) else ""
         if not subtask_content and hasattr(node, "children"):
