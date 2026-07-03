@@ -47,7 +47,7 @@ class RenderTeXVisitor(BaseRenderVisitor):
         self.render_semantic_environment("prompt", clean_content, width_fraction)
 
     def visit_subtaskentity(self, node: SubtaskEntity):
-        width_fraction = self.context.get_width(node) 
+        width_fraction = self.context.get_width(node)
         subtask_text = node.content if isinstance(node.content, str) else ""
         if not subtask_text and hasattr(node, "children"):
             text_parts = [c.content for c in node.children if isinstance(c, TextEntity)]

@@ -118,6 +118,7 @@ def process_md_to_tex(content: str) -> str:
             def shield_code(match):
                 code_blocks.append(match.group(1))
                 return f"CODEPLACEHOLDER{len(code_blocks)-1}"
+
             text = re.sub(r"`([^`]+)`", shield_code, text)
 
             text = text.replace("\\", "\\textbackslash ")
