@@ -22,15 +22,13 @@ def compile_custom_markdown(input_filepath: str, output_dir: str, filename_slug:
 
     print("[SSG] Executing Vue rendering pass...")
     vue_visitor = RenderVueVisitor()
-    vue_visitor.output.append("---\ntheme: default\nmdc: true\n---\n\n")
-
+    vue_visitor.emit_headmatter()
     for node in ast_nodes:
         vue_visitor.visit(node)
     vue_path = vue_visitor.write_to_dir(output_dir, filename_slug)
 
     print("[SSG] Executing TeX rendering pass...")
     tex_visitor = RenderTeXVisitor()
-
     for node in ast_nodes:
         tex_visitor.visit(node)
     tex_path = tex_visitor.write_to_dir(output_dir, filename_slug)

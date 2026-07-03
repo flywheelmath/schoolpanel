@@ -17,6 +17,11 @@ class RenderVueVisitor(BaseRenderVisitor):
         self.file_extension = "md"
         self.subtask_counter = 0
         self.in_subtask_scope = False
+        self.output = []
+
+    def emit_headmatter(self):
+        print("hello")
+        self.output.append("---\ntheme: default\nmdc: true\n---\n\n")
 
     def emit_task_start(self, node: TaskEntity, width_fraction):
         self.output.append("---\n\n")

@@ -20,7 +20,7 @@
 
 * updating list of LessonTask objects included in lesson
   - constraint: if the user edits the TeX or Vue files for a lesson after the initial fetch and then decides to edit the list of LessonTask objects by including or removing a task, we need to preserve the edits to the source code for the already fetched items
-  - solution: when the lesson source code is initialized, create a dedictaed directory:
+  - solution: when the lesson source code is initialized, create a dedicated directory:
 
 lessons/{date}/
 |- worksheet.tex
