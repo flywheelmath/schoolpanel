@@ -33,49 +33,18 @@ class RenderTeXVisitor(BaseRenderVisitor):
         self.output.append("\\end{task}\n")
 
     def visit_taskentity(self, node: TaskEntity):
-        parent_span = int(node.config.get("col_span", 12))
-        task_fraction = parent_span / 12.0
-        self.context.set_width(node, task_fraction)
-        self.current_task_span = parent_span
-
-        self.emit_task_start(node, task_fraction)
-
-        prompts = [c for c in node.children if isinstance(c, TaskPromptEntity)]
-        for prompt in prompts:
-            self.visit(prompt)
-
-        layout_children = [c for c in node.children if not isinstance(c, TaskPromptEntity)]
-
-        synth_cells = []
-        for child in layout_children:
-            if isinstance(child, SubtaskEntity):
-                c_span = int(child.config.get("col_span", 4))
-                r_span = int(child.config.get("row_span", 1))
-
-                cell_node = Cell(config=child.config, col_span=c_span, children=[child])
-                cell_node.config["row_span"] = r_span
-                synth_cells.append(cell_node)
-            else:
-                synth_cells.append(child)
-
-        if synth_cells:
-            synth_grid = Grid(config=node.config, children=synth_cells)
-            self.visit_grid(synth_grid)
-
+        width_fraction = self.context.get_width(node)
+        self.emit_task_start(node, width_fraction)
+        self.grid_strategy.render(node, self)
         self.emit_task_end(node)
 
     def visit_taskpromptentity(self, node: TaskPromptEntity):
-        parent_span = getattr(self, "current_task_span", 12)
-        prompt_span = int(node.config.get("col_span", parent_span))
-        prompt_fraction = prompt_span / parent_span
-
+        width_fraction = self.context.get_width(node)
         clean_content = process_md_to_tex(node.content)
-
-        self.render_semantic_environment("prompt", clean_content, prompt_fraction)
+        self.render_semantic_environment("prompt", clean_content, width_fraction)
 
     def visit_subtaskentity(self, node: SubtaskEntity):
-        item_span = int(node.config.get("col_span", 12))
-        width_fraction = item_span / 12.0
+        width_fraction = self.context.get_width(node) 
         subtask_text = node.content if isinstance(node.content, str) else ""
         if not subtask_text and hasattr(node, "children"):
             text_parts = [c.content for c in node.children if isinstance(c, TextEntity)]
@@ -102,6 +71,4 @@ class RenderTeXVisitor(BaseRenderVisitor):
         self.output.append(r"% --- End table ---")
 
     def render_semantic_environment(self, env_name, content, width_fraction):
-        self.output.append(f"  \\begin{{{env_name}}}[{width_fraction:.4f}]\n")
-        self.output.append(f"    {content}\n")
-        self.output.append(f"  \\end{{{env_name}}}\n")
+        self.output.append(f"\\{env_name}[{width_fraction:.4f}]{{{content}}}\n")

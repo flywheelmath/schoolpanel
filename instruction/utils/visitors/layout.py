@@ -1,165 +1,239 @@
-from core.models import Cell, Grid, TaskEntity
-
+import math
+from typing import Any, Dict, List, Tuple
+from core.models import Cell, Node, DomainEntity
 
 class BaseGridRenderStrategy:
-    def render(self, node: Grid, visitor: "RenderTeXVisitor"):
+    def render(self, node: Node, visitor: Any) -> None:
         raise NotImplementedError("Grid layout strategies must implement render()")
 
-
 class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
-    def render(self, node: Grid, visitor: "RenderTeXVisitor"):
+    def render(self, node: Node, visitor: Any) -> None:
         out = visitor.output
-        out.append("% --- Begin Tree-Partition Lookahead Grid ---\n")
 
-        cells = [
-            child for child in node.children if isinstance(child, (Cell, TaskEntity))
+        cells: List[Node] = [
+            child for child in node.children
+            if isinstance(child, (Cell, DomainEntity))
         ]
 
-        while cells:
-            current_line_cells = []
-            accumulated_cols = 0
-
-            while cells and accumulated_cols < 12:
-                next_c = cells[0]
-                col_span = int(next_c.config.get("col_span", 1))
-                if accumulated_cols + col_span <= 12:
-                    current_line_cells.append(cells.pop(0))
-                    accumulated_cols += col_span
-                else:
-                    break
-
-            if not current_line_cells:
+        idx = 0
+        while idx < len(cells):
+            current_row_cells, idx = self._pack_row_line(cells, idx)
+            if not current_row_cells:
                 break
 
-            best_split = 0
-            min_variance = float("inf")
+            max_line_row_span = self._get_max_row_span(current_row_cells)
+            min_line_row_span = self._get_min_row_span(current_row_cells)
 
-            def get_max_span(subset):
-                return (
-                    max([int(c.config.get("row_span", 1)) for c in subset])
-                    if subset
-                    else 0
-                )
+            if max_line_row_span == min_line_row_span:
+                if len(current_row_cells) == 1:
+                    cell = current_row_cells[0]
+                    visitor.context.set_width(cell, self._get_config(cell, "col_span", 4) / 12.0)
+                    visitor.visit(cell)
+                    out.append("\\par\n")
+                else:
+                    out.append("\\begin{gridrow}\n")
+                    for cell in current_row_cells:
+                        visitor.context.set_width(cell, self._get_config(cell, "col_span", 4) / 12.0)
+                        visitor.visit(cell)
+                    out.append("\\end{gridrow}\n")
+                continue
 
-            for i in range(len(current_line_cells) + 1):
-                left_max = get_max_span(current_line_cells[:i])
-                right_max = get_max_span(current_line_cells[i:])
+            best_split_index = self._find_best_partition_split(current_row_cells)
+            left_partition = current_row_cells[0:best_split_index]
+            right_partition = current_row_cells[best_split_index:]
 
-                variance = abs(left_max - right_max)
-                if variance < min_variance:
-                    min_variance = variance
-                    best_split = i
-
-            left_partition = current_line_cells[:best_split]
-            right_partition = current_line_cells[best_split:]
-
-            left_max = get_max_span(left_partition)
-            right_max = get_max_span(right_partition)
-
-            left_width_cols = sum(
-                int(c.config.get("col_span", 1)) for c in left_partition
-            )
-            right_width_cols = sum(
-                int(c.config.get("col_span", 1)) for c in right_partition
-            )
-
-            left_width_fraction = max((left_width_cols / 12.0), 0)
-            right_width_fraction = max((right_width_cols / 12.0), 0)
-
+            tracks = self._get_track_assignment(left_partition, right_partition)
             out.append("\\begin{gridrow}\n")
 
-            if (
-                left_max == right_max
-                or len(left_partition) == 0
-                or len(right_partition) == 0
-            ):
-                for cell in current_line_cells:
-                    span = int(cell.config.get("col_span", 1))
-                    width_fraction = max((span / 12.0), 0)
-                    visitor.context.set_width(cell, width_fraction)
-                    visitor.visit(cell)
-            else:
-                is_left_taller = left_max > right_max
-                taller_partition = left_partition if is_left_taller else right_partition
-                shorter_partition = (
-                    right_partition if is_left_taller else left_partition
-                )
-
-                taller_max = max(left_max, right_max)
-                shorter_max = min(left_max, right_max)
-                shorter_width_cols = (
-                    right_width_cols if is_left_taller else left_width_cols
-                )
-
-                taller_width_fraction = (
-                    left_width_fraction if is_left_taller else right_width_fraction
-                )
-                out.append(f"  \\begin{{gridcell}}[{taller_width_fraction:.4f}]\n")
-                out.append(f"    \\begin{{grid}}\n")
-                for cell in taller_partition:
-                    span = int(cell.config.get("col_span", 1))
-                    parent_width = sum(
-                        int(x.config.get("col_span", 1)) for x in taller_partition
+            if tracks["total_left_cols"] > 0:
+                if tracks["taller_on_left"]:
+                    self._emit_taller_column(left_partition, tracks['total_left_cols'], visitor)
+                else:
+                    idx = self._emit_shorter_column(
+                        left_partition,
+                        tracks["total_left_cols"],
+                        tracks["taller_max_h"],
+                        tracks["shorter_max_h"],
+                        cells,
+                        idx,
+                        visitor
                     )
-                    inner_width = span / parent_width
-                    out.append(f"      \\begin{{gridcell}}[{inner_width:.4f}]\n")
-                    if isinstance(cell, TaskEntity):
-                        visitor.visit_taskentity(cell)
-                    else:
-                        visitor.generic_visit(cell)
-                    out.append("      \\end{gridcell}\n")
-                out.append("    \\end{grid}\n")
-                out.append("  \\end{gridcell}\n")
 
-                smaller_width_fraction = (
-                    right_width_fraction if is_left_taller else left_width_fraction
-                )
-                out.append(f"  \\begin{{gridcell}}[{smaller_width_fraction:.4f}]\n")
-                out.append("    \\begin{gridrow}\n")
-                out.append("      \\begin{grid}\n")
-                for cell in shorter_partition:
-                    span = int(cell.config.get("col_span", 1))
-                    inner_width = (
-                        span / shorter_width_cols if shorter_width_cols > 0 else 1.0
+            if tracks["total_right_cols"] > 0:
+                if not tracks["taller_on_left"]:
+                    self._emit_taller_column(right_partition, tracks["total_right_cols"], visitor)
+                else:
+                    idx = self._emit_shorter_column(
+                        right_partition,
+                        tracks["total_right_cols"],
+                        tracks["taller_max_h"],
+                        tracks["shorter_max_h"],
+                        cells,
+                        idx,
+                        visitor
                     )
-                    visitor.context.set_width(cell, inner_width)
-                    visitor.visit(cell)
-                out.append("      \\end{grid}\n")
-                out.append("    \\end{gridrow}\n")
-
-                remaining_space = taller_max - shorter_max
-
-                while remaining_space > 0 and cells:
-                    next_cell = cells[0]
-                    next_span = int(next_cell.config.get("col_span", 1))
-                    next_row_span = int(next_cell.config.get("row_span", 1))
-
-                    if next_span <= shorter_width_cols:
-                        if next_row_span <= remaining_space + 1:
-                            cells.pop(0)
-                            out.append("    \\begin{gridrow}\n")
-                            out.append("      \\begin{grid}\n")
-                            inner_width = (
-                                next_span / shorter_width_cols
-                                if shorter_width_cols > 0
-                                else 1.0
-                            )
-                            visitor.context.set_width(next_cell, inner_width)
-                            visitor.visit(next_cell)
-                            out.append("      \\end{grid}\n")
-                            out.append("    \\end{gridrow}\n")
-
-                            if next_row_span == remaining_space + 1:
-                                remaining_space = 0
-                            else:
-                                remaining_space -= next_row_span
-                        else:
-                            break
-                    else:
-                        break
-
-                out.append("  \\end{gridcell}\n")
 
             out.append("\\end{gridrow}\n")
 
-        out.append("% --- End Tree-Partition Lookahead Grid ---\n")
+    def _get_config(self, node: Node, key: str, default: int = 1) -> int:
+        if hasattr(node, "config") and isinstance(node.config, dict):
+            return int(node.config.get(key, default))
+        return default
+
+    def _get_max_row_span(self, subset: List[Node]) -> int:
+        if not subset: return 0
+        return max(self._get_config(c, "row_span", 1) for c in subset)
+
+    def _get_min_row_span(self, subset: List[Node]) -> int:
+        if not subset: return 0
+        return min(self._get_config(c, "row_span", 1) for c in subset)
+
+    def _sum_col_spans(self, subset: List[Node]) -> int:
+        return sum(self._get_config(c, "col_span", 1) for c in subset)
+
+    def _pack_row_line(self, cells: List[Node], start_idx: int) -> Tuple[List[Node], int]:
+        packed_cells: List[Node] = []
+        accumulated_cols = 0
+        idx = start_idx
+
+        while idx < len(cells):
+            next_cell = cells[idx]
+            col_span = self._get_config(next_cell, "col_span", default=1)
+
+            if accumulated_cols + col_span <= 12:
+                packed_cells.append(next_cell)
+                accumulated_cols += col_span
+                idx += 1
+            else:
+                break
+        return packed_cells, idx
+
+    def _find_best_partition_split(self, row_cells: List[Node]) -> int:
+        best_split_index = 0
+        min_variance = float("inf")
+        best_balance = float("inf")
+
+        for i in range(len(row_cells) + 1):
+            left_subset = row_cells[0:i]
+            right_subset = row_cells[i:]
+
+            variance = abs(self._get_max_row_span(left_subset) - self._get_min_row_span(left_subset)) + \
+                        abs(self._get_max_row_span(right_subset) - self._get_min_row_span(right_subset))
+
+            balance = abs(self._sum_col_spans(left_subset) - self._sum_col_spans(right_subset))
+
+            if variance < min_variance:
+                min_variance = variance
+                best_balance = balance
+                best_split_index = i
+            elif variance == min_variance and balance < best_balance:
+                best_balance = balance
+                best_split_index = i
+
+        return best_split_index
+
+    def _get_track_assignment(self, left: List[Node], right: List[Node]) -> Dict[str, Any]:
+        left_max_h = self._get_max_row_span(left)
+        right_max_h = self._get_max_row_span(right)
+
+        taller_on_left = left_max_h >= right_max_h
+
+        return {
+            "total_left_cols": self._sum_col_spans(left),
+            "total_right_cols": self._sum_col_spans(right),
+            "taller_max_h": left_max_h if taller_on_left else right_max_h,
+            "shorter_max_h": right_max_h if taller_on_left else left_max_h,
+            "taller_on_left": taller_on_left
+        }
+
+    def _compute_filler_rows(self, total_cols: int, remaining_height: int, cells: List[Node], start_idx: int) -> Tuple[List[Node], int]:
+        filler_rows: List[List[Node]] = []
+        temp_idx = start_idx
+
+        while remaining_height > 0 and temp_idx < len(cells):
+            inner_row_cells: List[Node] = []
+            inner_accumulated_cols = 0
+            inner_max_row_span = 0
+            peek_idx = temp_idx
+
+            while peek_idx < len(cells):
+                next_cell = cells[peek_idx]
+                next_span = self._get_config(next_cell, "col_span", default=1)
+                next_row_span = self._get_config(next_cell, "row_span", default=1)
+
+                remaining_sum = sum(self._get_config(cells[k], "col_span", 1) for k in range(peek_idx, len(cells)))
+                all_remaining_fit_in_width = (inner_accumulated_cols + remaining_sum) <= total_cols
+
+                if (inner_accumulated_cols + next_span <= total_cols) and \
+                        (next_row_span <= remaining_height or all_remaining_fit_in_width):
+                    inner_row_cells.append(next_cell)
+                    inner_accumulated_cols += next_span
+                    inner_max_row_span = max(inner_max_row_span, next_row_span)
+                    peek_idx += 1
+                else:
+                    break
+
+            if not inner_row_cells:
+                break
+
+            filler_rows.append(inner_row_cells)
+            temp_idx = peek_idx
+
+            if inner_max_row_span >= remaining_height:
+                remaining_height = 0
+            else:
+                remaining_height -= inner_max_row_span
+
+        return filler_rows, temp_idx
+
+    def _emit_taller_column(self, partition_cells: List[Node], total_cols: int, visitor: Any) -> None:
+        out = visitor.output
+        width_fraction = total_cols / 12.0
+
+        if len(partition_cells) == 1:
+            cell = partition_cells[0]
+            visitor.context.set_width(cell, width_fraction)
+            visitor.visit(cell)
+            return
+
+        out.append(f"\\begin{{gridcolumn}}[{width_fraction:.4f}]\n")
+        for cell in partition_cells:
+            visitor.context.set_width(cell, 1.0)
+            visitor.visit(cell)
+        out.append("\\end{gridcolumn}%\n")
+
+    def _emit_shorter_column(self, partition_cells: List[Node], total_cols: int, taller_max: int, shorter_max: int, cells: List[Node], global_idx: int, visitor: Any) -> int:
+        out = visitor.output
+        width_fraction = total_cols / 12.0
+
+        remaining_height_space = taller_max - shorter_max
+        filler_rows, updated_idx = self._compute_filler_rows(total_cols, remaining_height_space, cells, global_idx)
+
+        total_items = len(partition_cells) + sum(len(row) for row in filler_rows)
+        if total_items == 1:
+            cell = partition_cells[0]
+            visitor.context.set_width(cell, width_fraction)
+            visitor.visit(cell)
+            return updated_idx
+
+        out.append(f"\\begin{{gridcolumn}}[{width_fraction:.4f}]\n")
+
+        for cell in partition_cells:
+            cell_span = self._get_config(cell, "col_span", default=1)
+            visitor.context.set_width(cell, cell_span / total_cols)
+            visitor.visit(cell)
+
+        if filler_rows:
+            out.append("\\par\n")
+
+        for i, row in enumerate(filler_rows):
+            for cell in row:
+                cell_span = self._get_config(cell, "col_span", default=1)
+                visitor.context.set_width(cell, cell_span / total_cols)
+                visitor.visit(cell)
+
+            if i < len(filler_rows) - 1:
+                out.append("\\par\n")
+
+        out.append("\\end{gridcolumn}%\n")
+        return updated_idx

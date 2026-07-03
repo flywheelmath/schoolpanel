@@ -46,7 +46,7 @@ class BaseRenderVisitor:
             os.makedirs(output_dir)
 
         full_filename = f"{filename_slug}.{self.file_extension}"
-        target_path = os.path.join(output_dir, full_filename)
+        target_path = os.path.join(output_dir, "visitors/config/", full_filename)
 
         with open(target_path, "w", encoding="utf-8") as f:
             f.write(self.get_result())

@@ -8,16 +8,11 @@ mdc: true
 ## Homework
 ---
 
-Solve for \(x\): \(2x + 5 = 15\) [http://google.com/](http://google.com/_test)
+Solve for \(x\): \(2x + 5 = 15\)
 
 <SubtaskGrid cols="2" flow="row">
 
 - (a) Subtract 5 **from** *both* sides: \(2x = 10\)
-    * test
-    > this is a block quote $5
-    > so is this
-    * this is another list item
-    and this is the end of that item
 - (b) Divide by 2 to isolate the variable: \(\{x = 5\}\)
 - (c) Check answer using substitution: \(2(5) + 5 = 15\)
   this is part of the same subtask (c)
@@ -45,6 +40,7 @@ Solve each equation for the letter.
 - (l) $x + 5 = 2$
 - (m) $x + 5 = 2$
 - (n) $x + 5 = 4$
+- (o) $x + 5 = 9$
 
 </SubtaskGrid>
 
