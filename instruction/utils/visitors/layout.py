@@ -29,13 +29,14 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
                     cell = current_row_cells[0]
                     visitor.context.set_width(cell, self._get_config(cell, "col_span", 4) / 12.0)
                     visitor.visit(cell)
-                    out.append("\\par\n")
+                    visitor.emit_line("\\par\n")
                 else:
-                    out.append("\\begin{gridrow}\n")
-                    for cell in current_row_cells:
-                        visitor.context.set_width(cell, self._get_config(cell, "col_span", 4) / 12.0)
-                        visitor.visit(cell)
-                    out.append("\\end{gridrow}\n")
+                    visitor.emit_line("\\begin{gridrow}\n")
+                    with visitor.indent():
+                        for cell in current_row_cells:
+                            visitor.context.set_width(cell, self._get_config(cell, "col_span", 4) / 12.0)
+                            visitor.visit(cell)
+                    visitor.emit_line("\\end{gridrow}\n")
                 continue
 
             best_split_index = self._find_best_partition_split(current_row_cells)
@@ -43,37 +44,36 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
             right_partition = current_row_cells[best_split_index:]
 
             tracks = self._get_track_assignment(left_partition, right_partition)
-            out.append("\\begin{gridrow}\n")
 
-            if tracks["total_left_cols"] > 0:
-                if tracks["taller_on_left"]:
-                    self._emit_taller_column(left_partition, tracks['total_left_cols'], visitor)
-                else:
-                    idx = self._emit_shorter_column(
-                        left_partition,
-                        tracks["total_left_cols"],
-                        tracks["taller_max_h"],
-                        tracks["shorter_max_h"],
-                        cells,
-                        idx,
-                        visitor
-                    )
-
-            if tracks["total_right_cols"] > 0:
-                if not tracks["taller_on_left"]:
-                    self._emit_taller_column(right_partition, tracks["total_right_cols"], visitor)
-                else:
-                    idx = self._emit_shorter_column(
-                        right_partition,
-                        tracks["total_right_cols"],
-                        tracks["taller_max_h"],
-                        tracks["shorter_max_h"],
-                        cells,
-                        idx,
-                        visitor
-                    )
-
-            out.append("\\end{gridrow}\n")
+            visitor.emit_line("\\begin{gridrow}\n")
+            with visitor.indent():
+                if tracks["total_left_cols"] > 0:
+                    if tracks["taller_on_left"]:
+                        self._emit_taller_column(left_partition, tracks['total_left_cols'], visitor)
+                    else:
+                        idx = self._emit_shorter_column(
+                            left_partition,
+                            tracks["total_left_cols"],
+                            tracks["taller_max_h"],
+                            tracks["shorter_max_h"],
+                            cells,
+                            idx,
+                            visitor
+                        )
+                if tracks["total_right_cols"] > 0:
+                    if not tracks["taller_on_left"]:
+                        self._emit_taller_column(right_partition, tracks["total_right_cols"], visitor)
+                    else:
+                        idx = self._emit_shorter_column(
+                            right_partition,
+                            tracks["total_right_cols"],
+                            tracks["taller_max_h"],
+                            tracks["shorter_max_h"],
+                            cells,
+                            idx,
+                            visitor
+                        )
+            visitor.emit_line("\\end{gridrow}\n")
 
     def _get_config(self, node: Node, key: str, default: int = 1) -> int:
         if hasattr(node, "config") and isinstance(node.config, dict):
@@ -196,11 +196,12 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
             visitor.visit(cell)
             return
 
-        out.append(f"\\begin{{gridcolumn}}[{width_fraction:.4f}]\n")
-        for cell in partition_cells:
-            visitor.context.set_width(cell, 1.0)
-            visitor.visit(cell)
-        out.append("\\end{gridcolumn}%\n")
+        visitor.emit_line(f"\\begin{{gridcolumn}}[{width_fraction:.4f}]\n")
+        with visitor.indent():
+            for cell in partition_cells:
+                visitor.context.set_width(cell, 1.0)
+                visitor.visit(cell)
+        visitor.emit_line("\\end{gridcolumn}%\n")
 
     def _emit_shorter_column(self, partition_cells: List[Node], total_cols: int, taller_max: int, shorter_max: int, cells: List[Node], global_idx: int, visitor: Any) -> int:
         out = visitor.output
@@ -216,24 +217,24 @@ class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
             visitor.visit(cell)
             return updated_idx
 
-        out.append(f"\\begin{{gridcolumn}}[{width_fraction:.4f}]\n")
-
-        for cell in partition_cells:
-            cell_span = self._get_config(cell, "col_span", default=1)
-            visitor.context.set_width(cell, cell_span / total_cols)
-            visitor.visit(cell)
-
-        if filler_rows:
-            out.append("\\par\n")
-
-        for i, row in enumerate(filler_rows):
-            for cell in row:
+        visitor.emit_line(f"\\begin{{gridcolumn}}[{width_fraction:.4f}]\n")
+        with visitor.indent():
+            for cell in partition_cells:
                 cell_span = self._get_config(cell, "col_span", default=1)
                 visitor.context.set_width(cell, cell_span / total_cols)
                 visitor.visit(cell)
+    
+            if filler_rows:
+                visitor.emit_line("\\par\n")
+    
+            for i, row in enumerate(filler_rows):
+                for cell in row:
+                    cell_span = self._get_config(cell, "col_span", default=1)
+                    visitor.context.set_width(cell, cell_span / total_cols)
+                    visitor.visit(cell)
+    
+                if i < len(filler_rows) - 1:
+                    visitor.emit_line("\\par\n")
 
-            if i < len(filler_rows) - 1:
-                out.append("\\par\n")
-
-        out.append("\\end{gridcolumn}%\n")
+        visitor.emit_line("\\end{gridcolumn}%\n")
         return updated_idx

@@ -1,4 +1,5 @@
 import os
+from contextlib import contextmanager
 from core.models import (
     Node,
     Grid,
@@ -27,6 +28,24 @@ class BaseRenderVisitor:
         self.output = []
         self.context = context or RenderContext()
         self.file_extension = "txt"
+        self.indent_level = 0
+
+    @contextmanager
+    def indent(self):
+        self.indent_level += 1
+        try:
+            yield
+        finally:
+            self.indent_level -= 1
+
+    def emit_line(self, text: str):
+        indentation = "  " * self.indent_level
+        lines = text.splitlines(keepends=True)
+        for line in lines:
+            if line.strip():
+                self.output.append(indentation + line)
+            else:
+                self.output.append(line)
 
     def get_result(self) -> str:
         return "".join(self.output)

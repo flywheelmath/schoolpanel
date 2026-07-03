@@ -27,15 +27,18 @@ class RenderTeXVisitor(BaseRenderVisitor):
         self.generic_visit(node)
 
     def emit_task_start(self, node, width_fraction):
-        self.output.append(f"\\begin{{task}}[{width_fraction:.4f}]\n")
+        self.emit_line(f"\\begin{{task}}[{width_fraction:.4f}]\n")
 
     def emit_task_end(self, node):
-        self.output.append("\\end{task}\n")
+        self.emit_line("\\end{task}\n")
 
     def visit_taskentity(self, node: TaskEntity):
         width_fraction = self.context.get_width(node)
         self.emit_task_start(node, width_fraction)
-        self.grid_strategy.render(node, self)
+
+        with self.indent():
+            self.grid_strategy.render(node, self)
+
         self.emit_task_end(node)
 
     def visit_taskpromptentity(self, node: TaskPromptEntity):
@@ -55,20 +58,16 @@ class RenderTeXVisitor(BaseRenderVisitor):
 
     def visit_textentity(self, node: TextEntity):
         if node.content.strip().startswith("\\"):
-            self.output.append(node.content + "\n")
+            self.emit_line(node.content + "\n")
         else:
             clean_tex = process_md_to_tex(node.content)
-            self.output.append(clean_tex + "\n")
+            self.emit_line(clean_tex + "\n")
 
     def visit_graphentity(self, node: GraphEntity):
-        self.output.append(r"% --- Start graph ---")
-        self.output.append(node.raw_body)
-        self.output.append(r"% --- End graph ---")
+        self.emit_line(node.raw_body)
 
     def visit_tableentity(self, node: TableEntity):
-        self.output.append(r"% --- Start table ---")
-        self.output.append(node.raw_body)
-        self.output.append(r"% --- End table ---")
+        self.emit_line(node.raw_body)
 
     def render_semantic_environment(self, env_name, content, width_fraction):
-        self.output.append(f"\\{env_name}[{width_fraction:.4f}]{{{content}}}\n")
+        self.emit_line(f"\\{env_name}[{width_fraction:.4f}]{{{content}}}\n")
