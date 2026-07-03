@@ -1,6 +1,6 @@
 import math
 from typing import Any, Dict, List, Tuple
-from core.models import Cell, Node, DomainEntity
+from core.models import Cell, Node
 
 
 class BaseGridRenderStrategy:
@@ -11,9 +11,8 @@ class BaseGridRenderStrategy:
 class DualHeightRowsGridStrategy(BaseGridRenderStrategy):
     def render(self, node: Node, visitor: Any) -> None:
         out = visitor.output
-
         cells: List[Node] = [
-            child for child in node.children if isinstance(child, (Cell, DomainEntity))
+            child for child in node.children if isinstance(child, Cell)
         ]
 
         idx = 0

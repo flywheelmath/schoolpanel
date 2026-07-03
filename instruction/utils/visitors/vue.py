@@ -3,41 +3,26 @@ from core.models import (
     Cell,
     Grid,
     GraphEntity,
+    Node,
     SubtaskEntity,
     TableEntity,
     TaskEntity,
     TaskPromptEntity,
-    TextEntity,
 )
 
 
 class RenderVueVisitor(BaseRenderVisitor):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, context=None):
+        super().__init__(context=context)
         self.file_extension = "md"
         self.subtask_counter = 0
-        self.in_subtask_scope = False
-        self.output = []
 
     def emit_headmatter(self):
-        print("hello")
         self.output.append("---\ntheme: default\nmdc: true\n---\n\n")
 
-    def emit_task_start(self, node: TaskEntity, width_fraction):
-        self.output.append("---\n\n")
-        self.subtask_counter = 0
-
-    def emit_prompt(self, node, width_fraction):
-        if node.content:
-            self.output.append(f"{node.content}\n\n")
-
-        cols = node.config.get("cols", 2)
-        flow = node.config.get("flow", "row")
-
-    def emit_subtask(self, node, width_fraction):
-        label = chr(ord("a") + self.subtask_counter)
-        self.subtask_counter += 1
-        self.output.append(f"- **{label}.** {node.content}\n")
+    def emit_line(self, line: str = ""):
+        if line.strip():
+            self.output.append(line)
 
     def visit_taskentity(self, node: TaskEntity):
         self.output.append("---\n\n")
@@ -51,33 +36,34 @@ class RenderVueVisitor(BaseRenderVisitor):
         flow = node.config.get("flow", "row")
         self.output.append(f'<SubtaskGrid cols="{cols}" flow="{flow}">\n\n')
 
-        remaining_children = [
-            c for c in node.children if not isinstance(c, TaskPromptEntity)
-        ]
-        for child in remaining_children:
-            self.visit(child)
+        with self.indent():
+            remaining_children = [
+                c for c in node.children if not isinstance(c, TaskPromptEntity)
+            ]
+            for child in remaining_children:
+                self.visit(child)
 
-        self.output.append("\n</SubtaskGrid>\n\n")
+        self.emit_line("\n</SubtaskGrid>\n\n")
 
     def visit_taskpromptentity(self, node: TaskPromptEntity):
-        self.output.append(f"{node.content}\n\n")
+        if node.content.strip():
+            self.emit_line(f"{node.content}\n\n")
 
     def visit_subtaskentity(self, node: SubtaskEntity):
         label = chr(ord("a") + self.subtask_counter)
         self.subtask_counter += 1
 
-        subtask_content = node.content if isinstance(node.content, str) else ""
-        if not subtask_content and hasattr(node, "children"):
-            text_parts = [c.content for c in node.children if isinstance(c, TextEntity)]
-            subtask_content = "\n".join(text_parts).strip()
-
-        lines = subtask_content.strip().split("\n")
-        if not lines:
+        if not node.content.strip():
             return
 
+        lines = node.content.strip().split("\n")
         formatted_body = []
         first_line = lines[0].strip()
-        formatted_body.append(f"- ({label}) {first_line}")
+        if self.indent_level % 2 == 0:
+            bullet = "-"
+        else:
+            bullet = "*"
+        formatted_body.append(f"{bullet} ({label}) {first_line}")
 
         for line in lines[1:]:
             if not line.strip():
@@ -89,8 +75,20 @@ class RenderVueVisitor(BaseRenderVisitor):
             else:
                 formatted_body.append(f"  {line}")
 
-        self.output.append("\n".join(formatted_body) + "\n")
+        self.emit_line("\n".join(formatted_body) + "\n")
+        self.generic_visit(node)
 
-    def visit_textentity(self, node: TextEntity):
-        if not self.in_subtask_scope:
-            self.output.append(f"{node.content}\n")
+    def visit_grid(self, node: Grid):
+        self.emit_line('<div class="grid-row">\n')
+        with self.indent():
+            self.generic_visit(node)
+        self.emit_line("</div>\n\n")
+
+    def visit_cell(self, node: Cell):
+        col_span = node.config.get("col_span", 4)
+        self.emit_line(f'<div class="grid-cell col-{col_span}">\n')
+        with self.indent():
+            if node.content:
+                self.emit_line(node.content + "\n")
+            self.generic_visit(node)
+        self.emit_line("</div>\n")

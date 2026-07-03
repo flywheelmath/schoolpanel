@@ -1,8 +1,8 @@
+this is just text
+
 # Extreme Layout Optimization and Variance Stress Test
 
 ## Section 1: Complex Grid Mechanics
-
-::: grid
 
 ### Task 1: The Multi-Tier Lookahead Pocket Stuffer
 ::: task {cols="2", flow="row", col_span=12}
@@ -57,15 +57,15 @@
 ::: task {cols="4", flow="row", col_span=12}
 # [col_span=12] Challenge 4: The Hanging Edge-Case Exemption Loop
 
-- [col_span=8, row_span=4] $\prod_{n=1}^{\infty} \left(1 + \frac{1}{n^2}\right)$ Taller Master Column (left partition).
-- [col_span=4, row_span=1] $\lim_{x \to 0} \frac{\sin x}{x} = 1$ Shorter Slave Column (right partition).
-- [col_span=4, row_span=1] $\frac{d}{dx}[e^x] = e^x$ Lookahead 1: Consumes space.
-- [col_span=4, row_span=4] $\int \sec \theta \, d\theta = \ln|\sec \theta + \tan \theta|$ Lookahead 2: Its `row_span` of 4 completely violates the remaining space rule. However, it is the *last remaining item in the queue*, meaning its width footprint matches the track width budget perfectly. This should trigger your `all_remaining_fit_in_width` exemption, greedily eating the hanging element early to avoid an orphaned line!
-- [col_span=8, row_span=4] $\prod_{n=1}^{\infty} \left(1 + \frac{1}{n^2}\right)$ Taller Master Column (left partition).
-- [col_span=4, row_span=1] $\lim_{x \to 0} \frac{\sin x}{x} = 1$ Shorter Slave Column (right partition).
-- [col_span=4, row_span=1] $\frac{d}{dx}[e^x] = e^x$ Lookahead 1: Consumes space.
-- [col_span=4, row_span=4] $\int \sec \theta \, d\theta = \ln|\sec \theta + \tan \theta|$ Lookahead 2: Its `row_span` of 4 completely violates the remaining space rule. However, it is the *last remaining item in the queue*, meaning its width footprint matches the track width budget perfectly. This should trigger your `all_remaining_fit_in_width` exemption, greedily eating the hanging element early to avoid an orphaned line!
+is this still in the prompt
 
-:::
+- [col_span=8, row_span=4] $\prod_{n=1}^{\infty} \left(1 + \frac{1}{n^2}\right)$ Taller Master Column (left partition).
+- [col_span=4, row_span=1] $\lim_{x \to 0} \frac{\sin x}{x} = 1$ Shorter Slave Column (right partition).
+- [col_span=4, row_span=1] $\frac{d}{dx}[e^x] = e^x$ Lookahead 1: Consumes space.
+- [col_span=4, row_span=4] $\int \sec \theta \, d\theta = \ln|\sec \theta + \tan \theta|$ Lookahead 2: Its `row_span` of 4 completely violates the remaining space rule. However, it is the *last remaining item in the queue*, meaning its width footprint matches the track width budget perfectly. This should trigger your `all_remaining_fit_in_width` exemption, greedily eating the hanging element early to avoid an orphaned line!
+- [col_span=8, row_span=4] $\prod_{n=1}^{\infty} \left(1 + \frac{1}{n^2}\right)$ Taller Master Column (left partition).
+- [col_span=4, row_span=1] $\lim_{x \to 0} \frac{\sin x}{x} = 1$ Shorter Slave Column (right partition).
+- [col_span=4, row_span=1] $\frac{d}{dx}[e^x] = e^x$ Lookahead 1: Consumes space.
+- [col_span=4, row_span=4] $\int \sec \theta \, d\theta = \ln|\sec \theta + \tan \theta|$ Lookahead 2: Its `row_span` of 4 completely violates the remaining space rule. However, it is the *last remaining item in the queue*, meaning its width footprint matches the track width budget perfectly. This should trigger your `all_remaining_fit_in_width` exemption, greedily eating the hanging element early to avoid an orphaned line!
 
 :::

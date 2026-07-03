@@ -6,7 +6,6 @@ from core.models import (
     Cell,
     TaskEntity,
     SubtaskEntity,
-    TextEntity,
     GraphEntity,
     TableEntity,
 )

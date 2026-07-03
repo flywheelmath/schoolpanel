@@ -10,7 +10,6 @@ from core.models import (
     TableEntity,
     TaskEntity,
     TaskPromptEntity,
-    TextEntity,
 )
 
 
@@ -24,6 +23,10 @@ class RenderTeXVisitor(BaseRenderVisitor):
         self.grid_strategy.render(node, self)
 
     def visit_cell(self, node: Cell):
+        if node.content:
+            clean_content = process_md_to_tex(node.content)
+            width_fraction = self.context.get_width(node)
+            self.render_semantic_environment("cell", clean_content, width_fraction)
         self.generic_visit(node)
 
     def emit_task_start(self, node, width_fraction):
@@ -48,20 +51,9 @@ class RenderTeXVisitor(BaseRenderVisitor):
 
     def visit_subtaskentity(self, node: SubtaskEntity):
         width_fraction = self.context.get_width(node)
-        subtask_text = node.content if isinstance(node.content, str) else ""
-        if not subtask_text and hasattr(node, "children"):
-            text_parts = [c.content for c in node.children if isinstance(c, TextEntity)]
-            subtask_text = "\n".join(text_parts).strip()
-
-        clean_content = process_md_to_tex(subtask_text)
+        clean_content = process_md_to_tex(node.content)
         self.render_semantic_environment("subtask", clean_content, width_fraction)
-
-    def visit_textentity(self, node: TextEntity):
-        if node.content.strip().startswith("\\"):
-            self.emit_line(node.content + "\n")
-        else:
-            clean_tex = process_md_to_tex(node.content)
-            self.emit_line(clean_tex + "\n")
+        self.generic_visit(node)
 
     def visit_graphentity(self, node: GraphEntity):
         self.emit_line(node.raw_body)
