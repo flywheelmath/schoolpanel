@@ -64,3 +64,8 @@ class PlotData(Node):
 @dataclass
 class TableEntity(Node):
     pass
+
+
+@dataclass
+class SectionHeadingEntity(Node):
+    level: int = 1

@@ -4,6 +4,7 @@ from core.models import (
     Grid,
     GraphEntity,
     Node,
+    SectionHeadingEntity,
     SubtaskEntity,
     TableEntity,
     TaskEntity,
@@ -19,10 +20,6 @@ class RenderVueVisitor(BaseRenderVisitor):
 
     def emit_headmatter(self):
         self.output.append("---\ntheme: default\nmdc: true\n---\n\n")
-
-    def emit_line(self, line: str = ""):
-        if line.strip():
-            self.output.append(line)
 
     def visit_taskentity(self, node: TaskEntity):
         self.output.append("---\n\n")
@@ -92,3 +89,12 @@ class RenderVueVisitor(BaseRenderVisitor):
                 self.emit_line(node.content + "\n")
             self.generic_visit(node)
         self.emit_line("</div>\n")
+
+    def visit_node(self, node: Node):
+        if node.content.strip():
+            self.emit_line(f"{node.content.strip()}\n\n")
+
+    def visit_sectionheadingentity(self, node: SectionHeadingEntity):
+        prefix = "#" * node_level
+        self.emit_line(f"{prefix} {node.content}\n\n")
+

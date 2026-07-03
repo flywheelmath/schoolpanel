@@ -8,6 +8,7 @@ from .models import (
     GraphEntity,
     PlotData,
     PointData,
+    SectionHeadingEntity,
     SubtaskEntity,
     TaskEntity,
     TaskPromptEntity,
@@ -89,9 +90,13 @@ class Parser:
         "plot": PlotData,
         "point": PointData,
         "table": TableEntity,
+        "heading": SectionHeadingEntity,
     }
 
     CONTEXTUAL_INLINE_REGISTRY: Dict[str, Dict[str, Type[Node]]] = {
+        "": {
+            "#": SectionHeadingEntity,
+        },
         "task": {
             "#": TaskPromptEntity,
             "-": SubtaskEntity,
@@ -156,8 +161,6 @@ class Parser:
             current_node = None
             current_content = []
 
-        tag_rules = self.CONTEXTUAL_INLINE_REGISTRY.get(parent_tag, {})
-
         idx = 0
         while idx < len(lines):
             line = lines[idx]
@@ -202,17 +205,22 @@ class Parser:
                 idx += 1
                 continue
 
+            tag_rules = self.CONTEXTUAL_INLINE_REGISTRY.get(parent_tag, {})
+
             config_match = re.match(r"^([#\-*]\s*)\[([^\]]+)\]\s*(.*)$", line_stripped)
             if config_match:
                 prefix_marker = config_match.group(1).strip()
-                config = parse_config(config_match.group(2))
+                config_str = config_match.group(2)
+                config = parse_config(config_str) if config_str else {}
                 line_body = config_match.group(3).strip()
 
                 if prefix_marker in tag_rules:
                     commit_current()
                     target_class = tag_rules[prefix_marker]
 
-                    if target_class == TaskPromptEntity:
+                    if target_class == SectionHeadingEntity:
+                        current_node = SectionHeadingEntity(config=config, level=len(prefix_marker), content=line_body)
+                    elif target_class == TaskPromptEntity:
                         current_node = TaskPromptEntity(
                             config=config, content=line_body.lstrip("#").strip()
                         )
@@ -310,7 +318,9 @@ class Parser:
         if issubclass(node_class, Grid):
             normalized_children = []
             for child in children:
-                if isinstance(child, Cell):
+                child_type_name = type(child).__name__
+ 
+                if child_type_name in ("Cell", "SubtaskEntity", "TaskPromptEntity"):
                     normalized_children.append(child)
                 else:
                     wrapper = Cell(config=child.config, children=[child])

@@ -6,6 +6,8 @@ from core.models import (
     Cell,
     Grid,
     GraphEntity,
+    Node,
+    SectionHeadingEntity,
     SubtaskEntity,
     TableEntity,
     TaskEntity,
@@ -60,6 +62,21 @@ class RenderTeXVisitor(BaseRenderVisitor):
 
     def visit_tableentity(self, node: TableEntity):
         self.emit_line(node.raw_body)
+
+    def visit_sectionheadingentity(self, node: SectionHeadingEntity):
+        tex_headers = {
+            1: r"\section*",
+            2: r"\subsection*",
+            3: r"\subsubsection*",
+            4: r"\paragraph",
+        }
+        cmd = tex_headers.get(node.level, r"\paragraph")
+        self.emit_line(f"{cmd}{{{node.content}}}\n")
+
+    def visit_node(self, node: Node):
+        if node.content.strip():
+            clean_content = process_md_to_tex(node.content)
+            self.emit_line(f"{clean_content}\n\n")
 
     def render_semantic_environment(self, env_name, content, width_fraction):
         self.emit_line(f"\\{env_name}[{width_fraction:.4f}]{{{content}}}\n")
