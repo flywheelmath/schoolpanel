@@ -2,6 +2,7 @@ import os
 import sys
 
 from core.parser import Parser, Tokenizer
+from graph.processor import GraphGeometryHydrator
 from visitors.vue import RenderVueVisitor
 from visitors.tex import RenderTeXVisitor
 
@@ -19,6 +20,9 @@ def compile_custom_markdown(input_filepath: str, output_dir: str, filename_slug:
     tokens = Tokenizer(raw_markdown).tokenize()
     parser = Parser(tokens)
     ast_nodes = parser.parse()
+
+    print("[SSG] Running graph geometry pipeline hydration pass...")
+    GraphGeometryHydrator.hydrate_ast(ast_nodes)
 
     print("[SSG] Executing Vue rendering pass...")
     vue_visitor = RenderVueVisitor()

@@ -33,3 +33,8 @@ this is part of the same subtask (c)
 -[col_span=3] $x + 5 = 9$
 :::
 :::
+
+[graph xmin="-6" xmax="6" ymin="-6" ymax="6" xstep="1" ystep="1" xlabelstep="2" ylabelstep="2" xlabel="Domain (x)" ylabel="Range (y)" arrows="<->"]
+plot: y = x^2 - 2x - 3
+plot: x^2 + y^2 < 16
+[/graph]

@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 class CoordinateMathEngine:
     @staticmethod
-    def simplify_path_rdp(points: List[Tuple[float, flot]], epsilon: float = 0.02) -> List[Tuple[float, float]]:
+    def simplify_path_rdp(points: List[Tuple[float, float]], epsilon: float = 0.02) -> List[Tuple[float, float]]:
         if len(points) < 3:
             return points
 
@@ -58,7 +58,7 @@ class CoordinateMathEngine:
         except (ZeroDivisionError, OverflowError, ValueError):
             return float('nan')
 
-    @clasmethod
+    @classmethod
     def sample_explicit_relation(
         cls,
         expr_str: str,
