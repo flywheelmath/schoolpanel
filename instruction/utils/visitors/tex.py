@@ -13,6 +13,7 @@ from core.models import (
     TaskEntity,
     TaskPromptEntity,
 )
+from graph.config import GraphConfigAdapter
 
 
 class RenderTeXVisitor(BaseRenderVisitor):
@@ -57,12 +58,6 @@ class RenderTeXVisitor(BaseRenderVisitor):
         self.render_semantic_environment("subtask", clean_content, width_fraction)
         self.generic_visit(node)
 
-    def visit_graphentity(self, node: GraphEntity):
-        self.emit_line(node.raw_body)
-
-    def visit_tableentity(self, node: TableEntity):
-        self.emit_line(node.raw_body)
-
     def visit_sectionheadingentity(self, node: SectionHeadingEntity):
         tex_headers = {
             1: r"\section*",
@@ -80,3 +75,58 @@ class RenderTeXVisitor(BaseRenderVisitor):
 
     def render_semantic_environment(self, env_name, content, width_fraction):
         self.emit_line(f"\\{env_name}[{width_fraction:.4f}]{{{content}}}\n")
+
+    def visit_graphentity(self, node: GraphEntity):
+        cfg = GraphConfigAdapter(node.config)
+
+        self.emit_line(r"\begin{center}")
+        self.emit_line(r"\begin{tikzpicture}[scale=0.5]")
+        self._tex_draw_grid(cfg)
+        self._tex_draw_axes(cfg)
+
+        for child in node.children:
+            if type(child).__name__ != "PlotData":
+                continue
+
+            if hasattr(child, "fill_polygons") and child.fill_polygons:
+                for poly in child.fill_polygons:
+                    coord_str = " -- ".join(f"({round(pt[0],3)},{round(pt[1],3)})" for pt in poly)
+                    self.emit_line(f"  \\fill[graph-plot-fill] {coord_str} -- cycle;")
+
+            if hasattr(child, "computed_paths") and child.computed_paths:
+                for path in child.computed_paths:
+                    if len(path) < 2:
+                        continue
+                    coord_str = " -- ".join(f"({round(pt[0],3)},{round(pt[1],3)})" for pt in path)
+                    line_style = "graph-plot-line"
+                    if "dashed" in child.config.get("style", ""):
+                        line_style += ", dashed"
+                    self.emit_line(f"  \\draw[{line_style}] {coord_str};")
+
+        self.emit_line(r"\end{tikzpicture}")
+        self.emit_line(r"\end{center}" + "\n")
+
+    def _tex_draw_grid(self, cfg: GraphConfigAdapter):
+        self.emit_line(f"  \\draw[graph-grid, step={cfg.xstep}] ({cfg.xmin},{cfg.ymin}) grid ({cfg.xmax},{cfg.xmax},{cfg.ymax});")
+
+    def _tex_draw_axes(self, cfg: GraphConfigAdapter):
+        arrow_opt = f", {cfg.arrows}" if cfg.arrows and cfg.arrows.lower() != "none" else ""
+        self.emit_line(f"  \\draw[graph-axis{arrow_opt}] ({cfg.xmin},0) -- ({cfg.xmax},0) node[right] {{{cfg.xlabel}}};")
+        self.emit_line(f"  \\draw[graph-axis{arrow_opt}] (0,{cfg.ymin}) -- (0,{cfg.ymax}) node[above] {{{cfg.ylabel}}};")
+
+        curr_x = cfg.xmin
+        while curr_x <= cfg.xmax:
+            if abs(curr_x) > 1e-7:
+                label_val = int(curr_x) if curr_x.is_integer() else curr_x
+                self.emit_line(f"  \\node[below, class=graph-tick-label] at ({curr_x},0) {{{label_val}}};")
+            curr_x += cfg.xlabelstep
+
+        curr_y = cfg.ymin
+        while curr_y <= cfg.ymax:
+            if abs(curr_y) > 1e-7:
+                label_val = int(curr_y) if curr_y.is_integer() else curr_y
+                self.emit_line(f"  \\node[left, class=graph-tick-label] at (0,{curr_y}) {{{label_val}}};")
+            curr_y += cfg.ylabelstep
+
+    def visit_tableentity(self, node: TableEntity):
+        self.emit_line(node.raw_body)
