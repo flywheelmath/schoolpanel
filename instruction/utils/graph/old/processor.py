@@ -17,24 +17,46 @@ class GraphGeometryHydrator:
             ymin = float(node.config.get("ymin", -6))
             ymax = float(node.config.get("ymax", 6))
 
+            normalized_children = []
             for child in node.children:
-                if isinstance(child, PlotData):
-                    raw_expr = child.original_expr.strip()
+                if type(child).__name__ != "PlotData" and hasattr(child, "content"):
+                    expr = child.content.replace("plot:" , "", 1).strip()
+                    plot_node = PlotData(config={}, children=[])
+                    plot_node.original_expr = expr
+                    normalized_children.append(plot_node)
+                else:
+                    normalized_children.append(child)
+
+            node.children = normalized_children
+                
+            for child in node.children:
+                if type(child).__name__ == "PlotData":
+                    raw_expr = getattr(child, "original_expr", "").strip()
+                    if not raw_expr:
+                        continue
+
                     eq_skeleton = raw_expr
-                    for rel in eq_skeleton:
-                        eq_skeleton = eq_skeleton.replace(rel, "=")
-                        break
+                    for rel in ("<=", ">=", "<", ">"):
+                        if rel in eq_skeleton:
+                            eq_skeleton = eq_skeleton.replace(rel, "=")
+                            break
 
-                    if "=" in eq_skeleton:
-                        lhs, rhs = eq_skeleton.split("=", 1)
-                        sympy_expr = sp.parse_expr(f"({lhs} - ({rhs})")
-                    else:
-                        sympy_expr = sp.parse_expr(eq_skeleton)
+                    eq_ekeleton = eq_skeleton.replace("^", "**")
 
-                    free_vars = {str(s) for s in sympy_expr.free_symbols}
+                    try:
+                        if "=" in eq_skeleton:
+                            lhs, rhs = eq_skeleton.split("=", 1)
+                            sympy_expr = sp.parse_expr(f"({lhs} - ({rhs})")
+                        else:
+                            sympy_expr = sp.parse_expr(eq_skeleton)
+    
+                        free_vars = {str(s) for s in sympy_expr.free_symbols}
+                    except Exception:
+                        free_vars = set()
+                        sympy_expr = None
 
-                    is_explicit_shortcut = False
-                    explicit_target_expr = None
+                    is_explicit_shortcut = re.sub(r"\s+", "", raw_expr).startswith("y=")
+                    target_expr = raw_expr
 
                     if "y" in free_vars and "x" in free_vars:
                         try:
