@@ -71,3 +71,18 @@ class IGeneralLayoutRenderer(abc.ABC):
     @abc.abstractmethod
     def close_document(self) -> str:
         pass
+
+    @abc.abstractmethod
+    def draw_list(self, data: ListData) -> None:
+        pass
+
+@dataclass(frozen=True)
+class ListElement:
+    content: str
+    custom_marker: Optional[str] = None
+
+@dataclass(frozen=True)
+class ListData:
+    items: List[ListElement]
+    list_type: str
+    style_class: str

@@ -130,3 +130,11 @@ class RenderTeXVisitor(BaseRenderVisitor):
 
     def visit_tableentity(self, node: TableEntity):
         self.emit_line(node.raw_body)
+
+    def draw_list(self, data: ListData) -> None:
+        env_name = "enumerate" if data.list_type == "ordered" else "itemize"
+        self.emit_line(f"\\begin{{{env_name}}}\n")
+        for item in data.items:
+            marker_prefix = f"[{item.custom_marker}]" if item.custom_marker else ""
+            self.emit_line(f"  \\item{marker_prefix} {item.content}\n")
+        self.emit_line(f"\\end{{{env_name}}}\n")

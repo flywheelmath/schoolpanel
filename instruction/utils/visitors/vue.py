@@ -101,6 +101,15 @@ class RenderVueVisitor(BaseRenderVisitor):
         prefix = "#" * node_level
         self.emit_line(f"{prefix} {node.content}\n\n")
 
+    def draw_list(self, data: ListData) -> None:
+        tag_name = "ol" if data.list_type == "ordered" else "ul"
+        self.emit_line(f'<{tag_name} class="graph-document-list {data.style_class}">\n')
+        for item in data.items:
+            marker_attr = f'  data-marker="{item.custom_marker}"' if item.custom_marker else ""
+            self.emit_line(f'  <li{marker_attr}>{item.content}</li>\n')
+        self.emit_line(f'</{tag_name}>\n')
+
+
     def visit_graphentity(self, node: GraphEntity):
         cfg = GraphConfigAdapter(node.config)
         svg_w, svg_h = 500, 500
